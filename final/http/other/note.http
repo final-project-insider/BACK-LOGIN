@@ -14,7 +14,7 @@ Content-Type: application/json
 {
   "noteTitle": "TEST 1",
   "noteContent": "CONTENT 1",
-  "senderId": 12345,
+  "senderId": 2100000000,
   "receiverId": 12345
 }
 

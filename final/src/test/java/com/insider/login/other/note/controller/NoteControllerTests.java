@@ -21,7 +21,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Transactional
 public class NoteControllerTests {
 
     @Autowired
@@ -34,8 +33,8 @@ public class NoteControllerTests {
     public void testSelectNoteList() throws Exception {
 
         // given
-        int memberNo = 12345;
-        int receiverId = 12345;
+        int memberNo = 3;
+        int receiverId = 3;
         String deleteYn = "N";
         int page = 0;
         int size = 10;
@@ -111,6 +110,7 @@ public class NoteControllerTests {
     @Test
     @DisplayName("deleteYn을 이용한 쪽지 삭제여부 update 테스트")
     public void testDeleteNote() throws Exception {
+
         // given
         int noteNo = 7;
         String deleteYn = "Y";

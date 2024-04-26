@@ -1,5 +1,6 @@
 package com.insider.login.approval.repository;
 
+import com.insider.login.approval.entity.Approval;
 import com.insider.login.approval.entity.Form;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -13,6 +14,10 @@ public class ApprovalRepository {
 
     public void insertForm(Form newForm) {
         manager.persist(newForm);
+    }
+
+    public void save(Approval approval){
+        manager.persist(approval);
     }
 }
 

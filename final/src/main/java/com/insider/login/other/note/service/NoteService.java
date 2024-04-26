@@ -86,7 +86,7 @@ public class NoteService {
     }
 
     /** 쪽지 삭제여부 업데이트 */
-    @Transactional
+
     public Map<String, Object> deleteNote(int noteNo, String deleteYn) {
 
         Map<String, Object> result = new HashMap<>();

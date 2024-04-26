@@ -22,6 +22,8 @@ public class AnnounceDTO {
 
     private int hits;
 
+    private String filePath;
+
 
 
 }

@@ -42,6 +42,16 @@ Content-Disposition: form-data; name="announceDTO"
 GET http://localhost:8080/announces
 
 ### 공지사항 상세 조회
-GET http://localhost:8080/announces/{ancNo}
+GET http://localhost:8080/announces/27
 
+### 공지사항 수정
+PUT http://localhost:8080/announces/6
+Content-Type: application/json
 
+{
+  "ancTitle" : "",
+  "ancContent" : ""
+}
+
+### 공지사항 삭제
+DELETE http://localhost:8080/announces/3

@@ -2,14 +2,13 @@ package com.insider.login.approval.dto;
 
 import java.util.List;
 
-public class ApprovalDTO {
+public class ApprovalDetailDTO {
 
-    //ApprovalDTO
-
-    // 결재번호, 기안자 사번(*member_info), 제목, 기안 내용, 작성일시, 상태, 반려사유, 양식번호(*form),
-    // 첨부파일(*List(apr_attachment)), 결재선(*List(approver)), 참조선(*List(referencer))
-
-
+    // 결재번호, 기안자 사번(*membmer_info), 제목, 기안 내용, 작성일시, 상태, 반려사유, 양식번호(*form),
+    // 기안자 부서(*member_info *depart_info), 기안자 직급(*member_info)
+    // 첨부파일번호, 첨부파일원본명, 첨부파일저장경로, 첨부파일저장명
+    // 결재자 번호, 결재순번, 결재자 사번(*member), 결재처리상태, 결재처리일시
+    // 결재자 직급(*member_info), 결재자 부서명(*member_info, *depart_info)
 
     private String approvalNo;                  //결재번호
     private int memberId;                       //기안자사번
@@ -21,11 +20,16 @@ public class ApprovalDTO {
     private String formNo;                      //양식번호
     private List<AttachmentDTO> attachment;     //첨부파일
     private List<ApproverDTO> approver;         //결재선
-    private List<ReferencerDTO> referencer;     //참조선
+    private String senderDepartName;            //(*depart_info) 기안자 부서
+    private String senderPositionName;          //(*member_info) 기안자 직급
+    private String receiverDepartName;          //(*depart_info) 결재자 부서
+    private String receiverPositionName;        //(*member_infO) 결재자 직급
 
-    public ApprovalDTO(){}
 
-    public ApprovalDTO(String approvalNo, int memberId, String approvalTitle, String approvalContent, String approvalDate, String approvalStatus, String rejectReason, String formNo, List<AttachmentDTO> attachment, List<ApproverDTO> approver, List<ReferencerDTO> referencer) {
+    public ApprovalDetailDTO() {
+    }
+
+    public ApprovalDetailDTO(String approvalNo, int memberId, String approvalTitle, String approvalContent, String approvalDate, String approvalStatus, String rejectReason, String formNo, List<AttachmentDTO> attachment, List<ApproverDTO> approver, String senderDepartName, String senderPositionName, String receiverPositionName, String receiverDepartName) {
         this.approvalNo = approvalNo;
         this.memberId = memberId;
         this.approvalTitle = approvalTitle;
@@ -36,7 +40,10 @@ public class ApprovalDTO {
         this.formNo = formNo;
         this.attachment = attachment;
         this.approver = approver;
-        this.referencer = referencer;
+        this.senderDepartName = senderDepartName;
+        this.senderPositionName = senderPositionName;
+        this.receiverPositionName = receiverPositionName;
+        this.receiverDepartName = receiverDepartName;
     }
 
     public String getApprovalNo() {
@@ -119,17 +126,41 @@ public class ApprovalDTO {
         this.approver = approver;
     }
 
-    public List<ReferencerDTO> getReferencer() {
-        return referencer;
+    public String getSenderDepartName() {
+        return senderDepartName;
     }
 
-    public void setReferencer(List<ReferencerDTO> referencer) {
-        this.referencer = referencer;
+    public void setSenderDepartName(String senderDepartName) {
+        this.senderDepartName = senderDepartName;
+    }
+
+    public String getSenderPositionName() {
+        return senderPositionName;
+    }
+
+    public void setSenderPositionName(String senderPositionName) {
+        this.senderPositionName = senderPositionName;
+    }
+
+    public String getReceiverPositionName() {
+        return receiverPositionName;
+    }
+
+    public void setReceiverPositionName(String receiverPositionName) {
+        this.receiverPositionName = receiverPositionName;
+    }
+
+    public String getReceiverDepartName() {
+        return receiverDepartName;
+    }
+
+    public void setReceiverDepartName(String receiverDepartName) {
+        this.receiverDepartName = receiverDepartName;
     }
 
     @Override
     public String toString() {
-        return "ApprovalDTO{" +
+        return "ApprovalDetailDTO{" +
                 "approvalNo='" + approvalNo + '\'' +
                 ", memberId=" + memberId +
                 ", approvalTitle='" + approvalTitle + '\'' +
@@ -140,7 +171,10 @@ public class ApprovalDTO {
                 ", formNo='" + formNo + '\'' +
                 ", attachment=" + attachment +
                 ", approver=" + approver +
-                ", referencer=" + referencer +
+                ", departName='" + senderDepartName + '\'' +
+                ", senderPositionName='" + senderPositionName + '\'' +
+                ", receiverPositionName='" + receiverPositionName + '\'' +
+                ", receiverDepartName='" + receiverDepartName + '\'' +
                 '}';
     }
 }

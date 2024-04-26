@@ -3,6 +3,7 @@ package com.insider.login.leave.repository;
 import com.insider.login.leave.entity.LeaveSubmit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,6 +13,6 @@ import java.util.List;
 public interface LeaveSubmitRepository extends JpaRepository<LeaveSubmit, Integer> {
 
     @Query("SELECT l FROM LeaveSubmit l WHERE l.leaveSubApplicant = :applicantId")
-    List<LeaveSubmit> findByMemberId(String applicantId);
+    List<LeaveSubmit> findByMemberId(@Param("applicantId") int applicantId);
 
 }

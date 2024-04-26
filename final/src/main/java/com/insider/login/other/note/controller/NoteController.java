@@ -100,7 +100,7 @@ public class NoteController extends CommonController {
     }
 
     @PutMapping("/notes/{noteNo}")
-    public ResponseEntity<?> deleteNote(@PathVariable (value = "noteNo", required = true) int noteNo,
+    public ResponseEntity<?> deleteNote(@PathVariable (value = "noteNo") int noteNo,
                                         @RequestParam (value = "deleteYn", required = false) String deleteYn) {
 
 

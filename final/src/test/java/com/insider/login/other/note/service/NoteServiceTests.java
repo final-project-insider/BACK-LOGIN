@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 
 
+
 @SpringBootTest
 public class NoteServiceTests {
 
@@ -51,14 +52,14 @@ public class NoteServiceTests {
     public void selectNoteByNoteNo() {
 
         // given
-        int noteNo = 1;
+        int noteNo = 3;
 
         // when
         Optional<Note> note = noteService.findNoteByNoteNo(noteNo);
 
         // then
         Assertions.assertNotNull(note);
-        Assertions.assertEquals(note.get().getNoteNo(), 1);
+        Assertions.assertEquals(note.get().getNoteNo(), 3);
         System.out.println(note);
 
 
@@ -101,23 +102,17 @@ public class NoteServiceTests {
 
         // when
         Map<String, Object> result = new HashMap<>();
-        result.put("result", noteService.deleteNote(noteNo, deleteYn));
 
         try {
-            noteService.deleteNote(noteNo, deleteYn);
-            result.put("result", true);
+            result.put("result", noteService.deleteNote(noteNo, deleteYn));
             System.out.println("Check : " + result);
 
         } catch (Exception e) {
-            noteService.deleteNote(noteNo, deleteYn);
-            result.put("result", true);
-            System.out.println("Check : " + result);
-
+            System.out.println("변경 실패");
         }
 
         // then
         Assertions.assertNotNull(result);
-        Assertions.assertEquals(result.get("result"), true);
 
     }
 

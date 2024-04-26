@@ -19,4 +19,5 @@ public interface AnnounceRepository extends JpaRepository<Announce, Integer> {
     @Query("SELECT a FROM Announce a JOIN AncFile f ON a.ancNo = f.ancNo WHERE a.ancNo = :ancNo")
     Announce findAnnounceWithFiles(@Param("ancNo") int ancNo);
 
+    Announce findByAncNo(int ancNo);
 }
