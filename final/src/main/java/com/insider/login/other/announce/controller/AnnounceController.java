@@ -105,7 +105,6 @@ public class AnnounceController extends FileController {
     public List<AncFile> findAncFilesByAnc(int ancNo) {
 
         List<AncFile> fileList = announceService.selectFileList(ancNo);
-        System.out.println("🎈file list  : " + fileList);
 
 
         return fileList;
@@ -145,10 +144,9 @@ public class AnnounceController extends FileController {
     /** 공지사항 수정 (제목 / 내용 ) */
     @PutMapping("/announces/{ancNo}")
     public ResponseEntity<ResponseMessage> updateAnc(@PathVariable("ancNo") int ancNo,
-                                                    @RequestParam(value = "ancTitle") String ancTitle,
-                                                    @RequestParam(value = "ancContent") String ancContent){
+                                                     @RequestBody AnnounceDTO announceDTO){
 
-        return ResponseEntity.ok().body(new ResponseMessage(200, "수정 성공", announceService.updateAnc(ancNo, ancTitle, ancContent)));
+        return ResponseEntity.ok().body(new ResponseMessage(200, "수정 성공", announceService.updateAnc(ancNo, announceDTO)));
 
     }
 

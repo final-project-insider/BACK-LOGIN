@@ -1,0 +1,46 @@
+##회원 가입
+POST http://localhost:8080/regist
+Content-Type: application/json
+Accept: */*
+
+{
+  "department": {
+    "departNo": 1,
+    "departName": "인사팀"
+  },
+  "memberId": 240401001,
+  "address": "서울 중구 왕십리동 123123123",
+  "email": "jeehwan98@naver.com",
+  "name": "김지환",
+  "password": "0000",
+  "position": {
+    "positionName": "알바",
+    "positionLevel": "90"
+  },
+  "phoneNo": "01012341234",
+  "role": "ADMIN",
+  "image": {
+    "memberImageNo": 1,
+    "memberImagePath": "이미지가 들어갈 경로"
+  }
+}
+
+###로그인
+POST http://localhost:8080/login
+Content-Type: application/json
+Accept: */*
+
+{
+  "id": 240401001,
+  "pass": "0000"
+}
+
+### GET 요청
+GET http://localhost:8080/test
+Authorization: BEARER eyJkYXRlIjoxNzE0Mzc5NDExMTg2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJSb2xlIjoiQURNSU4iLCJzdWIiOiJpbnNpZGVyJ3MgdG9rZW46IDI0MDQwMTAwMSIsInVzZXJOYW1lIjoi6rmA7KeA7ZmYIiwiZXhwIjoxNzE0NDY1ODExfQ.L8snG8V34d0zudgSX5K9zlmTlLe67Z8e7pThZmEHwjk
+
+### POST 요청
+POST http://localhost:8080/test
+Content-Type: application/json
+Accept: */*
+Authorization: BEARER eyJkYXRlIjoxNzE0Mzc5NDExMTg2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJSb2xlIjoiQURNSU4iLCJzdWIiOiJpbnNpZGVyJ3MgdG9rZW46IDI0MDQwMTAwMSIsInVzZXJOYW1lIjoi6rmA7KeA7ZmYIiwiZXhwIjoxNzE0NDY1ODExfQ.L8snG8V34d0zudgSX5K9zlmTlLe67Z8e7pThZmEHwjk

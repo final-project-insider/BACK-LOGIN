@@ -9,6 +9,7 @@ import com.insider.login.other.announce.repository.AnnounceFileRepository;
 import com.insider.login.other.announce.repository.AnnounceRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -28,7 +29,7 @@ import static org.apache.commons.io.FileUtils.getFile;
 
 @Service
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AnnounceService {
 
     private final AnnounceRepository announceRepository;
@@ -135,7 +136,7 @@ public class AnnounceService {
     }
 
     /** 공지사항 수정 */
-    public Map<String, Object> updateAnc(int ancNo, String ancTitle,String ancContent) {
+    public Map<String, Object> updateAnc(int ancNo, AnnounceDTO updateAncDTO) {
 
         Map<String, Object> result = new HashMap<>();
 
@@ -145,8 +146,8 @@ public class AnnounceService {
 
             AnnounceDTO announceDTO = modelMapper.map(announce, AnnounceDTO.class);
 
-            announceDTO.setAncTitle(ancTitle);
-            announceDTO.setAncContent(ancContent);
+            announceDTO.setAncTitle(updateAncDTO.getAncTitle());
+            announceDTO.setAncContent(updateAncDTO.getAncContent());
 
             Announce updateAnc = modelMapper.map(announceDTO, Announce.class);
             announceRepository.save(updateAnc);

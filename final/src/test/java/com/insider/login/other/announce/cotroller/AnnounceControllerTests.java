@@ -62,28 +62,6 @@ public class AnnounceControllerTests {
 
     }
 
-//    @Test
-//    @DisplayName("공지사항 상세 조회 테스트")
-//    public void selectAncWithFile() throws Exception  {
-//
-//        // given
-//        int ancNo = 27;
-//
-//        // when
-//        MvcResult result = mockMvc.perform(get("/announces/{ancNo}", ancNo)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(new ObjectMapper().writeValueAsString(ancNo)))
-//        // then
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.httpStatusCode").value(200))
-//                .andExpect(jsonPath("$.message").value("조회 성공"))
-//                .andExpect(jsonPath("$.results").exists())
-//                .andReturn();
-//
-//        String content = result.getResponse().getContentAsString();
-//        System.out.println("Response Content: " + content);
-//
-//    }
     @Test
     @DisplayName("공지사항 상세 조회 테스트")
     public void selectAncWithFile() throws Exception {
