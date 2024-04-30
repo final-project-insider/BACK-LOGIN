@@ -12,6 +12,8 @@ import com.insider.login.commute.repository.CorrectionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.Response;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -273,23 +275,43 @@ public class CommuteService {
     }
 
 
-//    @Transactional
-//    public List<CorrectionDTO> selectReqeustForCorrectList(LocalDate startDayOfMonth, LocalDate endDayOfMonth) {
-//        log.info("[CommuteService] selectReqeustForCorrectList");
-//
-//        List<Correction> correctionList = correctionRepository.findAllBetween(startDayOfMonth, endDayOfMonth);
-//
-//        List<CorrectionDTO> correctionDTOList = correctionList.stream()
-//                                                    .map(correction -> modelMapper.map(correction, CorrectionDTO.class))
-//                                                    .collect(Collectors.toList());
-//        return correctionDTOList;
-//    }
+    @Transactional
+    public Page<CorrectionDTO> selectReqeustForCorrectList(LocalDate startDayOfMonth, LocalDate endDayOfMonth, Pageable pageable) {
+        log.info("[CommuteService] selectReqeustForCorrectList");
 
-//    @Transactional
-//    public List<CorrectionDTO> selectRequestForCorrectListByMemberId(int memberId, LocalDate startDayOfMonth, LocalDate endDayOfMonth) {
-//        log.info("[CommuteService] selectRequestForCorrectListByMemberId");
-//        log.info("[CommuteService] memberId : ", memberId);
-//
-//        return null;
-//    }
+        Page<Correction> correctionList = correctionRepository.findAllByCorrRegistrationDateBetween(startDayOfMonth, endDayOfMonth, pageable);
+
+        if(correctionList != null) {
+            return correctionList.map(correction -> modelMapper.map(correction, CorrectionDTO.class));
+        } else {
+            return Page.empty();
+        }
+    }
+
+    @Transactional
+    public Page<CorrectionDTO> selectRequestForCorrectListByMemberId(int memberId, LocalDate startDayOfMonth, LocalDate endDayOfMonth, Pageable pageable) {
+        log.info("[CommuteService] selectRequestForCorrectListByMemberId");
+        log.info("[CommuteService] memberId : ", memberId);
+
+        Page<Correction> correctionListByMemberId = correctionRepository.findByCommuteMemberIdAndCorrRegistrationDateBetween(memberId, startDayOfMonth, endDayOfMonth, pageable);
+
+        if(correctionListByMemberId != null) {
+            return correctionListByMemberId.map(correction -> modelMapper.map(correction, CorrectionDTO.class));
+        } else {
+            return Page.empty();
+        }
+    }
+
+
+    @Transactional
+    public CorrectionDTO selectRequestForCorrectByCorrNo(int corrNo) {
+        log.info("[CommuteService] selectRequestForCorrectByCorrNo");
+        log.info("[CommuteService] corrNo : ", corrNo);
+
+        Correction correction = correctionRepository.findByCorrNo(corrNo);
+
+        CorrectionDTO correctionDTO = modelMapper.map(correction, CorrectionDTO.class);
+
+        return correctionDTO;
+    }
 }

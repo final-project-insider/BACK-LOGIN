@@ -22,7 +22,7 @@ public class MemberDTO {
     private String address;             // 주소
 //    private int transferredId;          // 발령 아이디
     private String phoneNo;             // 전화 번호
-    private String currentStatus;       // 현재 상태
+    private String memberStatus;       // 현재 상태
     private String email;               // 이메일
 //    private String userRole;            // 권한
     private List<CommuteDTO> commuteList;   // 출퇴근 리스트

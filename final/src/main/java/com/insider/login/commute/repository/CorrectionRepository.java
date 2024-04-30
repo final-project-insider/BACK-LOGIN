@@ -1,6 +1,8 @@
 package com.insider.login.commute.repository;
 
 import com.insider.login.commute.entity.Correction;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
@@ -10,5 +12,8 @@ public interface CorrectionRepository extends JpaRepository<Correction, Integer>
 
     Correction findByCorrNo(int corrNo);
 
-    List<Correction> findAllBetween(LocalDate startDayOfMonth, LocalDate endDayOfMonth);
+    Page<Correction> findAllByCorrRegistrationDateBetween(LocalDate startDayOfMonth, LocalDate endDayOfMonth, Pageable pageable);
+
+
+    Page<Correction> findByCommuteMemberIdAndCorrRegistrationDateBetween(int memberId, LocalDate startDayOfMonth, LocalDate endDayOfMonth, Pageable pageable);
 }

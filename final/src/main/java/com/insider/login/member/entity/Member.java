@@ -42,8 +42,8 @@ public class Member {
     @Column(name = "phone_no", nullable = false)
     private String phoneNo;             // 전화 번호
 
-    @Column(name = "current_status", nullable = false)
-    private String currentStatus;       // 현재 상태
+    @Column(name = "member_status", nullable = false)
+    private String memberStatus;       // 현재 상태
 
     @Column(name = "email", nullable = false)
     private String email;               // 이메일

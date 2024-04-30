@@ -11,11 +11,14 @@ import org.hibernate.sql.Update;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
@@ -77,7 +80,7 @@ public class CommuteServiceTests {
 //    @Transactional
     void testUpdateTimeOfCommuteByCommuteNo() {
         //given
-        int commuteNo = 5;
+        int commuteNo = 10;
         LocalTime endWork = LocalTime.of(18,00);
         String workingStatus = "퇴근";
 
@@ -199,7 +202,7 @@ public class CommuteServiceTests {
         /** 출퇴근 정정 요청 내역, 출퇴근 내역 2개를 update 해야 함!! */
 
         //given
-        int corrNo = 1;             // 정정 요청 번호
+        int corrNo = 3;             // 정정 요청 번호
         String corrStatus = "승인";
         String reasonForRejection = null;
         LocalDate corrProcessingDate = LocalDate.now();
@@ -219,35 +222,50 @@ public class CommuteServiceTests {
         Assertions.assertTrue((Boolean) result.get("result"));
     }
 
-//    @DisplayName("전체 출퇴근 시간 정정 내역 조회 테스트")
-//    @Test
-//    void testSelectRequestForCorrect() {
-//        //given
-//        LocalDate date = LocalDate.now();
-//        LocalDate startDayOfMonth = date.with(TemporalAdjusters.firstDayOfMonth());
-//        LocalDate endDayOfMonth = date.with(TemporalAdjusters.lastDayOfMonth());
-//
-//        //when
-//        List<CorrectionDTO> correctionlist = commuteService.selectReqeustForCorrectList(startDayOfMonth, endDayOfMonth);
-//
-//        //then
-//        Assertions.assertTrue(!correctionlist.isEmpty());
-//    }
+    @DisplayName("전체 출퇴근 시간 정정 내역 조회 테스트")
+    @Test
+    void testSelectRequestForCorrect() {
+        //given
+        LocalDate date = LocalDate.now();
+        LocalDate startDayOfMonth = date.with(TemporalAdjusters.firstDayOfMonth());
+        LocalDate endDayOfMonth = date.with(TemporalAdjusters.lastDayOfMonth());
+        Pageable pageable = Pageable.ofSize(10);
 
-//    @DisplayName("memberId 별로 출퇴근 시간 정정 내역 조회 테스트")
-//    @Test
-//    void testSelectRequestForCorrectByMemberId() {
-//        //given
-//        int memberId = 2024001001;
-//        LocalDate date = LocalDate.now();
-//        LocalDate startDayOfMonth = date.with(TemporalAdjusters.firstDayOfMonth());
-//        LocalDate endDayOfMonth = date.with(TemporalAdjusters.lastDayOfMonth());
-//
-//        //when
-//        List<CorrectionDTO> correctionList = commuteService.selectRequestForCorrectListByMemberId(memberId, startDayOfMonth, endDayOfMonth);
-//
-//        //then
-//        Assertions.assertTrue(!correctionList.isEmpty());
-//    }
+        //when
+        Page<CorrectionDTO> correctionlist = commuteService.selectReqeustForCorrectList(startDayOfMonth, endDayOfMonth, pageable);
+
+        //then
+        Assertions.assertNotNull(correctionlist);
+    }
+
+    @DisplayName("memberId 별로 출퇴근 시간 정정 내역 조회 테스트")
+    @Test
+    void testSelectRequestForCorrectByMemberId() {
+        //given
+        int memberId = 2024001001;
+        LocalDate date = LocalDate.now();
+        LocalDate startDayOfMonth = date.with(TemporalAdjusters.firstDayOfMonth());
+        LocalDate endDayOfMonth = date.with(TemporalAdjusters.lastDayOfMonth());
+        Pageable pageable = Pageable.ofSize(10);
+
+        //when
+        Page<CorrectionDTO> correctionList = commuteService.selectRequestForCorrectListByMemberId(memberId, startDayOfMonth, endDayOfMonth, pageable);
+
+        //then
+        Assertions.assertTrue(!correctionList.isEmpty());
+    }
+
+    @DisplayName("출퇴근 시간 정정 요청 상세 조회 테스트")
+    @Test
+    void testSelectRequestForCorrectByCorrNo() {
+        //given
+        int corrNo = 3;
+
+        //when
+        CorrectionDTO correction = commuteService.selectRequestForCorrectByCorrNo(corrNo);
+
+        //then
+        Assertions.assertNotNull(correction);
+    }
 
 }
