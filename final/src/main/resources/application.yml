@@ -17,7 +17,11 @@ file:
   upload:
     directory: C:\Users\hi\Desktop\file
 
-  websocket:
-    servlet:
-      max-binary-message-buffer-size: 500000
-      max-text-message-buffer-size: 500000
+websocket:
+  servlet:
+    max-binary-message-buffer-size: 500000
+    max-text-message-buffer-size: 50000
+
+jwt:
+  key: asdkfjlkawdsjfw390r82309rjlkasdfja213498dlk
+  time: 86400000

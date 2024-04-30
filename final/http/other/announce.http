@@ -5,13 +5,16 @@
 #  -F 'announceDTOJson={"ancTitle":"제목","ancContent":"내용","ancDate":"2020-11-11","ancWriter":"김고무","hits":0}'
 POST http://localhost:8080/announces
 Content-Type: multipart/form-data; boundary=WebAppBoundary
+Authorization: BEARER eyJkYXRlIjoxNzE0Mzc5NDExMTg2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJSb2xlIjoiQURNSU4iLCJzdWIiOiJpbnNpZGVyJ3MgdG9rZW46IDI0MDQwMTAwMSIsInVzZXJOYW1lIjoi6rmA7KeA7ZmYIiwiZXhwIjoxNzE0NDY1ODExfQ.L8snG8V34d0zudgSX5K9zlmTlLe67Z8e7pThZmEHwjk
 
 --WebAppBoundary
 Content-Disposition: form-data; name="files"; filename="file.txt"
+Authorization: BEARER eyJkYXRlIjoxNzE0Mzc5NDExMTg2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJSb2xlIjoiQURNSU4iLCJzdWIiOiJpbnNpZGVyJ3MgdG9rZW46IDI0MDQwMTAwMSIsInVzZXJOYW1lIjoi6rmA7KeA7ZmYIiwiZXhwIjoxNzE0NDY1ODExfQ.L8snG8V34d0zudgSX5K9zlmTlLe67Z8e7pThZmEHwjk
 
 < C:\Users\hi\Desktop\file\jjang.png
 --WebAppBoundary
 Content-Disposition: form-data; name="announceDTO"
+Authorization: BEARER eyJkYXRlIjoxNzE0Mzc5NDExMTg2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJSb2xlIjoiQURNSU4iLCJzdWIiOiJpbnNpZGVyJ3MgdG9rZW46IDI0MDQwMTAwMSIsInVzZXJOYW1lIjoi6rmA7KeA7ZmYIiwiZXhwIjoxNzE0NDY1ODExfQ.L8snG8V34d0zudgSX5K9zlmTlLe67Z8e7pThZmEHwjk
 
 {
 "ancTitle":"제발",
@@ -25,6 +28,7 @@ Content-Disposition: form-data; name="announceDTO"
 ### 공지사항만 등록
 POST http://localhost:8080/announces
 Content-Type: multipart/form-data; boundary=WebAppBoundary
+Authorization: BEARER eyJkYXRlIjoxNzE0Mzc5NDExMTg2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJSb2xlIjoiQURNSU4iLCJzdWIiOiJpbnNpZGVyJ3MgdG9rZW46IDI0MDQwMTAwMSIsInVzZXJOYW1lIjoi6rmA7KeA7ZmYIiwiZXhwIjoxNzE0NDY1ODExfQ.L8snG8V34d0zudgSX5K9zlmTlLe67Z8e7pThZmEHwjk
 
 --WebAppBoundary
 Content-Disposition: form-data; name="announceDTO"
@@ -39,19 +43,23 @@ Content-Disposition: form-data; name="announceDTO"
 --WebAppBoundary--
 
 ### 공지사항 전체조회 페이징
-GET http://localhost:8080/announces?page=2
+GET http://localhost:8080/announces?page=0
+Authorization: BEARER eyJkYXRlIjoxNzE0Mzc5NDExMTg2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJSb2xlIjoiQURNSU4iLCJzdWIiOiJpbnNpZGVyJ3MgdG9rZW46IDI0MDQwMTAwMSIsInVzZXJOYW1lIjoi6rmA7KeA7ZmYIiwiZXhwIjoxNzE0NDY1ODExfQ.L8snG8V34d0zudgSX5K9zlmTlLe67Z8e7pThZmEHwjk
 
 ### 공지사항 상세 조회
-GET http://localhost:8080/announces/34
+GET http://localhost:8080/announces/29
+Authorization: BEARER eyJkYXRlIjoxNzE0Mzc5NDExMTg2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJSb2xlIjoiQURNSU4iLCJzdWIiOiJpbnNpZGVyJ3MgdG9rZW46IDI0MDQwMTAwMSIsInVzZXJOYW1lIjoi6rmA7KeA7ZmYIiwiZXhwIjoxNzE0NDY1ODExfQ.L8snG8V34d0zudgSX5K9zlmTlLe67Z8e7pThZmEHwjk
 
 ### 공지사항 수정
-PUT http://localhost:8080/announces/6
+PUT http://localhost:8080/announces/7
 Content-Type: application/json
+Authorization: BEARER eyJkYXRlIjoxNzE0Mzc5NDExMTg2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJSb2xlIjoiQURNSU4iLCJzdWIiOiJpbnNpZGVyJ3MgdG9rZW46IDI0MDQwMTAwMSIsInVzZXJOYW1lIjoi6rmA7KeA7ZmYIiwiZXhwIjoxNzE0NDY1ODExfQ.L8snG8V34d0zudgSX5K9zlmTlLe67Z8e7pThZmEHwjk
 
 {
-  "ancTitle" : "",
-  "ancContent" : ""
+  "ancTitle" : "제목인데 왜 안돼?",
+  "ancContent" : "왜이래 이거"
 }
 
 ### 공지사항 삭제
 DELETE http://localhost:8080/announces/3
+Authorization: BEARER eyJkYXRlIjoxNzE0Mzc5NDExMTg2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJSb2xlIjoiQURNSU4iLCJzdWIiOiJpbnNpZGVyJ3MgdG9rZW46IDI0MDQwMTAwMSIsInVzZXJOYW1lIjoi6rmA7KeA7ZmYIiwiZXhwIjoxNzE0NDY1ODExfQ.L8snG8V34d0zudgSX5K9zlmTlLe67Z8e7pThZmEHwjk

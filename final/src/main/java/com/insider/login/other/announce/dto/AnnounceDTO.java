@@ -24,6 +24,8 @@ public class AnnounceDTO {
 
     private String filePath;
 
-
-
+    public AnnounceDTO(String ancTitle, String ancContent) {
+        this.ancTitle = ancTitle;
+        this.ancContent = ancContent;
+    }
 }

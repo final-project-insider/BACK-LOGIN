@@ -105,12 +105,15 @@ public class AnnounceServiceTests extends FileController {
 
         // given
         int ancNo = 2;
-        String ancContent = "공지사항을 수정해보도록 하겠습니다";
-        String ancTitle = "공지사항 제목을 수정해보도록 하겠습니다";
+
+        AnnounceDTO announceDTO = new AnnounceDTO();
+        announceDTO.setAncContent("공지사항 수정");
+        announceDTO.setAncTitle("공지사항 수정");
+
 
         // when
         Map <String, Object> result = new HashMap<>();
-        result.put("result", announceService.updateAnc(ancNo, ancTitle,ancContent));
+        result.put("result", announceService.updateAnc(ancNo, announceDTO));
 
         // then
         Assertions.assertNotNull(result);
