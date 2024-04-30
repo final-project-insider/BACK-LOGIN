@@ -11,6 +11,7 @@ import com.insider.login.leave.entity.LeaveSubmit;
 import com.insider.login.leave.repository.LeaveAccrualRepository;
 import com.insider.login.leave.repository.LeaveRepository;
 import com.insider.login.leave.repository.LeaveSubmitRepository;
+import com.insider.login.member.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -38,22 +39,27 @@ public class LeaveService extends LeaveUtil {
         this.modelMapper = modelMapper;
     }
 
-    public Page<LeaveSubmitDTO> selectLeaveSubmitListByMemberId(int applicantId, Pageable pageable) {
+    public Page<LeaveSubmitDTO> selectLeaveSubmitList(int applicantId, Pageable pageable) {
 
         log.info("[신청내역] 휴가 신청 내역 확인 시작 ======================================================");
 
-        // 사번으로 해당 사원의 휴가신청내역을 가져옴
-        Page<LeaveSubmit> submitList = leaveSubmitRepository.findByMemberId(applicantId, pageable);
+        // 조건에 따라 휴가신청내역을 가져옴
+        Page<LeaveSubmit> submitList = null;
+        if (applicantId > 0) {
+            submitList = leaveSubmitRepository.findByMemberId(applicantId, pageable);
+        } else {
+            submitList = leaveSubmitRepository.findAll(pageable);
+        }
 
         List<LeaveSubmitDTO> DTOList = new ArrayList<>();
 
         for (LeaveSubmit submit : submitList) {
             LeaveSubmitDTO leaveSubmitDTO = modelMapper.map(submit, LeaveSubmitDTO.class);
 
-            // 사번으로 사원명 조회해서 DTO에 넣기 ( member 머지되면 추가 예정 )
+            // 사번으로 사원명 조회해서 DTO에 넣기 ( member 안정화되면 추가 예정 )
 //            leaveSubmitDTO.setApplicantName(memberRepository.findMemberNameByMemberId(applicantId));
 
-            // 승인자 사번이 존재할 경우 승인자 사번으로 사원명을 조회해서 DTO에 넣기 ( member 머지 후 추가 예정 )
+            // 승인자 사번이 존재할 경우 승인자 사번으로 사원명을 조회해서 DTO에 넣기 ( member 안정화 후 추가 예정 )
 //            if (submit.getLeaveSubApprover() != 0) {
 //                leaveSubmitDTO.setApproverName(memberRepository.findById(submit.getLeaveSubApprover()));
 //            }
@@ -209,26 +215,6 @@ public class LeaveService extends LeaveUtil {
         return leaveSubmitDTO;
     }
 
-    public Page<LeaveSubmitDTO> selectLeaveSubmitList(Pageable pageable) {
-        log.info("[신청내역] 휴가 신청 내역 확인 시작 ======================================================");
-
-        Page<LeaveSubmit> submitList = leaveSubmitRepository.findAll(pageable);
-
-        List<LeaveSubmitDTO> DTOList = new ArrayList<>();
-
-        for (LeaveSubmit submit : submitList) {
-            LeaveSubmitDTO leaveSubmitDTO = modelMapper.map(submit, LeaveSubmitDTO.class);
-
-            // 사번으로 사원명 조회해서 DTO에 넣기 ( member 머지되면 추가 예정 )
-//            leaveSubmitDTO.setApplicantName(memberRepository.findMemberNameByMemberId(applicantId));
-
-            DTOList.add(leaveSubmitDTO);
-        }
-
-        // DTO로 변환된 내역들을 새로운 페이지로 만들어서 반환
-        return new PageImpl<>(DTOList, submitList.getPageable(), submitList.getTotalElements());
-    }
-
     @Transactional
     public String updateSubmit(LeaveSubmitDTO leaveSubmitDTO) {
         log.info("[휴가처리] 시작 ===============================");
@@ -318,6 +304,18 @@ public class LeaveService extends LeaveUtil {
         return null;
     }
 
+    // 사번을 매개변수로 주면 해당 사원의 휴가 정보를 DTO로 반환하는 메소드
+    public LeaveInfoDTO getLeaveInfoById(int memberId) {
+
+        List<Leaves> leavesList = leaveRepository.findByMemberId(memberId);
+
+        LeaveInfoDTO info = leaveInfoCalc(leavesList);
+        log.info("휴가 보유 조회 ===========\n"  + info);
+
+        return addLeaveInfo(info);
+    }
+
+    // leaveInfo DTO에 소진 일수와 잔여 일수를 추가해서 다시 반환하는 메소드
     public LeaveInfoDTO addLeaveInfo(LeaveInfoDTO DTO) {
 
         // 소진 일수 (사번으로 신청내역을 조회해서 신청일수를 모두 더함)

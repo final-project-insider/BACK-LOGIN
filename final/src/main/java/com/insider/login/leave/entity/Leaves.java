@@ -17,7 +17,7 @@ public class Leaves {
     @Column(name = "LEVAE_DAYS", nullable = false)
     private int leaveDays;          // 휴가 일수
 
-    @Column(name = "LEAVE=_TYPE", nullable = false, columnDefinition = "VARCHAR(12)")   // 연차, 특별휴가, 공가, 경조사
+    @Column(name = "LEAVE_TYPE", nullable = false, columnDefinition = "VARCHAR(12)")   // 연차, 특별휴가, 공가, 경조사
     private String leaveType;       // 휴가 유형
 
     protected Leaves() {
