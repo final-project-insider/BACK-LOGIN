@@ -1,6 +1,6 @@
 package com.insider.login.position.entity;
 
-import com.insider.login.member_jee.entity.Member;
+import com.insider.login.membe.entity.Member;
 import jakarta.persistence.*;
 
 import java.util.List;

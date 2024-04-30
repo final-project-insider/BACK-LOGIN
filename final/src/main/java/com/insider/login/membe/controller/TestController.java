@@ -1,4 +1,4 @@
-package com.insider.login.member_jee.controller;
+package com.insider.login.membe.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;

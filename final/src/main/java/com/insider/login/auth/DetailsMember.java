@@ -1,6 +1,6 @@
 package com.insider.login.auth;
 
-import com.insider.login.member_jee.entity.Member;
+import com.insider.login.membe.entity.Member;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

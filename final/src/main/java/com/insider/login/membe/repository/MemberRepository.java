@@ -1,6 +1,6 @@
-package com.insider.login.member_jee.repository;
+package com.insider.login.membe.repository;
 
-import com.insider.login.member_jee.entity.Member;
+import com.insider.login.membe.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

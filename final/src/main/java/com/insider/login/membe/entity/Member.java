@@ -1,11 +1,10 @@
-package com.insider.login.member_jee.entity;
+package com.insider.login.membe.entity;
 
 import com.insider.login.auth.image.entity.Image;
 
 import com.insider.login.common.utils.MemberRole;
 import com.insider.login.department.entity.Department;
 import com.insider.login.position.entity.Position;
-import com.insider.login.webSocket.Cahtting.entity.EnteredRoom;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -55,8 +54,8 @@ public class Member {                 // JPA를 사용을 할 것이기 때문�
     private Image image;
 
 
-    @OneToMany(mappedBy = "member_id")
-    private List<EnteredRoom> enteredRooms;
+//    @OneToMany(mappedBy = "member_id")
+//    private List<EnteredRoom> enteredRooms;
 
     public Member() {
 

@@ -4,7 +4,7 @@ import com.insider.login.auth.DetailsMember;
 import com.insider.login.common.AuthConstants;
 import com.insider.login.common.utils.ConvertUtil;
 import com.insider.login.common.utils.TokenUtils;
-import com.insider.login.member_jee.entity.Member;
+import com.insider.login.membe.entity.Member;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

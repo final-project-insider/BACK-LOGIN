@@ -1,7 +1,7 @@
 package com.insider.login.auth.model.service;
 
 import com.insider.login.auth.DetailsMember;
-import com.insider.login.member_jee.service.MemberService;
+import com.insider.login.membe.service.MemberService;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

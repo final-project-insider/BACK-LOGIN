@@ -4,7 +4,7 @@ import com.insider.login.auth.DetailsMember;
 import com.insider.login.common.AuthConstants;
 import com.insider.login.common.utils.TokenUtils;
 import com.insider.login.common.utils.MemberRole;
-import com.insider.login.member_jee.entity.Member;
+import com.insider.login.membe.entity.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;

@@ -1,7 +1,7 @@
-package com.insider.login.member_jee.service;
+package com.insider.login.membe.service;
 
-import com.insider.login.member_jee.entity.Member;
-import com.insider.login.member_jee.repository.MemberRepository;
+import com.insider.login.membe.entity.Member;
+import com.insider.login.membe.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

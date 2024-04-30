@@ -1,4 +1,4 @@
-package com.insider.login.member_jee.controller;
+package com.insider.login.membe.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -7,9 +7,9 @@ import com.insider.login.auth.model.dto.LoginDTO;
 
 
 
-import com.insider.login.member_jee.entity.Member;
-import com.insider.login.member_jee.repository.MemberRepository;
-import com.insider.login.member_jee.service.MemberService;
+import com.insider.login.membe.entity.Member;
+import com.insider.login.membe.repository.MemberRepository;
+import com.insider.login.membe.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
