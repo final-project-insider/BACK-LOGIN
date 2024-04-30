@@ -3,6 +3,7 @@ package com.insider.login.leave.service;
 
 import com.insider.login.common.CommonController;
 import com.insider.login.leave.dto.LeaveAccrualDTO;
+import com.insider.login.leave.dto.LeaveInfoDTO;
 import com.insider.login.leave.dto.LeavesDTO;
 import com.insider.login.leave.dto.LeaveSubmitDTO;
 import org.junit.jupiter.api.*;
@@ -299,7 +300,7 @@ public class LeavesServiceTests extends CommonController {
         }
 
         // when
-        Page<LeavesDTO> results = leaveService.selectLeavesList(pageable);
+        Page<LeaveInfoDTO> results = leaveService.selectLeavesList(pageable);
 
         // then
 

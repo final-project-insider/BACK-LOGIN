@@ -2,6 +2,7 @@ package com.insider.login.leave.dto;
 
 public class LeaveInfoDTO {
 
+    int memberId;                     // 사번
     int annualLeave;                  // 연차
     int vacationLeave;                // 공가
     int familyEventLeave;             // 경조사 휴가
@@ -13,7 +14,17 @@ public class LeaveInfoDTO {
     public LeaveInfoDTO() {
     }
 
-    public LeaveInfoDTO(int annualLeave, int vacationLeave, int familyEventLeave, int specialLeave, int totalDays, int consumedDays, int remainingDays) {
+    public LeaveInfoDTO(int memberId, int annualLeave, int vacationLeave, int familyEventLeave, int specialLeave, int totalDays) {
+        this.memberId = memberId;
+        this.annualLeave = annualLeave;
+        this.vacationLeave = vacationLeave;
+        this.familyEventLeave = familyEventLeave;
+        this.specialLeave = specialLeave;
+        this.totalDays = totalDays;
+    }
+
+    public LeaveInfoDTO(int memberId, int annualLeave, int vacationLeave, int familyEventLeave, int specialLeave, int totalDays, int consumedDays, int remainingDays) {
+        this.memberId = memberId;
         this.annualLeave = annualLeave;
         this.vacationLeave = vacationLeave;
         this.familyEventLeave = familyEventLeave;
@@ -23,6 +34,13 @@ public class LeaveInfoDTO {
         this.remainingDays = remainingDays;
     }
 
+    public int getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(int memberId) {
+        this.memberId = memberId;
+    }
     public int getAnnualLeave() {
         return annualLeave;
     }

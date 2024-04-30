@@ -1,13 +1,13 @@
 package com.insider.login.leave.service;
 
+import com.insider.login.leave.dto.LeaveInfoDTO;
+import com.insider.login.leave.entity.Leaves;
 import com.insider.login.leave.util.LeaveUtil;
 import com.insider.login.leave.dto.LeaveAccrualDTO;
-import com.insider.login.leave.dto.LeaveInfoDTO;
 import com.insider.login.leave.dto.LeavesDTO;
 import com.insider.login.leave.dto.LeaveSubmitDTO;
 import com.insider.login.leave.entity.LeaveAccrual;
 import com.insider.login.leave.entity.LeaveSubmit;
-import com.insider.login.leave.entity.Leaves;
 import com.insider.login.leave.repository.LeaveAccrualRepository;
 import com.insider.login.leave.repository.LeaveRepository;
 import com.insider.login.leave.repository.LeaveSubmitRepository;
@@ -285,67 +285,54 @@ public class LeaveService extends LeaveUtil {
         return (result > 0) ? "휴가처리 성공" : "휴가처리 실패";
     }
 
-    public Page<LeavesDTO> selectLeavesList(Pageable pageable) {
+    public Page<LeaveInfoDTO> selectLeavesList(Pageable pageable) {
         log.info("[보유내역] 시작 ==========================================");
         try {
-            List<Leaves> leavesList = leaveRepository.findAll();
 
-            Map<Integer, List<Leaves>> leavesByMemberId = leavesList.stream()
+            Page<Leaves> leavesPage = leaveRepository.findAll(pageable);
+
+            Map<Integer, List<Leaves>> leavesByMemberId = leavesPage.stream()
                     // Collectors.groupingBy()를 통해 Map 타입으로 반환, 괄호 안은 그룹화 기준이자 키
                     .collect(Collectors.groupingBy(Leaves::getMemberId));
 
-            LeaveInfoDTO infoDTO = new LeaveInfoDTO();
+            List<LeaveInfoDTO> infoDTOList = new ArrayList<>();
 
             for (Map.Entry<Integer, List<Leaves>> entry : leavesByMemberId.entrySet()) {
 
-                // entry의 키와 밸류를 각각의 변수에 저장
-                int memberId = entry.getKey();
-                List<Leaves> memberLeaves = entry.getValue();
+                // 밸류에는 하나의 사번이 가진 모든 휴가내역을 list로 가지고 있음
+                LeaveInfoDTO info = leaveInfoCalc(entry.getValue());
 
-                int annualLeave = 0;        // 연차
-                int vacationLeave = 0;      // 공가
-                int familyEventLeave = 0;   // 경조사 휴가
-                int specialLeave = 0;       // 특별휴가
-
-                // 해당 사번을 키로 가진 휴가 리스트를 for문을 통해 유형별 총 일수를 구함
-                for (Leaves leaves : memberLeaves) {
-                    switch (leaves.getLeaveType()) {
-                        case "연차":
-                            annualLeave += leaves.getLeaveDays();
-                            break;
-                        case "공가":
-                            vacationLeave += leaves.getLeaveDays();
-                            break;
-                        case "경조사":
-                            familyEventLeave += leaves.getLeaveDays();
-                            break;
-                        default:
-                            specialLeave += leaves.getLeaveDays();
-                            break;
-                    }
-                }
-
-                // 총 부여 일수
-                int totalDays = annualLeave + vacationLeave + familyEventLeave + specialLeave;
-
-                // 소진 일수
-                int consumedDays = 0;
-                List<LeaveSubmit> submitList = leaveSubmitRepository.findByMemberId(memberId);
-                for (LeaveSubmit submit : submitList) {
-                    consumedDays += calculateLeaveDays(submit);
-                }
-
-                // 잔여 일수
-                int remainingDays = totalDays - consumedDays;
-
-                infoDTO = new LeaveInfoDTO(annualLeave, vacationLeave, familyEventLeave, specialLeave, totalDays, consumedDays, remainingDays);
-
+                // addLeaveInfo()로 소진 일수와 잔여 일수를 추가한 후 리스트에 담음
+                infoDTOList.add(addLeaveInfo(info));
             }
 
+            // 리스트를 페이지로 전환
+            Page<LeaveInfoDTO> infoDTOPage = new PageImpl<>(infoDTOList, pageable, leavesPage.getTotalElements());
+
+            return infoDTOPage;
         } catch (Exception e) {
 
+            log.info("[보유내역] 에러 ======================================");
         }
 
         return null;
+    }
+
+    public LeaveInfoDTO addLeaveInfo(LeaveInfoDTO DTO) {
+
+        // 소진 일수 (사번으로 신청내역을 조회해서 신청일수를 모두 더함)
+        int consumedDays = 0;
+        List<LeaveSubmit> submitList = leaveSubmitRepository.findByMemberId(DTO.getMemberId());
+        for (LeaveSubmit submit : submitList) {
+            consumedDays += leaveDaysCalc(submit);
+        }
+
+        // 잔여 일수 (총 부여 수에서 소진 일수를 뺌)
+        int remainingDays = DTO.getTotalDays() - consumedDays;
+
+        DTO.setConsumedDays(consumedDays);
+        DTO.setRemainingDays(remainingDays);
+
+        return DTO;
     }
 }
