@@ -1,0 +1,11 @@
+### 출근 시간 등록
+POST http://localhost:8080/commutes
+Content-Type: application/json
+
+{
+  "memberId": 2024001003,
+  "workingDate": "2024-04-30",
+  "startWork": "08:45",
+  "workingStatus": "근무중",
+  "totalWorkingHours": 0
+}

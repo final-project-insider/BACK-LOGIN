@@ -24,11 +24,10 @@ public class CommuteDTO {
     private MemberDTO member;               // 구성원
     private CorrectionDTO correction;       // 출퇴근 정정
 
-    public CommuteDTO(int memberId, LocalDate workingDate, LocalTime startWork, LocalTime endWork, String workingStatus, int totalWorkingHours) {
+    public CommuteDTO(int memberId, LocalDate workingDate, LocalTime startWork, String workingStatus, int totalWorkingHours) {
         this.memberId = memberId;
         this.workingDate = workingDate;
         this.startWork = startWork;
-        this.endWork = endWork;
         this.workingStatus = workingStatus;
         this.totalWorkingHours = totalWorkingHours;
     }

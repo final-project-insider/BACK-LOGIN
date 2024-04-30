@@ -1,6 +1,8 @@
 package com.insider.login.config;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.insider.login.commute.entity.Commute;
 import org.hibernate.collection.spi.PersistentBag;
 import org.modelmapper.Converter;
@@ -26,5 +28,12 @@ public class BeanConfig {
                 .setFieldMatchingEnabled(true);
 
         return modelMapper;
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        return objectMapper;
     }
 }

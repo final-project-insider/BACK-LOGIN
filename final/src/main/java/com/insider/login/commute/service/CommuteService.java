@@ -46,10 +46,12 @@ public class CommuteService {
     }
 
     @Transactional
-    public void insertTimeOfCommute(CommuteDTO newCommute) {
+    public Map<String, Object> insertTimeOfCommute(CommuteDTO newCommute) {
 
         log.info("[CommuteService] insertTimeOfCommute");
         log.info("[CommuteService] CommuteDTO : " + newCommute);
+
+        Map<String, Object> result = new HashMap<>();
 
         /* 방법 1 */
 
@@ -73,9 +75,16 @@ public class CommuteService {
 
         /* 방법 2 */
 
-        commuteRepository.save(modelMapper.map(newCommute, Commute.class));
+        try {
+            commuteRepository.save(modelMapper.map(newCommute, Commute.class));
+            result.put("result", true);
+
+        } catch (Exception e) {
+            result.put("result", false);
+        }
 
         log.info("[CommuteService] insertTimeOfCommute End ===========");
+        return result;
     }
 
 

@@ -14,10 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.Charset;
 import java.time.DayOfWeek;
@@ -37,6 +34,14 @@ public class CommuteController {
     public CommuteController(CommuteService commuteService) {
         this.commuteService = commuteService;
     }
+
+    /** 출근 시간 등록 */
+    @PostMapping("/commutes")
+    public ResponseEntity<ResponseMessage> insertTimeOfCommute(@RequestBody CommuteDTO newCommute) {
+        return ResponseEntity.ok().body(new ResponseMessage(200, "등록 성공", commuteService.insertTimeOfCommute(newCommute)));
+    }
+
+    /** 퇴근 시간 등록 (update) */
 
     /** 출퇴근 내역 조회 (부서별, 회원별) */
     @GetMapping("/commutes")

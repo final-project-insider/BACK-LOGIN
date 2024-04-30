@@ -44,7 +44,6 @@ public class CommuteServiceTests {
                         2024001003,
                         LocalDate.now(),
                         LocalTime.of(8,55),
-                        null,
                         "근무중",
                         0
                 )
@@ -55,14 +54,13 @@ public class CommuteServiceTests {
     @ParameterizedTest
     @MethodSource("getStartWork")
 //    @Transactional
-    void testInsertTimeOfCommute(int memberId, LocalDate workingDate, LocalTime startWork, LocalTime endWork,
+    void testInsertTimeOfCommute(int memberId, LocalDate workingDate, LocalTime startWork,
                                  String workingStatus, Integer totalWorkingHours) {
         //given
         CommuteDTO newCommute = new CommuteDTO(
                 memberId,
                 workingDate,
                 startWork,
-                endWork,
                 workingStatus,
                 totalWorkingHours
         );
