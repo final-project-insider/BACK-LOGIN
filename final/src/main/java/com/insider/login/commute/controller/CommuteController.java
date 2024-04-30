@@ -4,9 +4,11 @@ import com.insider.login.common.CommonController;
 import com.insider.login.common.ResponseMessage;
 import com.insider.login.commute.dto.CommuteDTO;
 import com.insider.login.commute.dto.CorrectionDTO;
+import com.insider.login.commute.dto.UpdateTimeOfCommuteDTO;
 import com.insider.login.commute.service.CommuteService;
 import com.insider.login.member.entity.Member;
 import com.sun.net.httpserver.Headers;
+import org.hibernate.sql.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,6 +44,11 @@ public class CommuteController {
     }
 
     /** 퇴근 시간 등록 (update) */
+    @PutMapping("/commutes/{commuteNo}")
+    public ResponseEntity<ResponseMessage> updateTimeOfCommute(@PathVariable("commuteNo") int commuteNo,
+                                                                @RequestBody UpdateTimeOfCommuteDTO updateCommute) {
+        return ResponseEntity.ok().body(new ResponseMessage(200, "추가 등록 성공", commuteService.updateTimeOfCommuteByCommuteNo(updateCommute)));
+    }
 
     /** 출퇴근 내역 조회 (부서별, 회원별) */
     @GetMapping("/commutes")

@@ -9,3 +9,13 @@ Content-Type: application/json
   "workingStatus": "근무중",
   "totalWorkingHours": 0
 }
+
+### 퇴근 시간 등록
+PUT http://localhost:8080/commutes/17
+Content-Type: application/json
+
+{
+  "endWork": "17:45",
+  "workingStatus": "퇴근",
+  "totalWorkingHours": "480"
+}
