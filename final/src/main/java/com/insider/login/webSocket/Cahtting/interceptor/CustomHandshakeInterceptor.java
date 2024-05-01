@@ -20,9 +20,9 @@ public class CustomHandshakeInterceptor implements HandshakeInterceptor {
         String sessionID = httpSession.getId();
         attributes.put("sessionID", sessionID);
 
-        String userName = req.getParameter("userName");
+        String memberId = req.getParameter("memberId");
 
-        attributes.put("userName", userName);
+        attributes.put("memberId", memberId);
 
 
         return true;

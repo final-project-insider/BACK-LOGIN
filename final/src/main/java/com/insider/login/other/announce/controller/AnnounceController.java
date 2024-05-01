@@ -124,7 +124,7 @@ public class AnnounceController extends FileController {
         if (files != null) {
             // 파일이 있는 경우
 
-            announceDTO.setFilePath(ymlConfig.getDirectory());
+            announceDTO.setFilePath(ymlConfig.getUploadDir());
             serviceResult = announceService.insertAncWithFile(announceDTO, files);
             serviceResult.put("result", true);
         } else {

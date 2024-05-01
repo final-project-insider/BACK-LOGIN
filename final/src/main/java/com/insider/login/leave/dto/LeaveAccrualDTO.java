@@ -4,29 +4,38 @@ public class LeaveAccrualDTO {
 
     private int leaveAccrualNo;                 // 발생 번호
 
-    private String recipientId;                 // 대상자 사번
+    private int recipientId;                    // 대상자 사번
 
     private String recipientName;               // 대상자 사원명
 
     private String recipientDepart;             // 대상자 부서
 
-    private String leaveAccrualReason;          // 발생 사유
-
     private int leaveAccrualDays;               // 발생 일수
 
-    private String leaveAccrualGrantor;         // 처리자 사원명
+    private String leaveAccrualReason;          // 발생 사유
+
+    private int grantorId;                      // 처리자 사번
+
+    private String grantorName;                 // 처리자 사원명
 
     public LeaveAccrualDTO() {
     }
 
-    public LeaveAccrualDTO(int leaveAccrualNo, String recipientId, String recipientName, String recipientDepart, String leaveAccrualReason, int leaveAccrualDays, String leaveAccrualGrantor) {
+    public LeaveAccrualDTO(int recipientId, int leaveAccrualDays, String leaveAccrualReason) {
+        this.recipientId = recipientId;
+        this.leaveAccrualDays = leaveAccrualDays;
+        this.leaveAccrualReason = leaveAccrualReason;
+    }
+
+    public LeaveAccrualDTO(int leaveAccrualNo, int recipientId, String recipientName, String recipientDepart, int leaveAccrualDays, String leaveAccrualReason, int grantorId, String grantorName) {
         this.leaveAccrualNo = leaveAccrualNo;
         this.recipientId = recipientId;
         this.recipientName = recipientName;
         this.recipientDepart = recipientDepart;
-        this.leaveAccrualReason = leaveAccrualReason;
         this.leaveAccrualDays = leaveAccrualDays;
-        this.leaveAccrualGrantor = leaveAccrualGrantor;
+        this.leaveAccrualReason = leaveAccrualReason;
+        this.grantorId = grantorId;
+        this.grantorName = grantorName;
     }
 
     public int getLeaveAccrualNo() {
@@ -37,11 +46,11 @@ public class LeaveAccrualDTO {
         this.leaveAccrualNo = leaveAccrualNo;
     }
 
-    public String getRecipientId() {
+    public int getRecipientId() {
         return recipientId;
     }
 
-    public void setRecipientId(String recipientId) {
+    public void setRecipientId(int recipientId) {
         this.recipientId = recipientId;
     }
 
@@ -61,14 +70,6 @@ public class LeaveAccrualDTO {
         this.recipientDepart = recipientDepart;
     }
 
-    public String getLeaveAccrualReason() {
-        return leaveAccrualReason;
-    }
-
-    public void setLeaveAccrualReason(String leaveAccrualReason) {
-        this.leaveAccrualReason = leaveAccrualReason;
-    }
-
     public int getLeaveAccrualDays() {
         return leaveAccrualDays;
     }
@@ -77,24 +78,41 @@ public class LeaveAccrualDTO {
         this.leaveAccrualDays = leaveAccrualDays;
     }
 
-    public String getLeaveAccrualGrantor() {
-        return leaveAccrualGrantor;
+    public String getLeaveAccrualReason() {
+        return leaveAccrualReason;
     }
 
-    public void setLeaveAccrualGrantor(String leaveAccrualGrantor) {
-        this.leaveAccrualGrantor = leaveAccrualGrantor;
+    public void setLeaveAccrualReason(String leaveAccrualReason) {
+        this.leaveAccrualReason = leaveAccrualReason;
+    }
+
+    public int getGrantorId() {
+        return grantorId;
+    }
+
+    public void setGrantorId(int grantorId) {
+        this.grantorId = grantorId;
+    }
+
+    public String getGrantorName() {
+        return grantorName;
+    }
+
+    public void setGrantorName(String grantorName) {
+        this.grantorName = grantorName;
     }
 
     @Override
     public String toString() {
         return "LeaveAccrualDTO{" +
                 "leaveAccrualNo=" + leaveAccrualNo +
-                ", recipientId='" + recipientId + '\'' +
+                ", recipientId=" + recipientId +
                 ", recipientName='" + recipientName + '\'' +
                 ", recipientDepart='" + recipientDepart + '\'' +
-                ", leaveAccrualReason='" + leaveAccrualReason + '\'' +
                 ", leaveAccrualDays=" + leaveAccrualDays +
-                ", leaveAccrualGrantor='" + leaveAccrualGrantor + '\'' +
+                ", leaveAccrualReason='" + leaveAccrualReason + '\'' +
+                ", grantorId=" + grantorId +
+                ", grantorName='" + grantorName + '\'' +
                 '}';
     }
 }

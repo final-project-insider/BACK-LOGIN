@@ -88,7 +88,7 @@ public class AnnounceService {
                     // 파일 저장
                     String fileName = file.getOriginalFilename();
                     String fileType = file.getContentType();
-                    String uploadDirectory = ymlConfig.getDirectory();
+                    String uploadDirectory = ymlConfig.getUploadDir();
                     String filePath = uploadDirectory + "\\" + fileName;   // 파일을 저장할 경로 지정
 
                     File newFile = new File(filePath);

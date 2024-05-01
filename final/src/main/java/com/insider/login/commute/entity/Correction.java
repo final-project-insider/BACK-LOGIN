@@ -43,6 +43,20 @@ public class Correction {
     @Column(name = "corr_processing_date")
     private LocalDate corrProcessingDate;       // 정정 처리 일자
 
+    @OneToOne(mappedBy = "correction")
+    private Commute commute;                    // 출퇴근
+
     protected Correction() {}
 
+    public Correction(int corrNo, int commuteNo, String reqStartWork, String reqEndWork, String reasonForCorr, LocalDate corrRegistrationDate, String corrStatus, String reasonForRejection, LocalDate corrProcessingDate) {
+        this.corrNo = corrNo;
+        this.commuteNo = commuteNo;
+        this.reqStartWork = reqStartWork;
+        this.reqEndWork = reqEndWork;
+        this.reasonForCorr = reasonForCorr;
+        this.corrRegistrationDate = corrRegistrationDate;
+        this.corrStatus = corrStatus;
+        this.reasonForRejection = reasonForRejection;
+        this.corrProcessingDate = corrProcessingDate;
+    }
 }

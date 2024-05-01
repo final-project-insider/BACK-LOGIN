@@ -1,6 +1,6 @@
 package com.insider.login.common.utils;
 
-import com.insider.login.member_jee.entity.Member;
+import com.insider.login.member.entity.Member;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -22,10 +22,6 @@ public class TokenUtils {
     @Value("${jwt.key}") // Application file에서 설정 정보를 불러와서 setting할 것
     public void setJwtSecretKey (String jwtSecretKey) { // 정적 변수이기 때문에 class명.field명
         TokenUtils.jwtSecretKey = jwtSecretKey;
-    }
-
-    private String getJwtSecretKey() {
-        return jwtSecretKey;
     }
 
     @Value("${jwt.time}")
@@ -87,12 +83,13 @@ public class TokenUtils {
         // 만료시간도 추가해야한다
         Date expireTime = new Date(System.currentTimeMillis() + tokenValidateTime);
         System.out.println("expire time: " + expireTime);
+        System.out.println("generateJwtToken의 member정보: " + member);
 
         // token에 대한 setting
         JwtBuilder builder = Jwts.builder()
                 .setHeader(createHeader())                              // token은 header, payload, 그리고 signature로 구성이 되어있기 때문에 각 setting을 해줘야 한다
-                .setClaims(createClaims(member))                          // payload에다가 user data를 넣어준다
-                .setSubject("insider's token: " + member.getMemberId())   // token의 제목을 넣어준다
+                .setClaims(createClaims(member))                        // payload에다가 user data를 넣어준다
+                .setSubject("insider's token: " + member.getMemberId()) // token의 제목을 넣어준다
                 .signWith(SignatureAlgorithm.HS256, createSignature())  // HS256 형식으로 암호화를 해준다
                 .setExpiration(expireTime);                             // 만료시간
         System.out.println("builder의 정보: " + builder);
@@ -109,7 +106,7 @@ public class TokenUtils {
         header.put("alg", "HS256");                     // algorithm 방식
         header.put("date", System.currentTimeMillis()); // 만들어준 시간
 
-        System.out.println("header정보: " + header);
+        System.out.println("header 정보: " + header);
 
         return header;
     }
@@ -117,7 +114,7 @@ public class TokenUtils {
     /* 사용자 정보를 기반으로 claim을 생성하는 method */
     private static Map<String, Object> createClaims(Member member) {
         Map<String, Object> claims = new HashMap<>();
-        System.out.println("member의 정보: " + member);
+        System.out.println("member 정보: " + member);
 
         claims.put("departName",member.getDepartment().getDepartName());    // 부서 이름
         claims.put("positionName", member.getPosition().getPositionName()); // 직급
@@ -125,7 +122,10 @@ public class TokenUtils {
         claims.put("userName", member.getName());   // claims에다가 정보를 입력하는 것들...
         claims.put("Role", member.getRole());
         claims.put("memberId", member.getMemberId());
-        System.out.println("🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈" + claims);
+
+        System.out.println("🧥🧥🧥🧥🧥🧥 claims에 담은 memberId 정보: " + claims.get("memberId")); // 확인용
+//        System.out.println("claims의 정보: " + claims);
+//        System.out.println(claims.get("token"));
 //        claims.put("Time", LocalTime.now());
         /* 꺼내오는 정보들 예시...*/
 //        System.out.println("Claims의 정보: " + claims);

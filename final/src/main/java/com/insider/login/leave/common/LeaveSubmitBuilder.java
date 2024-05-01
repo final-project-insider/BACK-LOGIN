@@ -72,7 +72,7 @@ public class LeaveSubmitBuilder {
         return this;
     }
 
-    public LeaveSubmit build() {
-        return new LeaveSubmit(leaveSubNo, refLeaveSubNo, leaveSubApplicant, leaveSubApprover, leaveSubStartDate, leaveSubEndDate, leaveSubApplyDate, leaveSubType, leaveSubStatus, leaveSubProcessDate, leaveSubReason);
-    }
+//    public LeaveSubmit build() {
+//        return new LeaveSubmit(leaveSubNo, refLeaveSubNo, leaveSubApplicant, leaveSubApprover, leaveSubStartDate, leaveSubEndDate, leaveSubApplyDate, leaveSubType, leaveSubStatus, leaveSubProcessDate, leaveSubReason);
+//    }
 }

@@ -1,6 +1,5 @@
 package com.insider.login.webSocket.Cahtting.entity;
 
-import com.insider.login.member_jee.entity.Member;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,12 +15,14 @@ import java.util.List;
 public class ChatRoom {
 
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "room_id")
+    private Long roomId;
 
+    @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "Entered_room")
+    @OneToMany(mappedBy = "chatRoom")
     private List<EnteredRoom> enteredRoom = new ArrayList<>();
 
     public ChatRoom(String name) {

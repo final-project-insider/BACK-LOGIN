@@ -12,6 +12,7 @@ public class Form {
     @Id
     @Column(name = "FORM_NO")
     private String formNo;          //양식번호
+    //
 
     @Column(name = "FORM_NAME")
     private String formName;        //양식제목

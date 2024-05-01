@@ -20,4 +20,34 @@ public class CorrectionDTO {
     private String corrStatus;                  // 정정 상태
     private String reasonForRejection;          // 반려 사유
     private LocalDate corrProcessingDate;       // 정정 처리 일자
+    private CommuteDTO commute;                 // 출퇴근
+
+    public CorrectionDTO(int corrNo, int commuteNo, String reqStartWork, String reqEndWork, String reasonForCorr, LocalDate corrRegistrationDate, String corrStatus, String reasonForRejection, LocalDate corrProcessingDate) {
+        this.corrNo = corrNo;
+        this.commuteNo = commuteNo;
+        this.reqStartWork = reqStartWork;
+        this.reqEndWork = reqEndWork;
+        this.reasonForCorr = reasonForCorr;
+        this.corrRegistrationDate = corrRegistrationDate;
+        this.corrStatus = corrStatus;
+        this.reasonForRejection = reasonForRejection;
+        this.corrProcessingDate = corrProcessingDate;
+    }
+
+    public CorrectionDTO(int commuteNo, String reqStartWork, String reqEndWork, String reasonForCorr, LocalDate corrRegistrationDate, String corrStatus, String reasonForRejection, LocalDate corrProcessingDate) {
+        this.commuteNo = commuteNo;
+        this.reqStartWork = reqStartWork;
+        this.reqEndWork = reqEndWork;
+        this.reasonForCorr = reasonForCorr;
+        this.corrRegistrationDate = corrRegistrationDate;
+        this.corrStatus = corrStatus;
+        this.reasonForRejection = reasonForRejection;
+        this.corrProcessingDate = corrProcessingDate;
+    }
+
+    public CorrectionDTO(String corrStatus, LocalDate corrProcessingDate) {
+        this.corrStatus = corrStatus;
+        this.corrProcessingDate = corrProcessingDate;
+    }
+
 }

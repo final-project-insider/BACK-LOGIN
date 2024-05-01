@@ -1,7 +1,6 @@
 package com.insider.login.webSocket.Cahtting.handler;
 
 
-import com.insider.login.webSocket.Cahtting.service.ChatMessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -25,7 +24,6 @@ public class SocketHandler extends TextWebSocketHandler {
     // CLIENTS 변수에 세션을 담아두기 위한 맵
     private static final Map<String, WebSocketSession> CLIENTS = new HashMap<>();
 
-    private final ChatMessageService chatMessageService;
 
     //최초 연결 시
     @Override

@@ -12,10 +12,12 @@ spring:
     properties:
       hibernate:
         format_sql: true
+      ddl-auto: create
 
 file:
-  upload:
-    directory: C:\Users\hi\Desktop\file
+  upload-dir: "C:/login/"
+  file-dir: "upload"
+
 
 websocket:
   servlet:
@@ -25,3 +27,13 @@ websocket:
 jwt:
   key: asdkfjlkawdsjfw390r82309rjlkasdfja213498dlk
   time: 86400000
+
+server:
+  port: 8080
+
+logging:
+  level:
+    org:
+      hibernate:
+        sql: debug
+        type: trace

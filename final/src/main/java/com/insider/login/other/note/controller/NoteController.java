@@ -1,16 +1,10 @@
 package com.insider.login.other.note.controller;
 
-import com.insider.login.auth.DetailsMember;
-import com.insider.login.common.AuthConstants;
 import com.insider.login.common.CommonController;
 import com.insider.login.common.ResponseMessage;
-import com.insider.login.common.utils.TokenUtils;
-import com.insider.login.member_jee.entity.Member;
 import com.insider.login.other.note.dto.NoteDTO;
 import com.insider.login.other.note.entity.Note;
 import com.insider.login.other.note.service.NoteService;
-import io.jsonwebtoken.Claims;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.Charset;
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;

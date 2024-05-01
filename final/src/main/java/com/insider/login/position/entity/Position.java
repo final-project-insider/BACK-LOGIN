@@ -1,6 +1,6 @@
 package com.insider.login.position.entity;
 
-import com.insider.login.member_jee.entity.Member;
+import com.insider.login.member.entity.Member;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public class Position {
     public Position() {
     }
 
-    public Position(String positionName, String positionLevel, List<Member> members) {
+    public Position(String positionName, String positionLevel) {
         this.positionName = positionName;
         this.positionLevel = positionLevel;
 //        this.members = members;
