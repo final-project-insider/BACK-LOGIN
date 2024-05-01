@@ -3,15 +3,15 @@ POST http://localhost:8080/commutes
 Content-Type: application/json
 
 {
-  "memberId": 2024001003,
-  "workingDate": "2024-04-30",
+  "memberId": 2024001001,
+  "workingDate": "2024-05-01",
   "startWork": "08:45",
   "workingStatus": "근무중",
   "totalWorkingHours": 0
 }
 
 ### 퇴근 시간 등록
-PUT http://localhost:8080/commutes/17
+PUT http://localhost:8080/commutes/23
 Content-Type: application/json
 
 {
@@ -19,3 +19,6 @@ Content-Type: application/json
   "workingStatus": "퇴근",
   "totalWorkingHours": "480"
 }
+
+### 부서별 출퇴근 시간 조회
+GET http://localhost:8080/commutes?target=depart&targetValue=1&date=2024-05-01

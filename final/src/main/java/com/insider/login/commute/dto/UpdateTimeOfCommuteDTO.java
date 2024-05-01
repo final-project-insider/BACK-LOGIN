@@ -12,7 +12,7 @@ import java.time.LocalTime;
 @ToString
 public class UpdateTimeOfCommuteDTO {
 
-    private int commuteNo;              // 출퇴근 번호
+//    private int commuteNo;              // 출퇴근 번호
     private LocalTime endWork;          // 퇴근 시간
     private String workingStatus;       // 근무 상태
     private int totalWorkingHours;      // 총 근무 시간

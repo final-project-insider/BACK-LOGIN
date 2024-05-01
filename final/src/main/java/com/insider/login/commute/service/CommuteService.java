@@ -9,6 +9,10 @@ import com.insider.login.commute.entity.Commute;
 import com.insider.login.commute.entity.Correction;
 import com.insider.login.commute.repository.CommuteRepository;
 import com.insider.login.commute.repository.CorrectionRepository;
+import com.insider.login.member.entity.Department;
+import com.insider.login.member.entity.Member;
+import com.insider.login.member.repository.DepartmentRepository;
+import com.insider.login.member.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.Response;
 import org.modelmapper.ModelMapper;
@@ -24,10 +28,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,13 +37,20 @@ public class CommuteService {
 
     private final CommuteRepository commuteRepository;
     private final CorrectionRepository correctionRepository;
-
+    private final DepartmentRepository departmentRepository;
+    private final MemberRepository memberRepository;
     private final ModelMapper modelMapper;
 
-    public CommuteService(CommuteRepository commuteRepository, ModelMapper modelMapper, CorrectionRepository correctionRepository) {
+    public CommuteService(CommuteRepository commuteRepository,
+                          ModelMapper modelMapper,
+                          CorrectionRepository correctionRepository,
+                          DepartmentRepository departmentRepository,
+                          MemberRepository memberRepository) {
         this.commuteRepository = commuteRepository;
         this.modelMapper = modelMapper;
         this.correctionRepository = correctionRepository;
+        this.departmentRepository = departmentRepository;
+        this.memberRepository = memberRepository;
     }
 
     @Transactional
@@ -89,11 +97,10 @@ public class CommuteService {
 
 
     @Transactional
-    public Map<String, Object> updateTimeOfCommuteByCommuteNo(UpdateTimeOfCommuteDTO updateTimeOfCommute) {
+    public Map<String, Object> updateTimeOfCommuteByCommuteNo(int commuteNo , UpdateTimeOfCommuteDTO updateTimeOfCommute) {
 
         Map<String, Object> result = new HashMap<>();
 
-        int commuteNo = updateTimeOfCommute.getCommuteNo();
         Commute commute = commuteRepository.findByCommuteNo(commuteNo);
 
         log.info("update 전 : " , commute);
@@ -124,11 +131,36 @@ public class CommuteService {
         log.info("[CommuteService] selectCommuteListByDepartNo");
         log.info("[CommuteService] departNo : ", departNo);
 
-        List<Commute> commuteListByDepartNo = commuteRepository.findByMemberDepartmentDepartNoAndWorkingDateBetween(departNo, startDayOfMonth, endDayOfMonth);
+        Department findDepartmentByDepartNo = departmentRepository.findByDepartNo(departNo);
 
-        List<CommuteDTO> commuteDTOList = commuteListByDepartNo.stream()
+        List<Member> findMemberByDepartment = memberRepository.findByDepartNo(findDepartmentByDepartNo.getDepartNo());
+
+//        for(Member member : findMemberByDepartment) {
+//            System.out.println("member : " + member);
+//        }
+
+        List<Commute> findCommuteByMember = new ArrayList<>();
+
+        for(Member member : findMemberByDepartment) {
+            List<Commute> memberCommuteList = commuteRepository.findByMemberAndWorkingDateBetween(member, startDayOfMonth, endDayOfMonth);
+            findCommuteByMember.addAll(memberCommuteList);
+        }
+
+        List<CommuteDTO> commuteDTOList = findCommuteByMember.stream()
                                             .map(commute -> modelMapper.map(commute, CommuteDTO.class))
                                             .collect(Collectors.toList());
+
+
+//        List<Commute> commuteListByDepartNo = commuteRepository.findByMemberDepartmentDepartNoAndWorkingDateBetween(departNo, startDayOfMonth, endDayOfMonth);
+
+//        log.info("[CommuteService] commuteListByDepartNo : " + commuteListByDepartNo);
+//        System.out.println("[CommuteService] commuteListByDepartNo : " + commuteListByDepartNo);
+
+//        List<CommuteDTO> commuteDTOList = commuteListByDepartNo.stream()
+//                                            .map(commute -> modelMapper.map(commute, CommuteDTO.class))
+//                                            .collect(Collectors.toList());
+
+//        System.out.println("[CommuteService] commuteDTOList : " + commuteDTOList);
 
         log.info("[CommuteService] selectCommuteListByDepartNo End ==================");
 

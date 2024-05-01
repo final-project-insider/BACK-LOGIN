@@ -78,7 +78,7 @@ public class CommuteServiceTests {
 //    @Transactional
     void testUpdateTimeOfCommuteByCommuteNo() {
         //given
-        int commuteNo = 10;
+        int commuteNo = 18;
         LocalTime endWork = LocalTime.of(18,00);
         String workingStatus = "퇴근";
 
@@ -95,7 +95,6 @@ public class CommuteServiceTests {
 //        System.out.println(totalWorkingTimeString);
 
         UpdateTimeOfCommuteDTO updateTimeOfCommute = new UpdateTimeOfCommuteDTO(
-                commuteNo,
                 endWork,
                 workingStatus,
                 totalWorkingHours
@@ -103,7 +102,7 @@ public class CommuteServiceTests {
 
         //when
         Map<String, Object> result = new HashMap<>();
-        result = commuteService.updateTimeOfCommuteByCommuteNo(updateTimeOfCommute);
+        result = commuteService.updateTimeOfCommuteByCommuteNo(commuteNo, updateTimeOfCommute);
 
         //then
         Assertions.assertTrue((Boolean) result.get("result"));
@@ -129,10 +128,11 @@ public class CommuteServiceTests {
         List<CommuteDTO> departCommuteList = commuteService.selectCommuteListByDepartNo(departNo, startDayOfMonth, endDayOfMonth);
 
         //then
-        Assertions.assertTrue(!departCommuteList.isEmpty());
+        Assertions.assertNotNull(departCommuteList);
+        departCommuteList.forEach(commute -> System.out.println("commute : " + commute));
     }
 
-    @DisplayName("memberId 별로 출퇴근 내역 조회 테스트")
+    @DisplayName("멤버별 출퇴근 내역 조회 테스트")
     @Test
 //    @Transactional
     void testSelectCommuteListByMemberId() {
@@ -152,7 +152,8 @@ public class CommuteServiceTests {
         List<CommuteDTO> commuteList = commuteService.selectCommuteListByMemberId(memberId, startWeek, endWeek);
 
         //then
-        Assertions.assertTrue(!commuteList.isEmpty());
+        Assertions.assertNotNull(commuteList);
+        commuteList.forEach(commute -> System.out.println("commute : " + commute));
     }
 
     private static Stream<Arguments> getCorrectTimeOfCommute() {

@@ -47,7 +47,7 @@ public class CommuteController {
     @PutMapping("/commutes/{commuteNo}")
     public ResponseEntity<ResponseMessage> updateTimeOfCommute(@PathVariable("commuteNo") int commuteNo,
                                                                 @RequestBody UpdateTimeOfCommuteDTO updateCommute) {
-        return ResponseEntity.ok().body(new ResponseMessage(200, "추가 등록 성공", commuteService.updateTimeOfCommuteByCommuteNo(updateCommute)));
+        return ResponseEntity.ok().body(new ResponseMessage(200, "추가 등록 성공", commuteService.updateTimeOfCommuteByCommuteNo(commuteNo, updateCommute)));
     }
 
     /** 출퇴근 내역 조회 (부서별, 회원별) */
