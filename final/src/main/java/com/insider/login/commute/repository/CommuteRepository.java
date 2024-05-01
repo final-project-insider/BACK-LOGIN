@@ -15,11 +15,7 @@ public interface CommuteRepository extends JpaRepository<Commute, Integer> {
 
     Commute findByCommuteNo(int commuteNo);
 
-//    List<Commute> findByMemberId(int memberId);
-
     List<Commute> findByMemberIdAndWorkingDateBetween(int memberId, LocalDate startWeek, LocalDate endWeek);
-
-    List<Commute> findByMemberDepartmentDepartNoAndWorkingDateBetween(int departNo, LocalDate startDayOfMonth, LocalDate endDayOfMonth);
 
     List<Commute> findByMemberAndWorkingDateBetween(Member member, LocalDate startDayOfMonth, LocalDate endDayOfMonth);
 }

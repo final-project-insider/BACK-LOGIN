@@ -104,12 +104,6 @@ public class CommuteControllerTests {
         int targetValue = 1;
         LocalDate date = LocalDate.now();
 
-//        TargetDTO targetDTO = new TargetDTO(
-//                target,
-//                targetValue,
-//                date
-//        );
-
         //when
         MvcResult result = mockMvc.perform(get("/commutes")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -129,16 +123,27 @@ public class CommuteControllerTests {
 
     @DisplayName("멤버별 출퇴근 내역 조회 테스트")
     @Test
-    void testSelectRequestForCorrectListByMemberId() {
+    void testSelectRequestForCorrectListByMemberId() throws Exception {
         //given
         String target = "member";
         int targetValue = 2024001001;
         LocalDate date = LocalDate.now();
 
         //when
+        MvcResult result = mockMvc.perform(get("/commutes")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .param("target", target)
+                            .param("targetValue", String.valueOf(targetValue))
+                            .param("date", date.toString()))
+        // then
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.httpStatusCode").value(200))
+                .andExpect(jsonPath("$.message").value("조회 성공"))
+                .andExpect(jsonPath("$.results").exists())
+                .andReturn();
 
-        //then
-
+        String content = result.getResponse().getContentAsString();
+        System.out.println("Response Content: " + content);
     }
 
 

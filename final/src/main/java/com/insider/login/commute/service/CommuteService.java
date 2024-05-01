@@ -135,10 +135,6 @@ public class CommuteService {
 
         List<Member> findMemberByDepartment = memberRepository.findByDepartNo(findDepartmentByDepartNo.getDepartNo());
 
-//        for(Member member : findMemberByDepartment) {
-//            System.out.println("member : " + member);
-//        }
-
         List<Commute> findCommuteByMember = new ArrayList<>();
 
         for(Member member : findMemberByDepartment) {
@@ -149,18 +145,6 @@ public class CommuteService {
         List<CommuteDTO> commuteDTOList = findCommuteByMember.stream()
                                             .map(commute -> modelMapper.map(commute, CommuteDTO.class))
                                             .collect(Collectors.toList());
-
-
-//        List<Commute> commuteListByDepartNo = commuteRepository.findByMemberDepartmentDepartNoAndWorkingDateBetween(departNo, startDayOfMonth, endDayOfMonth);
-
-//        log.info("[CommuteService] commuteListByDepartNo : " + commuteListByDepartNo);
-//        System.out.println("[CommuteService] commuteListByDepartNo : " + commuteListByDepartNo);
-
-//        List<CommuteDTO> commuteDTOList = commuteListByDepartNo.stream()
-//                                            .map(commute -> modelMapper.map(commute, CommuteDTO.class))
-//                                            .collect(Collectors.toList());
-
-//        System.out.println("[CommuteService] commuteDTOList : " + commuteDTOList);
 
         log.info("[CommuteService] selectCommuteListByDepartNo End ==================");
 
@@ -173,10 +157,13 @@ public class CommuteService {
         log.info("[CommuteService] selectCommuteListByMemberId");
         log.info("[CommuteService] memberId : " , memberId);
 
-//        List<Commute> commuteListByMemberId = commuteRepository.findByMemberId(memberId);
-        List<Commute> commuteListByMemberId = commuteRepository.findByMemberIdAndWorkingDateBetween(memberId, startWeek, endWeek);
+        Member findMemberByMemberId = memberRepository.findByMemberId(memberId);
 
-        List<CommuteDTO> commuteDTOList = commuteListByMemberId.stream()
+        List<Commute> findCommuteByMember = commuteRepository.findByMemberIdAndWorkingDateBetween(memberId, startWeek, endWeek);
+
+//        List<Commute> commuteListByMemberId = commuteRepository.findByMemberIdAndWorkingDateBetween(memberId, startWeek, endWeek);
+
+        List<CommuteDTO> commuteDTOList = findCommuteByMember.stream()
                                             .map(commute -> modelMapper.map(commute, CommuteDTO.class))
                                             .collect(Collectors.toList());
 

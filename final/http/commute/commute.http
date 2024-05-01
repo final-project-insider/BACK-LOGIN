@@ -22,3 +22,6 @@ Content-Type: application/json
 
 ### 부서별 출퇴근 시간 조회
 GET http://localhost:8080/commutes?target=depart&targetValue=1&date=2024-05-01
+
+### 멤버별 출퇴근 시간 조회
+GET http://localhost:8080/commutes?target=member&targetValue=2024001001&date=2024-05-01
