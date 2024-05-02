@@ -61,28 +61,6 @@ public class CommuteService {
 
         Map<String, Object> result = new HashMap<>();
 
-        /* 방법 1 */
-
-//        try {
-//            Commute startWork = new Commute(
-//                    newCommute.getMemberId(),
-//                    newCommute.getWorkingDate(),
-//                    newCommute.getStartWork(),
-//                    newCommute.getEndWork(),
-//                    newCommute.getWorkingStatus(),
-//                    newCommute.getTotalWorkingHours()
-//            );
-//
-//            log.info("[CommuteService] startwork :", startWork);
-//
-//            commuteRepository.save(startWork);
-//
-//        } catch (Exception e) {
-//            log.info("[insertCommute] Exception");
-//        }
-
-        /* 방법 2 */
-
         try {
             commuteRepository.save(modelMapper.map(newCommute, Commute.class));
             result.put("result", true);
