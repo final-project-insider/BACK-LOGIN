@@ -96,7 +96,7 @@ public class CommuteControllerTests {
 
     @DisplayName("부서별 출퇴근 내역 조회 테스트")
     @Test
-    void testSelectRequestForCorrectListByDepartNo() throws Exception {
+    void testSelectCommuteListByDepartNo() throws Exception {
         //given
         String target = "depart";
         int targetValue = 1;
@@ -121,7 +121,7 @@ public class CommuteControllerTests {
 
     @DisplayName("멤버별 출퇴근 내역 조회 테스트")
     @Test
-    void testSelectRequestForCorrectListByMemberId() throws Exception {
+    void testSelectCommuteListByMemberId() throws Exception {
         //given
         String target = "member";
         int targetValue = 2024001001;
@@ -202,12 +202,93 @@ public class CommuteControllerTests {
 
         //when
         MvcResult result = mockMvc.perform(put("/corrections/{corrNo}", corrNo)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(updateCorrection)))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(updateCorrection)))
         //then
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.httpStatusCode").value(200))
                 .andExpect(jsonPath("$.message").value("정정 처리 성공"))
+                .andExpect(jsonPath("$.results").exists())
+                .andReturn();
+
+        String content = result.getResponse().getContentAsString();
+        System.out.println("Response Content: " + content);
+    }
+
+    @DisplayName("전체 출퇴근 시간 정정 내역 조회 테스트")
+    @Test
+    void testSelectRequestForCorrectList() throws Exception {
+        //given
+        LocalDate date = LocalDate.now();
+        int page = 0;
+        int size = 10;
+        String sort = "corrNo";
+        String direction = "DESC";
+
+        //when
+        MvcResult result = mockMvc.perform(get("/corrections")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .param("date", date.toString())
+                            .param("page", String.valueOf(page))
+                            .param("size", String.valueOf(size))
+                            .param("sort", sort)
+                            .param("direction", direction))
+        //then
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.httpStatusCode").value(200))
+                .andExpect(jsonPath("$.message").value("조회 성공"))
+                .andExpect(jsonPath("$.results").exists())
+                .andReturn();
+
+        String content = result.getResponse().getContentAsString();
+        System.out.println("Response Content: " + content);
+    }
+
+    @DisplayName("멤버별 출퇴근 시간 정정 내역 조회 테스트")
+    @Test
+    void testSelectRequestForCorrectByMemberId() throws Exception {
+        //given
+        int memberId = 2024001001;
+        LocalDate date = LocalDate.now();
+        int page = 0;
+        int size = 10;
+        String sort = "corrNo";
+        String direction = "DESC";
+
+        //when
+        MvcResult result = mockMvc.perform(get("/corrections")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .param("memberId", String.valueOf(memberId))
+                            .param("date", date.toString())
+                            .param("page", String.valueOf(page))
+                            .param("size", String.valueOf(size))
+                            .param("sort", sort)
+                            .param("direction", direction))
+                //then
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.httpStatusCode").value(200))
+                .andExpect(jsonPath("$.message").value("조회 성공"))
+                .andExpect(jsonPath("$.results").exists())
+                .andReturn();
+
+        String content = result.getResponse().getContentAsString();
+        System.out.println("Response Content: " + content);
+    }
+
+    @DisplayName("출퇴근 시간 정정 요청 상세 조회 테스트")
+    @Test
+    void testSelectRequestForCorrectByCorrNo() throws Exception {
+        //given
+        int corrNo = 20;
+
+        //when
+        MvcResult result = mockMvc.perform(get("/corrections/{corrNo}", corrNo)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(new ObjectMapper().writeValueAsString(corrNo)))
+        //then
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.httpStatusCode").value(200))
+                .andExpect(jsonPath("$.message").value("조회 성공"))
                 .andExpect(jsonPath("$.results").exists())
                 .andReturn();
 

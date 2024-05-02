@@ -108,7 +108,7 @@ public class CommuteController {
 
     /** 출퇴근 시간 정정 내역 조회 (전체, 멤버별) */
     @GetMapping("/corrections")
-    public ResponseEntity<ResponseMessage> selectRequestForCorrectList(@RequestParam(value = "memberId") Integer memberId,
+    public ResponseEntity<ResponseMessage> selectRequestForCorrectList(@RequestParam(value = "memberId", required = false) Integer memberId,
                                                                        @RequestParam(value = "date") LocalDate date,
                                                                        @RequestParam(value = "page", defaultValue = "0") int page,
                                                                        @RequestParam(value = "size", defaultValue = "10") int size,
@@ -126,11 +126,11 @@ public class CommuteController {
 
         if(memberId != null) {
 
-            correctionList = commuteService.selectRequestForCorrectList(startDayOfMonth, endDayOfMonth, pageable);
+            correctionList = commuteService.selectRequestForCorrectListByMemberId(memberId, startDayOfMonth, endDayOfMonth, pageable);
 
         } else {
 
-            correctionList = commuteService.selectRequestForCorrectListByMemberId(memberId, startDayOfMonth, endDayOfMonth, pageable);
+            correctionList = commuteService.selectRequestForCorrectList(startDayOfMonth, endDayOfMonth, pageable);
         }
 
         Map<String, Object> responseMap = new HashMap<>();
@@ -140,6 +140,21 @@ public class CommuteController {
         responseMap.put("totalPages", correctionList.getTotalPages());
 
         ResponseMessage responseMessage = new ResponseMessage(200, "조회 성공", responseMap);
+
+        return new ResponseEntity<>(responseMessage, headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/corrections/{corrNo}")
+    public ResponseEntity<ResponseMessage> selectRequestForCorrectByCorrNo(@PathVariable("corrNo") int corrNo) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        CorrectionDTO correction = commuteService.selectRequestForCorrectByCorrNo(corrNo);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("result", correction);
+
+        ResponseMessage responseMessage = new ResponseMessage(200, "조회 성공", result);
 
         return new ResponseEntity<>(responseMessage, headers, HttpStatus.OK);
     }

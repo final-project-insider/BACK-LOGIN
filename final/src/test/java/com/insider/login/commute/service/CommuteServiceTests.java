@@ -226,7 +226,7 @@ public class CommuteServiceTests {
 
     @DisplayName("전체 출퇴근 시간 정정 내역 조회 테스트")
     @Test
-    void testSelectRequestForCorrect() {
+    void testSelectRequestForCorrectList() {
         //given
         LocalDate date = LocalDate.now();
         LocalDate startDayOfMonth = date.with(TemporalAdjusters.firstDayOfMonth());
@@ -234,13 +234,14 @@ public class CommuteServiceTests {
         Pageable pageable = Pageable.ofSize(10);
 
         //when
-        Page<CorrectionDTO> correctionlist = commuteService.selectRequestForCorrectList(startDayOfMonth, endDayOfMonth, pageable);
+        Page<CorrectionDTO> correctionList = commuteService.selectRequestForCorrectList(startDayOfMonth, endDayOfMonth, pageable);
 
         //then
-        Assertions.assertNotNull(correctionlist);
+        Assertions.assertNotNull(correctionList);
+        correctionList.forEach(correction -> System.out.println("correction : " + correction));
     }
 
-    @DisplayName("memberId 별로 출퇴근 시간 정정 내역 조회 테스트")
+    @DisplayName("멤버별 출퇴근 시간 정정 내역 조회 테스트")
     @Test
     void testSelectRequestForCorrectByMemberId() {
         //given
@@ -255,6 +256,8 @@ public class CommuteServiceTests {
 
         //then
         Assertions.assertTrue(!correctionList.isEmpty());
+        Assertions.assertNotNull(correctionList);
+        correctionList.forEach(correction -> System.out.println("correction : " + correction));
     }
 
     @DisplayName("출퇴근 시간 정정 요청 상세 조회 테스트")
@@ -268,6 +271,7 @@ public class CommuteServiceTests {
 
         //then
         Assertions.assertNotNull(correction);
+        System.out.println("correction : " + correction);
     }
 
 }

@@ -274,7 +274,7 @@ public class CommuteService {
 
                         commuteDTO.setStartWork(updateStartWork);
                         commuteDTO.setEndWork(updateEndWork);
-                        commuteDTO.setWorkingStatus("퇴근");                  // 무단 결근 상황에서 개인 연차를 사용하여 출퇴근 시간을 정상으로 정정 요청 할 때
+//                        commuteDTO.setWorkingStatus("퇴근");                  // 무단 결근 상황에서 개인 연차를 사용하여 출퇴근 시간을 정상으로 정정 요청 할 때
                         commuteDTO.setTotalWorkingHours(totalWorkingHours);
 
                         log.info("[CommuteService] 출근시간, 퇴근시간 모두 정정 처리 후 ");
