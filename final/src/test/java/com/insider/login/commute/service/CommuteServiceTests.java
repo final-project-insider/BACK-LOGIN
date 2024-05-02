@@ -159,9 +159,9 @@ public class CommuteServiceTests {
     private static Stream<Arguments> getCorrectTimeOfCommute() {
         return Stream.of(
                 Arguments.of(
-                        17
+                        1
                         ,null
-                        ,"22:00"
+                        ,"20:00"
                         ,"시스템 에러로 인해 야근 시 퇴근시간에 오류가 있습니다."
                         ,LocalDate.now()
                         ,"대기"
@@ -234,7 +234,7 @@ public class CommuteServiceTests {
         Pageable pageable = Pageable.ofSize(10);
 
         //when
-        Page<CorrectionDTO> correctionlist = commuteService.selectReqeustForCorrectList(startDayOfMonth, endDayOfMonth, pageable);
+        Page<CorrectionDTO> correctionlist = commuteService.selectRequestForCorrectList(startDayOfMonth, endDayOfMonth, pageable);
 
         //then
         Assertions.assertNotNull(correctionlist);

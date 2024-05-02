@@ -126,7 +126,7 @@ public class CommuteController {
 
         if(memberId != null) {
 
-            correctionList = commuteService.selectReqeustForCorrectList(startDayOfMonth, endDayOfMonth, pageable);
+            correctionList = commuteService.selectRequestForCorrectList(startDayOfMonth, endDayOfMonth, pageable);
 
         } else {
 

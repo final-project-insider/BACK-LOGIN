@@ -157,11 +157,7 @@ public class CommuteService {
         log.info("[CommuteService] selectCommuteListByMemberId");
         log.info("[CommuteService] memberId : " , memberId);
 
-        Member findMemberByMemberId = memberRepository.findByMemberId(memberId);
-
         List<Commute> findCommuteByMember = commuteRepository.findByMemberIdAndWorkingDateBetween(memberId, startWeek, endWeek);
-
-//        List<Commute> commuteListByMemberId = commuteRepository.findByMemberIdAndWorkingDateBetween(memberId, startWeek, endWeek);
 
         List<CommuteDTO> commuteDTOList = findCommuteByMember.stream()
                                             .map(commute -> modelMapper.map(commute, CommuteDTO.class))
@@ -180,33 +176,60 @@ public class CommuteService {
 
         Map<String, Object> result = new HashMap<>();
 
-        /* 방법1 */
-
-//        try {
-//            Correction correctionTimeOfCommute = new Correction(
-//                    newCorrection.getCorrNo(),
-//                    newCorrection.getCommuteNo(),
-//                    newCorrection.getReqStartWork(),
-//                    newCorrection.getReqEndWork(),
-//                    newCorrection.getReasonForCorr(),
-//                    newCorrection.getCorrRegistrationDate(),
-//                    newCorrection.getCorrStatus(),
-//                    newCorrection.getReasonForRejection(),
-//                    newCorrection.getCorrProcessingDate()
-//            );
-//
-//            log.info("[CommuteService] insertRequestForCorrect correctionTimeOfCommute : ", correctionTimeOfCommute);
-//
-//            correctionRepository.save(correctionTimeOfCommute);
-//
-//        } catch (Exception e) {
-//            log.info("[CommuteService] insertRequestForCorrect Error");
-//        }
-
-        /* 방법 2 */
         try {
-            correctionRepository.save(modelMapper.map(newCorrection, Correction.class));
+
+            int commuteNo = newCorrection.getCommuteNo();
+            Commute commute = commuteRepository.findByCommuteNo(commuteNo);
+
+            CorrectionDTO correctionDTO = new CorrectionDTO();
+
+            correctionDTO.setCommuteNo(commuteNo);
+            correctionDTO.setReasonForCorr(newCorrection.getReasonForCorr());
+            correctionDTO.setCorrRegistrationDate(newCorrection.getCorrRegistrationDate());
+            correctionDTO.setCorrStatus(newCorrection.getCorrStatus());
+
+            /** 1. 출퇴근 내역에서 출근 시간과 퇴근 시간이 모두 존재하는 경우 */
+            if(commute.getStartWork() != null && commute.getEndWork() != null) {
+
+                /** 1-1. 출근 시간과 퇴근시간 모두 정정 요청 */
+                if(newCorrection.getReqStartWork() != null && newCorrection.getReqEndWork() != null) {
+                    correctionDTO.setReqStartWork(newCorrection.getReqStartWork());
+                    correctionDTO.setReqEndWork(newCorrection.getReqEndWork());
+
+                /** 1-2. 출근 시간만 정정 요청 */
+                } else if(newCorrection.getReqStartWork() != null && newCorrection.getReqEndWork() == null) {
+                    correctionDTO.setReqStartWork(newCorrection.getReqStartWork());
+
+                /** 1-3. 퇴근 시간만 정정 요청 */
+                } else if(newCorrection.getReqStartWork() == null && newCorrection.getReqEndWork() != null) {
+                    correctionDTO.setReqEndWork(newCorrection.getReqEndWork());
+
+                /** 1-4. 출퇴근 정정 요청 시간이 존재하지 않는 경우 */
+                } else {
+                    System.out.println("출퇴근 정정 요청 시간 null !!!!!!!!!!!!!!");
+                }
+
+            /** 2. 출퇴근 내역에서 출근 시간만 존재하는 경우 */
+            } else if(commute.getStartWork() != null && commute.getEndWork() == null) {
+
+                /** 2-1. 출근 시간만 정정 요청 */
+                if(newCorrection.getReqStartWork() != null & newCorrection.getReqEndWork() == null) {
+                    correctionDTO.setReqStartWork(newCorrection.getReqStartWork());
+
+                /** 2-2. 나머지 경우 */
+                } else {
+                    System.out.println("출퇴근 정정 요청 error !!!!!!!!!!!!!!!!!!");
+                }
+
+            /** 3. 출퇴근 내역이 존재하지 않는 경우 */
+            } else {
+                System.out.println("출퇴근 시간이 null !!!!!!!!!");
+            }
+
+            correctionRepository.save(modelMapper.map(correctionDTO, Correction.class));
             result.put("result", true);
+
+            log.info("[CommuteService] 출퇴근 정정 요청 등록 후 ");
 
         } catch (Exception e ) {
             System.out.println("출퇴근 정정 요청 Error");
@@ -348,8 +371,8 @@ public class CommuteService {
     }
 
     @Transactional
-    public Page<CorrectionDTO> selectReqeustForCorrectList(LocalDate startDayOfMonth, LocalDate endDayOfMonth, Pageable pageable) {
-        log.info("[CommuteService] selectReqeustForCorrectList");
+    public Page<CorrectionDTO> selectRequestForCorrectList(LocalDate startDayOfMonth, LocalDate endDayOfMonth, Pageable pageable) {
+        log.info("[CommuteService] selectRequestForCorrectList");
 
         Page<Correction> correctionList = correctionRepository.findAllByCorrRegistrationDateBetween(startDayOfMonth, endDayOfMonth, pageable);
 
