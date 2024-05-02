@@ -25,3 +25,26 @@ GET http://localhost:8080/commutes?target=depart&targetValue=1&date=2024-05-01
 
 ### 멤버별 출퇴근 시간 조회
 GET http://localhost:8080/commutes?target=member&targetValue=2024001001&date=2024-05-01
+
+### 출퇴근 시간 정정 등록
+POST http://localhost:8080/corrections
+Content-Type: application/json
+
+{
+  "commuteNo": 11,
+  "reqStartWork": "09:00",
+  "reqEndWork": "18:00",
+  "reasonForCorr": "시스템 오류로 인해 지각으로 처리되었습니다.",
+  "corrRegistrationDate": "2024-05-02",
+  "corrStatus": "대기"
+}
+
+### 출퇴근 시간 정정 처리 등록
+PUT http://localhost:8080/corrections/28
+Content-Type: application/json
+
+{
+  "corrStatus": "승인",
+  "reasonForRejection": null,
+  "corrProcessingDate": "2024-05-02"
+}

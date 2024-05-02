@@ -16,10 +16,14 @@ public class UpdateProcessForCorrectionDTO {
     private String reasonForRejection;          // 반려 사유
     private LocalDate corrProcessingDate;       // 정정 처리 일자
 
-    public UpdateProcessForCorrectionDTO(int corrNo, String corrStatus, LocalDate corrProcessingDate) {
-        this.corrNo = corrNo;
+    public UpdateProcessForCorrectionDTO(String corrStatus, LocalDate corrProcessingDate) {
         this.corrStatus = corrStatus;
         this.corrProcessingDate = corrProcessingDate;
     }
 
+    public UpdateProcessForCorrectionDTO(String corrStatus, String reasonForRejection, LocalDate corrProcessingDate) {
+        this.corrStatus = corrStatus;
+        this.reasonForRejection = reasonForRejection;
+        this.corrProcessingDate = corrProcessingDate;
+    }
 }

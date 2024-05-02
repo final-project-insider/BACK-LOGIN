@@ -7,7 +7,7 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 
-@Entity
+@Entity(name = "Correction")
 @Table(name = "commute_corr")
 @AllArgsConstructor
 @Getter
@@ -22,7 +22,7 @@ public class Correction {
     @Column(name = "commute_no", nullable = false)
     private int commuteNo;                      // 출퇴근 번호
 
-    @Column(name = "req_start_work", nullable = false)
+    @Column(name = "req_start_work")
     private String reqStartWork;                // 정정 요청 출근 시간
 
     @Column(name = "req_end_work")

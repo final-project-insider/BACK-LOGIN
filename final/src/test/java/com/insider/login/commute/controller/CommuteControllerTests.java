@@ -3,9 +3,7 @@ package com.insider.login.commute.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.insider.login.commute.dto.CommuteDTO;
-import com.insider.login.commute.dto.TargetDTO;
-import com.insider.login.commute.dto.UpdateTimeOfCommuteDTO;
+import com.insider.login.commute.dto.*;
 import org.hibernate.sql.Update;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -139,6 +137,77 @@ public class CommuteControllerTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.httpStatusCode").value(200))
                 .andExpect(jsonPath("$.message").value("조회 성공"))
+                .andExpect(jsonPath("$.results").exists())
+                .andReturn();
+
+        String content = result.getResponse().getContentAsString();
+        System.out.println("Response Content: " + content);
+    }
+
+    @DisplayName("출퇴근 시간 정정 등록 테스트")
+    @Test
+    void testInsertRequestForCorrect() throws Exception {
+        //given
+        int commuteNo = 18;
+        String reqStartWork = "09:00";
+        String reqStartEnd = null;
+        String reasonForCorr = "시스템 오류로 인해 지각으로 처리되었습니다.";
+        LocalDate corrRegistrationDate = LocalDate.now();
+        String corrStatus = "대기";
+
+        CorrectionDTO newCorrection = new CorrectionDTO(
+                commuteNo,
+                reqStartWork,
+                reqStartEnd,
+                reasonForCorr,
+                corrRegistrationDate,
+                corrStatus
+        );
+
+        //when
+        MvcResult result = mockMvc.perform(post("/corrections")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(newCorrection)))
+        //then
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("등록 성공"))
+                .andExpect(jsonPath("$.results").exists())
+                .andReturn();
+
+        String content = result.getResponse().getContentAsString();
+        System.out.println("Response Content: " + content);
+    }
+
+    @DisplayName("출퇴근 시간 정정 처리 테스트")
+    @Test
+    void testUpdateProcessForCorrectByCorrNo() throws Exception {
+        //given
+        /** 정정 처리 - 승인 */
+        int corrNo = 26;
+        String corrStatus = "승인";
+        String reasonForRejection = null;
+        LocalDate corrProcessingDate = LocalDate.now();
+
+        /** 정정 처리 - 반려 */
+//        int corrNo = 26;
+//        String corrStatus = "반려";
+//        String reasonForRejection = "적절한 정정 사유에 해당하지 않습니다.";
+//        LocalDate corrProcessingDate = LocalDate.now();
+
+        UpdateProcessForCorrectionDTO updateCorrection = new UpdateProcessForCorrectionDTO(
+                corrStatus,
+                reasonForRejection,
+                corrProcessingDate
+        );
+
+        //when
+        MvcResult result = mockMvc.perform(put("/corrections/{corrNo}", corrNo)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(updateCorrection)))
+        //then
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.httpStatusCode").value(200))
+                .andExpect(jsonPath("$.message").value("정정 처리 성공"))
                 .andExpect(jsonPath("$.results").exists())
                 .andReturn();
 

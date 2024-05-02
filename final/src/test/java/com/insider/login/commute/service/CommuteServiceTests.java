@@ -159,14 +159,12 @@ public class CommuteServiceTests {
     private static Stream<Arguments> getCorrectTimeOfCommute() {
         return Stream.of(
                 Arguments.of(
-                        1,
-                        "09:00"
+                        17
                         ,null
-                        ,"엘리베이터 점검으로 인해 지각으로 처리되었습니다."
+                        ,"22:00"
+                        ,"시스템 에러로 인해 야근 시 퇴근시간에 오류가 있습니다."
                         ,LocalDate.now()
                         ,"대기"
-                        ,null
-                        ,null
                 )
         );
     }
@@ -174,8 +172,7 @@ public class CommuteServiceTests {
     @ParameterizedTest
     @MethodSource("getCorrectTimeOfCommute")
     void testInsertRequestForCorrect(int commuteNo, String reqStartWork, String reqEndWork,
-                                     String reasonForCorr, LocalDate corrRegistrationDate, String corrStatus,
-                                     String reasonForRejection, LocalDate corrProcessingDate) {
+                                     String reasonForCorr, LocalDate corrRegistrationDate, String corrStatus) {
         //given
         CorrectionDTO newCorrection = new CorrectionDTO(
                 commuteNo,
@@ -183,9 +180,7 @@ public class CommuteServiceTests {
                 reqEndWork,
                 reasonForCorr,
                 corrRegistrationDate,
-                corrStatus,
-                reasonForRejection,
-                corrProcessingDate
+                corrStatus
         );
 
         //when
@@ -198,24 +193,32 @@ public class CommuteServiceTests {
     @DisplayName("출퇴근 시간 정정 처리 테스트")
     @Test
     void testUpdateProcessForCorrectByCorrNo() {
-        /** 출퇴근 정정 요청 내역, 출퇴근 내역 2개를 update 해야 함!! */
-
         //given
-        int corrNo = 3;             // 정정 요청 번호
+        /** 정정 처리 - 승인 */
+        int corrNo = 30;
         String corrStatus = "승인";
-        String reasonForRejection = null;
         LocalDate corrProcessingDate = LocalDate.now();
 
         UpdateProcessForCorrectionDTO updateProcessForCorrection = new UpdateProcessForCorrectionDTO(
-                corrNo,
                 corrStatus,
-                reasonForRejection,
                 corrProcessingDate
         );
 
+        /** 정정 처리 - 반려 */
+//        int corrNo = 30;
+//        String corrStatus = "반려";
+//        String reasonForRejection = "적절한 정정 사유에 해당하지 않습니다.";
+//        LocalDate corrProcessingDate = LocalDate.now();
+//
+//        UpdateProcessForCorrectionDTO updateProcessForCorrection = new UpdateProcessForCorrectionDTO(
+//                corrStatus,
+//                reasonForRejection,
+//                corrProcessingDate
+//        );
+
         //when
         Map<String, Object> result = new HashMap<>();
-        result = commuteService.updateProcessForCorrectByCorrNo(updateProcessForCorrection);
+        result = commuteService.updateProcessForCorrectByCorrNo(corrNo, updateProcessForCorrection);
 
         //then
         Assertions.assertTrue((Boolean) result.get("result"));

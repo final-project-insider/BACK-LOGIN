@@ -173,10 +173,12 @@ public class CommuteService {
     }
 
     @Transactional
-    public void insertRequestForCorrect(CorrectionDTO newCorrection) {
+    public Map<String, Object> insertRequestForCorrect(CorrectionDTO newCorrection) {
 
         log.info("[CommuteService] insertRequestForCorrect");
         log.info("[CommuteService] newCorrection : ", newCorrection);
+
+        Map<String, Object> result = new HashMap<>();
 
         /* 방법1 */
 
@@ -202,85 +204,128 @@ public class CommuteService {
 //        }
 
         /* 방법 2 */
-        correctionRepository.save(modelMapper.map(newCorrection, Correction.class));
+        try {
+            correctionRepository.save(modelMapper.map(newCorrection, Correction.class));
+            result.put("result", true);
+
+        } catch (Exception e ) {
+            System.out.println("출퇴근 정정 요청 Error");
+            e.printStackTrace();
+            result.put("result", false);
+        }
 
         log.info("[CommuteService] insertRequestForCorrect End ================");
+
+        return result;
     }
 
     @Transactional
-    public Map<String, Object> updateProcessForCorrectByCorrNo(UpdateProcessForCorrectionDTO updateProcessForCorrection) {
+    public Map<String, Object> updateProcessForCorrectByCorrNo(int corrNo, UpdateProcessForCorrectionDTO updateProcessForCorrection) {
 
         log.info("[CommuteService] updateProcessForCorrectByCorrNo");
         log.info("[CommuteService] updateProcessForCorrection : ", updateProcessForCorrection);
 
         Map<String, Object> result = new HashMap<>();
 
-        int corrNo = updateProcessForCorrection.getCorrNo();
         Correction correction = correctionRepository.findByCorrNo(corrNo);
 
         int commuteNo = correction.getCommuteNo();
         Commute commute = commuteRepository.findByCommuteNo(commuteNo);
 
         if(correction != null && commute != null) {
+
             /** 1. 출퇴근 정정 요청 내역 update */
-            CorrectionDTO correctionDTO = modelMapper.map(correction , CorrectionDTO.class);
+            CorrectionDTO correctionDTO = modelMapper.map(correction, CorrectionDTO.class);
 
             correctionDTO.setCorrStatus(updateProcessForCorrection.getCorrStatus());
-            correctionDTO.setReasonForRejection(updateProcessForCorrection.getReasonForRejection());
-            correctionDTO.setReasonForRejection(updateProcessForCorrection.getReasonForRejection());       // 승인되어 null 이어도 통과!
             correctionDTO.setCorrProcessingDate(updateProcessForCorrection.getCorrProcessingDate());
-
-            Correction updateCorrection = modelMapper.map(correctionDTO, Correction.class);
-            correctionRepository.save(updateCorrection);
-
-            log.info("[CommuteService] Correction update 후 ");
 
             /** 2. 출퇴근 내역 update */
             CommuteDTO commuteDTO = modelMapper.map(commute, CommuteDTO.class);
 
-            System.out.println( correction.getReqStartWork());
-            System.out.println( correction.getReqEndWork());
-
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
-            /** 2-1. 출근, 퇴근 시간 정정 */
-            if(correction.getReqStartWork() != null && correction.getReqEndWork() != null) {
-                LocalTime updateStartWork = LocalTime.parse(correction.getReqStartWork(), formatter);
-                LocalTime updateEndWork = LocalTime.parse(correction.getReqEndWork(), formatter);
+            /** 1-1. 출퇴근 정정 처리 - 승인 */
+            if(updateProcessForCorrection.getReasonForRejection() == null) {
 
-                Duration workingDuration = Duration.between(updateStartWork, updateEndWork).minusHours(1);
-                int totalWorkingHours = (int) workingDuration.toMinutes();
+                Correction updateCorrection = modelMapper.map(correctionDTO, Correction.class);
+                correctionRepository.save(updateCorrection);
 
-                commuteDTO.setStartWork(updateStartWork);
-                commuteDTO.setEndWork(updateEndWork);
-                commuteDTO.setWorkingStatus("퇴근");
-                commuteDTO.setTotalWorkingHours(totalWorkingHours);
+                /** 1-1-1. 출근 시간만 존재할 때 => 출근 시간만 정정 가능 */
+                if(commute.getStartWork() != null && commute.getEndWork() == null) {
 
-            /** 2-2. 출근 시간만 정정 */
-            } else if(correction.getReqStartWork() != null) {
-                LocalTime updateStartWork = LocalTime.parse(correction.getReqStartWork(), formatter);
-                LocalTime originalEndWork = commute.getEndWork();
+                    LocalTime updateStartWork = LocalTime.parse(correction.getReqStartWork(), formatter);
+                    commuteDTO.setStartWork(updateStartWork);
 
-                Duration workingDuration = Duration.between(updateStartWork, originalEndWork).minusHours(1);
-                int totalWorkingHours = (int) workingDuration.toMinutes();
+                    log.info("[CommuteService] 출근시간만 존재할 때 출근시간 정정 처리 후 ");
 
-                commuteDTO.setStartWork(updateStartWork);
-                commuteDTO.setTotalWorkingHours(totalWorkingHours);
+                    /** 1-1-2. 출근시간, 퇴근시간 모두 존재할 때 */
+                } else if (commute.getStartWork() != null && commute.getEndWork() != null) {
 
-                /** 2-2. 퇴근 시간만 정정 */
-            } else if(correction.getReqEndWork() != null) {
-                LocalTime originalStartWork = commute.getStartWork();
-                LocalTime updateEndWork = LocalTime.parse(correction.getReqEndWork(), formatter);
+                    /** 1-1-2-1. 출근시간, 퇴근시간 모두 정정 */
+                    if(correction.getReqStartWork() != null && correction.getReqEndWork() != null) {
 
-                Duration workingDuration = Duration.between(originalStartWork, updateEndWork).minusHours(1);
-                int totalWorkingHours = (int) workingDuration.toMinutes();
+                        LocalTime updateStartWork = LocalTime.parse(correction.getReqStartWork(), formatter);
+                        LocalTime updateEndWork = LocalTime.parse(correction.getReqEndWork(), formatter);
 
-                commuteDTO.setEndWork(updateEndWork);
-                commuteDTO.setTotalWorkingHours(totalWorkingHours);
+                        Duration workingDuration = Duration.between(updateStartWork, updateEndWork).minusHours(1);
+                        int totalWorkingHours = (int) workingDuration.toMinutes();
 
-                /** 2-3. 출퇴근 시간 모두 null */
+                        commuteDTO.setStartWork(updateStartWork);
+                        commuteDTO.setEndWork(updateEndWork);
+                        commuteDTO.setWorkingStatus("퇴근");                  // 무단 결근 상황에서 개인 연차를 사용하여 출퇴근 시간을 정상으로 정정 요청 할 때
+                        commuteDTO.setTotalWorkingHours(totalWorkingHours);
+
+                        log.info("[CommuteService] 출근시간, 퇴근시간 모두 정정 처리 후 ");
+
+                        /** 1-1-2-2. 출근시간만 정정 */
+                    } else if (correction.getReqStartWork() != null && correction.getReqEndWork() == null) {
+
+                        LocalTime updateStartWork = LocalTime.parse(correction.getReqStartWork(), formatter);
+                        LocalTime originalEndWork = commute.getEndWork();
+
+                        Duration workingDuration = Duration.between(updateStartWork, originalEndWork).minusHours(1);
+                        int totalWorkingHours = (int) workingDuration.toMinutes();
+
+                        commuteDTO.setStartWork(updateStartWork);
+                        commuteDTO.setTotalWorkingHours(totalWorkingHours);
+
+                        log.info("[CommuteService] 출근시간만 정정 처리 후 ");
+
+                        /** 1-1-2-3. 퇴근시간만 정정 */
+                    } else if (correction.getReqStartWork() == null && correction.getReqEndWork() != null) {
+
+                        LocalTime originalStartWork = commute.getStartWork();
+                        LocalTime updateEndWork = LocalTime.parse(correction.getReqEndWork(), formatter);
+
+                        Duration workingDuration = Duration.between(originalStartWork, updateEndWork).minusHours(1);
+                        int totalWorkingHours = (int) workingDuration.toMinutes();
+
+                        commuteDTO.setEndWork(updateEndWork);
+                        commuteDTO.setTotalWorkingHours(totalWorkingHours);
+
+                        log.info("[CommuteService] 퇴근시간만 정정 처리 후 ");
+
+                    /** 1-1-2-4. 출퇴근 정정 요청 시간 모두 null */
+                    } else {
+                        System.out.println("출퇴근 정정 요청 시간 모두 null !!!!");
+                    }
+
+                /** 1-1-3. 출근시간, 퇴근시간 모두 존재하지 않을 때 */
+                } else {
+                    System.out.println("출퇴근 시간 모두 null !!!!!");
+                }
+
+                log.info("[CommuteService] Correction update 승인 처리 후 ");
+
+            /** 1-2. 출퇴근 정정 처리 - 반려 */
             } else {
-                System.out.println("출퇴근 시간 모두 null !!!!");
+                correctionDTO.setReasonForRejection(updateProcessForCorrection.getReasonForRejection());
+
+                Correction updateCorrection = modelMapper.map(correctionDTO, Correction.class);
+                correctionRepository.save(updateCorrection);
+
+                log.info("[CommuteService] Correction update 반려 처리 후 ");
             }
 
             Commute updateCommute = modelMapper.map(commuteDTO, Commute.class);
@@ -301,7 +346,6 @@ public class CommuteService {
 
         return result;
     }
-
 
     @Transactional
     public Page<CorrectionDTO> selectReqeustForCorrectList(LocalDate startDayOfMonth, LocalDate endDayOfMonth, Pageable pageable) {

@@ -32,9 +32,27 @@ public class CorrectionDTO {
         this.corrProcessingDate = corrProcessingDate;
     }
 
+
     public CorrectionDTO(String corrStatus, LocalDate corrProcessingDate) {
         this.corrStatus = corrStatus;
         this.corrProcessingDate = corrProcessingDate;
+    }
+
+    public CorrectionDTO(int commuteNo, String reqStartWork, String reqEndWork, String reasonForCorr, LocalDate corrRegistrationDate, String corrStatus) {
+        this.commuteNo = commuteNo;
+        this.reqStartWork = reqStartWork;
+        this.reqEndWork = reqEndWork;
+        this.reasonForCorr = reasonForCorr;
+        this.corrRegistrationDate = corrRegistrationDate;
+        this.corrStatus = corrStatus;
+    }
+
+    public CorrectionDTO(int commuteNo, String reqStartWork, String reasonForCorr, LocalDate corrRegistrationDate, String corrStatus) {
+        this.commuteNo = commuteNo;
+        this.reqStartWork = reqStartWork;
+        this.reasonForCorr = reasonForCorr;
+        this.corrRegistrationDate = corrRegistrationDate;
+        this.corrStatus = corrStatus;
     }
 
 }

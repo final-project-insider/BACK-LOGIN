@@ -4,6 +4,7 @@ import com.insider.login.common.CommonController;
 import com.insider.login.common.ResponseMessage;
 import com.insider.login.commute.dto.CommuteDTO;
 import com.insider.login.commute.dto.CorrectionDTO;
+import com.insider.login.commute.dto.UpdateProcessForCorrectionDTO;
 import com.insider.login.commute.dto.UpdateTimeOfCommuteDTO;
 import com.insider.login.commute.service.CommuteService;
 import com.insider.login.member.entity.Member;
@@ -90,6 +91,19 @@ public class CommuteController {
         ResponseMessage responseMessage = new ResponseMessage(200, "조회 성공", result);
 
         return new ResponseEntity<>(responseMessage, headers, HttpStatus.OK);
+    }
+
+    /** 출퇴근 시간 정정 요청 등록 */
+    @PostMapping("/corrections")
+    public ResponseEntity<ResponseMessage> insertRequestForCorrect(@RequestBody CorrectionDTO newCorrection) {
+        return ResponseEntity.ok().body(new ResponseMessage(200, "등록 성공", commuteService.insertRequestForCorrect(newCorrection)));
+    }
+
+    /** 출퇴근 시간 정정 처리 등록 (update) */
+    @PutMapping("/corrections/{corrNo}")
+    public ResponseEntity<ResponseMessage> updateProcessForCorrectByCorrNo(@PathVariable("corrNo") int corrNo,
+                                                                           @RequestBody UpdateProcessForCorrectionDTO updateCorrection) {
+        return ResponseEntity.ok().body(new ResponseMessage(200, "정정 처리 성공",commuteService.updateProcessForCorrectByCorrNo(corrNo, updateCorrection)));
     }
 
     /** 출퇴근 시간 정정 내역 조회 (전체, 멤버별) */

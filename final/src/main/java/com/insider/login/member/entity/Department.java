@@ -7,7 +7,7 @@ import lombok.ToString;
 
 import java.util.List;
 
-@Entity
+@Entity(name = "CommuteDepartment")
 @Table(name = "department_info")
 @AllArgsConstructor
 @Getter
