@@ -13,6 +13,9 @@ import com.insider.login.member.entity.Department;
 import com.insider.login.member.entity.Member;
 import com.insider.login.member.repository.DepartmentRepository;
 import com.insider.login.member.repository.MemberRepository;
+import com.insider.login.member.service.MemberService;
+import com.insider.login.other.notice.dto.NoticeDTO;
+import com.insider.login.other.notice.service.NoticeService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.Response;
 import org.modelmapper.ModelMapper;
@@ -26,6 +29,7 @@ import org.springframework.ui.ModelMap;
 import java.sql.Time;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -39,18 +43,25 @@ public class CommuteService {
     private final CorrectionRepository correctionRepository;
     private final DepartmentRepository departmentRepository;
     private final MemberRepository memberRepository;
+    private final NoticeService noticeService;
+    private final MemberService memberService;
     private final ModelMapper modelMapper;
 
     public CommuteService(CommuteRepository commuteRepository,
                           ModelMapper modelMapper,
                           CorrectionRepository correctionRepository,
                           DepartmentRepository departmentRepository,
-                          MemberRepository memberRepository) {
+                          MemberRepository memberRepository,
+                          NoticeService noticeService,
+                          MemberService memberService) {
+
         this.commuteRepository = commuteRepository;
         this.modelMapper = modelMapper;
         this.correctionRepository = correctionRepository;
         this.departmentRepository = departmentRepository;
         this.memberRepository = memberRepository;
+        this.noticeService = noticeService;
+        this.memberService = memberService;
     }
 
     @Transactional
@@ -207,6 +218,22 @@ public class CommuteService {
             correctionRepository.save(modelMapper.map(correctionDTO, Correction.class));
             result.put("result", true);
 
+            /** 출퇴근 정정 요청 등록 시 처리자에게 알림 */
+
+            List<Member> adminMembers = memberService.getAdminMembers();
+            for(Member adminMember : adminMembers) {
+                NoticeDTO newNotice = new NoticeDTO();
+
+                System.out.println("adminMember : " + adminMember);
+
+                newNotice.setMemberId(adminMember.getMemberId());
+                newNotice.setNoticeType("출퇴근");
+                newNotice.setNoticeContent("새로운 출퇴근 정정 요청이 있습니다. 확인해주세요.");
+                newNotice.setNoticeDateTime(LocalDateTime.now());
+
+                noticeService.insertNewNotice(newNotice);
+            }
+
             log.info("[CommuteService] 출퇴근 정정 요청 등록 후 ");
 
         } catch (Exception e ) {
@@ -334,6 +361,16 @@ public class CommuteService {
             commuteRepository.save(updateCommute);
 
             log.info("[CommuteService] Commute update 후 ");
+
+            /** 출퇴근 정정 처리 시 요청자에게 알림 */
+
+            NoticeDTO newNotice = new NoticeDTO();
+            newNotice.setMemberId(commute.getMemberId());
+            newNotice.setNoticeType("출퇴근");
+            newNotice.setNoticeContent("출퇴근 정정 요청이 처리되었습니다. 확인해주세요.");
+            newNotice.setNoticeDateTime(LocalDateTime.now());
+
+            noticeService.insertNewNotice(newNotice);
 
             result.put("result", true);
 

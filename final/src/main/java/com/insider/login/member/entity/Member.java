@@ -11,7 +11,6 @@ import java.util.List;
 @Table(name = "member_info")
 @AllArgsConstructor
 @Getter
-@ToString
 public class Member {
 
     @Id
@@ -24,7 +23,7 @@ public class Member {
     @Column(name = "password", nullable = false)
     private String password;            // 비밀번호
 
-    @Column(name = "depart_no", nullable = false)
+    @Column(name = "depart_no", nullable = false, insertable = false, updatable = false)
     private int departNo;               // 부서 번호
 
     @Column(name = "position_name", nullable = false)
@@ -48,14 +47,14 @@ public class Member {
     @Column(name = "email", nullable = false)
     private String email;               // 이메일
 
-//    @Column(name = "user_role", nullable = false)
-//    private String userRole;          // 권한
+    @Column(name = "member_role", nullable = false)
+    private String memberRole;          // 권한
 
     @OneToMany(mappedBy = "member")
     private List<Commute> commuteList;  // 출퇴근 리스트
 
     @ManyToOne
-    @JoinColumn(name = "depart_no", insertable = false, updatable = false)
+    @JoinColumn(name = "depart_no", nullable = false)
     private Department department;      // 부서
 
     protected Member() {}

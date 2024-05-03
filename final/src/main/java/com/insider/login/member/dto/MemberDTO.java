@@ -24,8 +24,6 @@ public class MemberDTO {
     private String phoneNo;             // 전화 번호
     private String memberStatus;       // 현재 상태
     private String email;               // 이메일
-//    private String userRole;            // 권한
+    private String memberRole;            // 권한
     private List<CommuteDTO> commuteList;   // 출퇴근 리스트
-    private DepartmentDTO department;   // 부서
-
 }

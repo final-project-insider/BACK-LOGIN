@@ -1,0 +1,52 @@
+### 출퇴근 정정 요청 알림 등록
+POST http://localhost:8080/notices
+Content-Type: application/json
+
+{
+  "memberId": 2024001003,
+  "noticeDateTime": "2024-05-02T11:20",
+  "noticeType": "출퇴근",
+  "noticeContent": "새로운 출퇴근 정정 요청이 있습니다. 확인해주세요."
+}
+
+### 출퇴근 정정 처리 알림 등록
+POST http://localhost:8080/notices
+Content-Type: application/json
+
+{
+  "memberId": 2024001003,
+  "noticeDateTime": "2024-05-02T09:55",
+  "noticeType": "출퇴근",
+  "noticeContent": "출퇴근 정정 요청이 처리되었습니다. 확인해주세요."
+}
+
+### 전자결재 상신 알림 등록
+POST http://localhost:8080/notices
+Content-Type: application/json
+
+{
+  "memberId": 2024001003,
+  "noticeDateTime": "2024-05-02T10:40",
+  "noticeType": "전자결재",
+  "noticeContent": "새로운 결재 기안이 있습니다. 확인해주세요."
+}
+
+### 전자결재 결재 알림 등록
+POST http://localhost:8080/notices
+Content-Type: application/json
+
+{
+  "memberId": 2024001003,
+  "noticeDateTime": "2024-05-02T13:50",
+  "noticeType": "전자결재",
+  "noticeContent": "기안하신 결재가 처리되었습니다. 확인해주세요."
+}
+
+### 수신한 알림 내역 조회
+GET http://localhost:8080/notices?memberId=2024001001
+
+### 알림 선택 삭제
+DELETE http://localhost:8080/notices/20
+
+### 알림 전체 삭제
+DELETE http://localhost:8080/members/2024001003/notices
