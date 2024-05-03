@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/BACK-LOGIN.iml" filepath="$PROJECT_DIR$/.idea/BACK-LOGIN.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/final.main.iml" filepath="$PROJECT_DIR$/.idea/modules/final.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/BACK-LOGIN.iml" filepath="$PROJECT_DIR$/.idea/modules/BACK-LOGIN.iml" />
     </modules>
   </component>
 </project>

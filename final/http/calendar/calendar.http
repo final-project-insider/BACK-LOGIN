@@ -1,0 +1,44 @@
+### 일정 조회 - 월간
+GET http://localhost:8080/calendars?type=monthly&year=2024&month=4&department=개발팀
+Authorization: BEARER eyJkYXRlIjoxNzE0NTIyNDEyOTQyLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJwb3NpdGlvbk5hbWUiOiLslYzrsJQiLCJSb2xlIjoiQURNSU4iLCJpbWFnZSI6IuydtOuvuOyngOqwgCDrk6TslrTqsIgg6rK966GcIiwic3ViIjoiaW5zaWRlcidzIHRva2VuOiAyNDA0MDEwMDEiLCJ1c2VyTmFtZSI6Iuq5gOyngO2ZmCIsImV4cCI6MTcxNDYwODgxMiwiZGVwYXJ0TmFtZSI6IuyduOyCrO2MgCIsIm1lbWJlcklkIjoyNDA0MDEwMDF9.Ajn8VLUnWGkJJEOxi9o6ykMD5P6_IGK3wKKJcptuOrU
+
+### 일정 조회 - 주간
+GET http://localhost:8080/calendars?type=weekly&year=2024&month=4&week=15&department=회계팀
+Authorization: BEARER eyJkYXRlIjoxNzE0NTIyNDEyOTQyLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJwb3NpdGlvbk5hbWUiOiLslYzrsJQiLCJSb2xlIjoiQURNSU4iLCJpbWFnZSI6IuydtOuvuOyngOqwgCDrk6TslrTqsIgg6rK966GcIiwic3ViIjoiaW5zaWRlcidzIHRva2VuOiAyNDA0MDEwMDEiLCJ1c2VyTmFtZSI6Iuq5gOyngO2ZmCIsImV4cCI6MTcxNDYwODgxMiwiZGVwYXJ0TmFtZSI6IuyduOyCrO2MgCIsIm1lbWJlcklkIjoyNDA0MDEwMDF9.Ajn8VLUnWGkJJEOxi9o6ykMD5P6_IGK3wKKJcptuOrU
+
+### 일정 조회 - 일간
+GET http://localhost:8080/calendars?type=daily&year=2024&month=4&day=12&department=인사팀
+Authorization: BEARER eyJkYXRlIjoxNzE0NTIyNDEyOTQyLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJwb3NpdGlvbk5hbWUiOiLslYzrsJQiLCJSb2xlIjoiQURNSU4iLCJpbWFnZSI6IuydtOuvuOyngOqwgCDrk6TslrTqsIgg6rK966GcIiwic3ViIjoiaW5zaWRlcidzIHRva2VuOiAyNDA0MDEwMDEiLCJ1c2VyTmFtZSI6Iuq5gOyngO2ZmCIsImV4cCI6MTcxNDYwODgxMiwiZGVwYXJ0TmFtZSI6IuyduOyCrO2MgCIsIm1lbWJlcklkIjoyNDA0MDEwMDF9.Ajn8VLUnWGkJJEOxi9o6ykMD5P6_IGK3wKKJcptuOrU
+
+### 일정 등록
+POST http://localhost:8080/calendars
+Content-Type: application/json
+Authorization: BEARER eyJkYXRlIjoxNzE0NTIyNDEyOTQyLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJwb3NpdGlvbk5hbWUiOiLslYzrsJQiLCJSb2xlIjoiQURNSU4iLCJpbWFnZSI6IuydtOuvuOyngOqwgCDrk6TslrTqsIgg6rK966GcIiwic3ViIjoiaW5zaWRlcidzIHRva2VuOiAyNDA0MDEwMDEiLCJ1c2VyTmFtZSI6Iuq5gOyngO2ZmCIsImV4cCI6MTcxNDYwODgxMiwiZGVwYXJ0TmFtZSI6IuyduOyCrO2MgCIsIm1lbWJlcklkIjoyNDA0MDEwMDF9.Ajn8VLUnWGkJJEOxi9o6ykMD5P6_IGK3wKKJcptuOrU
+
+{
+  "calendarName": "테스트 일정",
+  "calendarStart": "2024-04-10T12:30:00",
+  "calendarEnd": "2024-04-11T12:30:00",
+  "color": "red",
+  "registrantId": 200401023
+}
+
+### 일정 수정
+PUT http://localhost:8080/calendars
+Content-Type: application/json
+Authorization: BEARER eyJkYXRlIjoxNzE0NTIyNDEyOTQyLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJwb3NpdGlvbk5hbWUiOiLslYzrsJQiLCJSb2xlIjoiQURNSU4iLCJpbWFnZSI6IuydtOuvuOyngOqwgCDrk6TslrTqsIgg6rK966GcIiwic3ViIjoiaW5zaWRlcidzIHRva2VuOiAyNDA0MDEwMDEiLCJ1c2VyTmFtZSI6Iuq5gOyngO2ZmCIsImV4cCI6MTcxNDYwODgxMiwiZGVwYXJ0TmFtZSI6IuyduOyCrO2MgCIsIm1lbWJlcklkIjoyNDA0MDEwMDF9.Ajn8VLUnWGkJJEOxi9o6ykMD5P6_IGK3wKKJcptuOrU
+
+{
+  "calendarNo": 1,
+  "calendarName": "수정할 일정",
+  "calendarStart": "2024-07-11T12:30:00",
+  "calendarEnd": "2024-07-12T12:30:00",
+  "color": "red",
+  "department": "all",
+  "registrantId": 200401023
+}
+
+
+### 일정 삭제
+DELETE http://localhost:8080/calendars/11
+Authorization: BEARER eyJkYXRlIjoxNzE0NTIyNDEyOTQyLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJwb3NpdGlvbk5hbWUiOiLslYzrsJQiLCJSb2xlIjoiQURNSU4iLCJpbWFnZSI6IuydtOuvuOyngOqwgCDrk6TslrTqsIgg6rK966GcIiwic3ViIjoiaW5zaWRlcidzIHRva2VuOiAyNDA0MDEwMDEiLCJ1c2VyTmFtZSI6Iuq5gOyngO2ZmCIsImV4cCI6MTcxNDYwODgxMiwiZGVwYXJ0TmFtZSI6IuyduOyCrO2MgCIsIm1lbWJlcklkIjoyNDA0MDEwMDF9.Ajn8VLUnWGkJJEOxi9o6ykMD5P6_IGK3wKKJcptuOrU

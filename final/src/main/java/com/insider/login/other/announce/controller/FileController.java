@@ -7,8 +7,8 @@ import com.insider.login.other.announce.dto.AnnounceDTO;
 public class FileController {
 
     public static AnnounceDTO convertJsonToAnnounceDTO(String announceDTOJson) {
-        // JSON 문자열을 AnnounceDTO 객체로 변환하는 로직을 구현해야 함
-        // ObjectMapper를 사용하여 JSON을 객체로 변환
+
+        // ObjectMapper : JSON을 객체로 변환
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.readValue(announceDTOJson, AnnounceDTO.class);

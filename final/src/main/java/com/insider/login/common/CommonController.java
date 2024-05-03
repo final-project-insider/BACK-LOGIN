@@ -33,7 +33,7 @@ public class CommonController {
     public String nowDate () {
 
         Date now = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
         String nowDate = sdf.format(now);
 

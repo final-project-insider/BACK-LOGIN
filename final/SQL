@@ -14,7 +14,9 @@ CREATE TABLE ANNOUNCE (
                           ANC_CONTENT TEXT NOT NULL,
                           ANC_DATE VARCHAR(255) NOT NULL,
                           ANC_WRITER VARCHAR(255) NOT NULL,
-                          HITS INT
+                          HITS INT,
+                          FILE_PATH VARCHAR(255)
+
 );
 
 CREATE TABLE ANNOUNCE_FILES (
@@ -24,4 +26,26 @@ CREATE TABLE ANNOUNCE_FILES (
                                 FILE_PATH VARCHAR(255),
                                 ANC_NO INT,
                                 FOREIGN KEY (ANC_NO) REFERENCES ANNOUNCE(ANC_NO)
+);
+
+CREATE TABLE CHAT_MESSAGE
+(
+    ID           INT AUTO_INCREMENT
+        PRIMARY KEY,
+    USERNAME     VARCHAR(255) NOT NULL,
+    MSG          TEXT         NULL,
+    ROOM_NUMBER  INT          NULL,
+    CREATED_DATE DATETIME     NULL
+);
+
+
+CREATE TABLE CHAT_ROOM
+(
+    ROOM_NUMBER        INT AUTO_INCREMENT
+        PRIMARY KEY,
+    MEMBER_ID          INT      NULL,
+    CREATED_DATE       DATETIME NULL,
+    LAST_MODIFIED_DATE DATETIME NULL,
+    CONSTRAINT CHAT_ROOM_IBFK_1
+        FOREIGN KEY (MEMBER_ID) REFERENCES MEMBER_INFO (MEMBER_ID)
 );

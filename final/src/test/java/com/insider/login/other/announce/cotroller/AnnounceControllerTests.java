@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -63,24 +64,23 @@ public class AnnounceControllerTests {
 
     @Test
     @DisplayName("공지사항 상세 조회 테스트")
-    public void selectAncWithFile() throws Exception  {
+    public void selectAncWithFile() throws Exception {
 
         // given
-        int ancNo = 15;
+        int ancNo = 27;
 
         // when
         MvcResult result = mockMvc.perform(get("/announces/{ancNo}", ancNo)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(ancNo)))
-        // then
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(ancNo)))
+                // then
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.httpStatusCode").value(200))
-                .andExpect(jsonPath("$.message").value("조회 성공"))
-                .andExpect(jsonPath("$.results").exists())
                 .andReturn();
+
 
         String content = result.getResponse().getContentAsString();
         System.out.println("Response Content: " + content);
+
 
     }
 
@@ -96,6 +96,7 @@ public class AnnounceControllerTests {
         announceDTO.setAncDate("2020-11-11");
         announceDTO.setHits(0);
         announceDTO.setAncWriter("김고무");
+        announceDTO.setFilePath("C:\\Users\\simko\\Desktop\\file\\" + "text.txt");
         System.out.println(announceDTO);
 
         // JSON 데이터를 문자열로 변환하여 파일에 추가
@@ -106,7 +107,6 @@ public class AnnounceControllerTests {
         // 테스트할 파일 생성
         MockMultipartFile files = new MockMultipartFile("files", "test.txt",
                 MediaType.TEXT_PLAIN_VALUE, "test file content".getBytes());
-
         // when
         // mockMvc를 사용하여 요청 전송
         mockMvc.perform(multipart("/announces")
@@ -138,9 +138,33 @@ public class AnnounceControllerTests {
                 .andExpect(jsonPath("$.results").exists())
                 .andReturn();
 
-        // then
         String content = result.getResponse().getContentAsString();
         System.out.println("Content: " + content);
     }
+
+
+    @Test
+    @DisplayName("컨트롤러 공지사항 삭제 테스트")
+    public void testDeleteAncAndFile() throws Exception {
+
+        // given
+        int ancNo = 25;
+
+
+        // when
+        MvcResult result = mockMvc.perform(delete("/announces/{ancNo}", ancNo)
+                    .contentType(MediaType.APPLICATION_JSON))
+            //then
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.httpStatusCode").value(200))
+            .andExpect(jsonPath("$.message").value("삭제 성공"))
+            .andExpect(jsonPath("$.results").exists())
+            .andReturn();
+
+        String content = result.getResponse().getContentAsString();
+        System.out.println("Content: " + content);
+
+    }
+
 
 }

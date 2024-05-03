@@ -33,15 +33,15 @@ public class Announce {
     @Column(name = "hits")
     private int hits;
 
+    @Column(name = "file_path")
+    private String filePath;
+
     protected Announce() {}
 
-    public Announce(AnnounceDTO announceDTO) {
-        this.ancNo = announceDTO.getAncNo();
-        this.ancTitle = announceDTO.getAncTitle();
-        this.ancContent = announceDTO.getAncContent();
-        this.ancDate = announceDTO.getAncDate();
-        this.ancWriter = announceDTO.getAncWriter();
-        this.hits = announceDTO.getHits();
+
+    /** 조회수 증가 비즈니스 로직 */
+    public void increaseHits() {
+        this.hits++;
     }
 
 

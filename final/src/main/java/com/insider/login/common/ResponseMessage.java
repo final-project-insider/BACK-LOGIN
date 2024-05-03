@@ -17,5 +17,4 @@ public class ResponseMessage {
 
     private Map<String, Object> results;
 
-
 }

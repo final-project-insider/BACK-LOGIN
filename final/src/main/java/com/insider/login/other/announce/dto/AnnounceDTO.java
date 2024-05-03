@@ -22,6 +22,10 @@ public class AnnounceDTO {
 
     private int hits;
 
+    private String filePath;
 
-
+    public AnnounceDTO(String ancTitle, String ancContent) {
+        this.ancTitle = ancTitle;
+        this.ancContent = ancContent;
+    }
 }

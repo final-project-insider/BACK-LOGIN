@@ -7,7 +7,9 @@ import com.insider.login.other.announce.entity.AncFile;
 import com.insider.login.other.announce.entity.Announce;
 import com.insider.login.other.announce.repository.AnnounceFileRepository;
 import com.insider.login.other.announce.repository.AnnounceRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -15,17 +17,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.View;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.apache.commons.io.FileUtils.delete;
 import static org.apache.commons.io.FileUtils.getFile;
 
 @Service
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AnnounceService {
 
     private final AnnounceRepository announceRepository;
@@ -53,18 +57,16 @@ public class AnnounceService {
     }
 
 
-    /**
-     * 공지사항 상세 조회
-     */
+
+    /** 공지사항 상세 조회 */
     public Announce findAncWithFile(int ancNo) {
-
-        
-        return announceRepository.findAnnounceWithFiles(ancNo);
-
+        Announce announce = announceRepository.findAnnounceWithFiles(ancNo);
+        if (announce != null) {
+            announce.increaseHits(); // 조회수 증가 비즈니스 로직 메서드
+            announceRepository.save(announce);
+        }
+        return announce;
     }
-
-
-
 
     /** 파일과 공지사항 모두 있을 때 insert */
     public Map<String, Object> insertAncWithFile(AnnounceDTO ancDTO, List<MultipartFile> files) {
@@ -87,7 +89,7 @@ public class AnnounceService {
                     String fileName = file.getOriginalFilename();
                     String fileType = file.getContentType();
                     String uploadDirectory = ymlConfig.getDirectory();
-                    String filePath = uploadDirectory + fileName;   // 파일을 저장할 경로 지정
+                    String filePath = uploadDirectory + "\\" + fileName;   // 파일을 저장할 경로 지정
 
                     File newFile = new File(filePath);
                     file.transferTo(newFile);
@@ -134,7 +136,7 @@ public class AnnounceService {
     }
 
     /** 공지사항 수정 */
-    public Map<String, Object> updateAnc(int ancNo, String ancTitle,String ancContent) {
+    public Map<String, Object> updateAnc(int ancNo, AnnounceDTO updateAncDTO) {
 
         Map<String, Object> result = new HashMap<>();
 
@@ -144,8 +146,8 @@ public class AnnounceService {
 
             AnnounceDTO announceDTO = modelMapper.map(announce, AnnounceDTO.class);
 
-            announceDTO.setAncTitle(ancTitle);
-            announceDTO.setAncContent(ancContent);
+            announceDTO.setAncTitle(updateAncDTO.getAncTitle());
+            announceDTO.setAncContent(updateAncDTO.getAncContent());
 
             Announce updateAnc = modelMapper.map(announceDTO, Announce.class);
             announceRepository.save(updateAnc);
@@ -156,5 +158,34 @@ public class AnnounceService {
 
         }
         return result;
+    }
+
+    /** 공지사항 삭제 */
+    @Transactional
+    public Map<String, Object> deleteAncAndFile(int ancNo) {
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("result", true);
+
+        // 공지사항과 파일을 동시에 삭제 : 동일한 트랜잭션 내 로직
+        Announce announce = announceRepository.findByAncNo(ancNo);
+        if (announce != null) {
+
+            List<AncFile> ancFiles = announceFileRepository.findByAncNo(ancNo);
+            if (!ancFiles.isEmpty()) {
+                announceFileRepository.deleteAll(ancFiles);
+            }
+            announceRepository.delete(announce);
+        }
+
+        return result;
+    }
+
+    public List<AncFile> selectFileList(int ancNo) {
+
+        List<AncFile> fileList = announceFileRepository.findByAncNo(ancNo);
+
+
+        return fileList;
     }
 }

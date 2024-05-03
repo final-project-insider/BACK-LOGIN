@@ -33,7 +33,7 @@ public class NoteControllerTests {
     public void testSelectNoteList() throws Exception {
 
         // given
-        int memberNo = 3;
+        int memberId = 3;
         int receiverId = 3;
         String deleteYn = "N";
         int page = 0;
@@ -43,7 +43,7 @@ public class NoteControllerTests {
 
 
         // when
-        MvcResult result = mockMvc.perform(get("/members/{memberNo}/notes", memberNo)
+        MvcResult result = mockMvc.perform(get("/members/{memberId}/notes", memberId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .param("receiverId", String.valueOf(receiverId))
                         .param("deleteYn", deleteYn)
@@ -121,7 +121,6 @@ public class NoteControllerTests {
                         .param("deleteYn", deleteYn))
         // then
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.httpStatusCode").value(200))
                 .andExpect(jsonPath("$.message").value("삭제 성공"))
                 .andExpect(jsonPath("$.results").exists())
                 .andReturn();

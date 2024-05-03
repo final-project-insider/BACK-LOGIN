@@ -37,8 +37,10 @@ public class ApprovalService {
     private ApproverRepository approverRepository;
     private AttachmentRepository attachmentRepository;
     private ReferencerRepository referencerRepository;
-    private ApprovalMemberRepository memberRepository;
-    private ApprovalDepartmentRepository departmentRepository;
+
+    private ApprovalMemberRepository approvalMemberRepository;
+    private ApprovalDepartmentRepository approvalDepartmentRepository;
+
     private FormRepository formRepository;
 
     private final ModelMapper modelMapper;
@@ -47,16 +49,18 @@ public class ApprovalService {
                            ApproverRepository approverRepository,
                            AttachmentRepository attachmentRepository,
                            ReferencerRepository referencerRepository,
-                           ApprovalMemberRepository memberRepository,
-                           ApprovalDepartmentRepository departmentRepository,
+
+                           ApprovalMemberRepository approvalMemberRepository,
+                           ApprovalDepartmentRepository approvalDepartmentRepository,
+
                            FormRepository formRepository,
                            ModelMapper modelMapper){
         this.approvalRepository = approvalRepository;
         this.approverRepository = approverRepository;
         this.attachmentRepository = attachmentRepository;
         this.referencerRepository = referencerRepository;
-        this.memberRepository = memberRepository;
-        this.departmentRepository = departmentRepository;
+        this.approvalMemberRepository = approvalMemberRepository;
+        this.approvalDepartmentRepository = approvalDepartmentRepository;
         this.formRepository = formRepository;
         this.modelMapper = modelMapper;
     }
@@ -210,9 +214,9 @@ public class ApprovalService {
         Approval approval = approvalRepository.findById(approvalNo);
 
         //기안자 정보 가져오기
-        Member senderMember = memberRepository.findById(approval.getMemberId());
+        Member senderMember = approvalMemberRepository.findById(approval.getMemberId());
         //기안자의 부서 정보 가져오기
-        Department senderDepart = departmentRepository.findById(senderMember.getDepartNo());
+        Department senderDepart = approvalDepartmentRepository.findById(senderMember.getDepartNo());
         //양식 정보 가져오기
         Form approvalForm = formRepository.findById(approval.getFormNo());
 
@@ -232,9 +236,9 @@ public class ApprovalService {
         for(int i = 0; i < approverList.size(); i++){
 
             //결재자 정보 가져오기
-            Member receiverMember = memberRepository.findById(approverList.get(i).getMemberId());
+            Member receiverMember = approvalMemberRepository.findById(approverList.get(i).getMemberId());
             //결재자 부서 정보 가져오기
-            Department receiverDepart = departmentRepository.findById(receiverMember.getDepartNo());
+            Department receiverDepart = approvalDepartmentRepository.findById(receiverMember.getDepartNo());
 
             String approverFormattedDateTime = "";
 
@@ -256,9 +260,9 @@ public class ApprovalService {
         for(int i = 0; i < referencerList.size(); i++){
 
             //참조자 정보 가져오기
-            Member referencerMember = memberRepository.findById(referencerList.get(i).getMemberId());
+            Member referencerMember = approvalMemberRepository.findById(referencerList.get(i).getMemberId());
             //참조자 부서 정보 가져오기
-            Department referencerDepart = departmentRepository.findById(referencerMember.getDepartNo());
+            Department referencerDepart = approvalDepartmentRepository.findById(referencerMember.getDepartNo());
 
             ReferencerDTO referencerDTO = new ReferencerDTO(referencerList.get(i).getRefNo(), referencerList.get(i).getApprovalNo(), referencerList.get(i).getMemberId(), referencerList.get(i).getRefOrder(), referencerMember.getName(), referencerMember.getPositionName(), referencerDepart.getDepartName());
             referencer.add(referencerDTO);
@@ -285,7 +289,7 @@ public class ApprovalService {
 
         if(standByApprover != null ){
 
-            Member standByMember = memberRepository.findById(standByApprover.getMemberId());
+            Member standByMember = approvalMemberRepository.findById(standByApprover.getMemberId());
             standByMemberName = standByMember.getName();
         }
 

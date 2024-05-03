@@ -7,7 +7,7 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 
-@Entity
+@Entity(name = "Correction")
 @Table(name = "commute_corr")
 @AllArgsConstructor
 @Getter
@@ -22,7 +22,7 @@ public class Correction {
     @Column(name = "commute_no", nullable = false)
     private int commuteNo;                      // 출퇴근 번호
 
-    @Column(name = "req_start_work", nullable = false)
+    @Column(name = "req_start_work")
     private String reqStartWork;                // 정정 요청 출근 시간
 
     @Column(name = "req_end_work")
@@ -43,6 +43,20 @@ public class Correction {
     @Column(name = "corr_processing_date")
     private LocalDate corrProcessingDate;       // 정정 처리 일자
 
+    @OneToOne(mappedBy = "correction")
+    private Commute commute;                    // 출퇴근
+
     protected Correction() {}
 
+    public Correction(int corrNo, int commuteNo, String reqStartWork, String reqEndWork, String reasonForCorr, LocalDate corrRegistrationDate, String corrStatus, String reasonForRejection, LocalDate corrProcessingDate) {
+        this.corrNo = corrNo;
+        this.commuteNo = commuteNo;
+        this.reqStartWork = reqStartWork;
+        this.reqEndWork = reqEndWork;
+        this.reasonForCorr = reasonForCorr;
+        this.corrRegistrationDate = corrRegistrationDate;
+        this.corrStatus = corrStatus;
+        this.reasonForRejection = reasonForRejection;
+        this.corrProcessingDate = corrProcessingDate;
+    }
 }

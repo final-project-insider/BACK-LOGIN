@@ -12,13 +12,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
 
 @RestController
 public class NoteController extends CommonController {
@@ -34,8 +35,8 @@ public class NoteController extends CommonController {
 
 
     /** 받은 쪽지, 보낸 쪽지 리스트  */
-    @GetMapping("/members/{memberNo}/notes")
-    public ResponseEntity<ResponseMessage> receiveNoteList(@PathVariable("memberNo") int memberNo,
+    @GetMapping("/members/{memberId}/notes")
+    public ResponseEntity<ResponseMessage> receiveNoteList(@PathVariable("memberId") int memberId,
                                                            @RequestParam(value = "receiverId", required = false) Integer receiverId,
                                                            @RequestParam(value = "senderId", required = false) Integer senderId,
                                                            @RequestParam(value = "deleteYn", required = true) String deleteYn,
@@ -45,13 +46,15 @@ public class NoteController extends CommonController {
                                                            @RequestParam(value = "direction", defaultValue = "DESC") String direction) {
 
 
+
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
 
         Pageable pageable = CommonController.getPageable(page, size, sort, direction);
 
-        Page<NoteDTO> notePage = noteService.selectNoteList(memberNo, receiverId, senderId, pageable, deleteYn);
+        Page<NoteDTO> notePage = noteService.selectNoteList(memberId, receiverId, senderId, pageable, deleteYn);
 
         if (notePage.isEmpty()) {
             String errorMessage = "조회된 노트가 없습니다.";
@@ -103,7 +106,7 @@ public class NoteController extends CommonController {
     public ResponseEntity<?> deleteNote(@PathVariable (value = "noteNo") int noteNo,
                                         @RequestParam (value = "deleteYn", required = false) String deleteYn) {
 
-
+        deleteYn = "Y";
         return ResponseEntity.ok().body(new ResponseMessage(200, "삭제 성공", noteService.deleteNote(noteNo, deleteYn)));
 
     }

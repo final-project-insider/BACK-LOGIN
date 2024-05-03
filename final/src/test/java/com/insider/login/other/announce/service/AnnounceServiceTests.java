@@ -1,6 +1,7 @@
 package com.insider.login.other.announce.service;
 
 import com.insider.login.common.CommonController;
+import com.insider.login.other.announce.controller.FileController;
 import com.insider.login.other.announce.dto.AncFileDTO;
 import com.insider.login.other.announce.dto.AnnounceDTO;
 import com.insider.login.other.announce.entity.Announce;
@@ -22,7 +23,7 @@ import java.io.InputStream;
 import java.util.*;
 
 @SpringBootTest
-public class AnnounceServiceTests {
+public class AnnounceServiceTests extends FileController {
 
     @Autowired
     private AnnounceService announceService;
@@ -50,7 +51,7 @@ public class AnnounceServiceTests {
     public void selectAncWithFile() {
 
         //given
-        int ancNo = 15;
+        int ancNo = 19;
 
         // when
         Announce announce = announceService.findAncWithFile(ancNo);
@@ -58,7 +59,6 @@ public class AnnounceServiceTests {
         // then
         Assertions.assertNotNull(announce);
         Assertions.assertEquals(announce.getAncNo(),ancNo);
-        System.out.println(announce);
 
     }
 
@@ -70,14 +70,17 @@ public class AnnounceServiceTests {
         // given
         File imageFile = new File(getClass().getClassLoader().getResource("jjang-gu.png").getFile());
         FileInputStream input = new FileInputStream(imageFile);
-        MultipartFile multipartFile = new MockMultipartFile("test.png", imageFile.getName(), "image/png", IOUtils.toByteArray(input));
+        MultipartFile multipartFile = new MockMultipartFile("테슷흐.png", imageFile.getName(), "image/png", IOUtils.toByteArray(input));
+        String filePath = "C:\\Users\\simko\\Desktop\\file" + "\\" + imageFile.getName();   // 저장경로 + \ + fileName
 
+        System.out.println("🎈" + input);
         AnnounceDTO announceDTO = new AnnounceDTO();
-        announceDTO.setAncTitle("김제목 김제목");
+        announceDTO.setAncTitle("테스트 테스트 테스트");
         announceDTO.setAncWriter("김덕배");
         announceDTO.setAncContent("성공의 지름길");
         announceDTO.setHits(0);
         announceDTO.setAncDate("2020-2020-2020");
+        announceDTO.setFilePath(filePath);
 
         // when
         Map<String, Object> result = new HashMap<>();
@@ -102,15 +105,34 @@ public class AnnounceServiceTests {
 
         // given
         int ancNo = 2;
-        String ancContent = "공지사항을 수정해보도록 하겠습니다";
-        String ancTitle = "공지사항 제목을 수정해보도록 하겠습니다";
+
+        AnnounceDTO announceDTO = new AnnounceDTO();
+        announceDTO.setAncContent("공지사항 수정");
+        announceDTO.setAncTitle("공지사항 수정");
+
 
         // when
         Map <String, Object> result = new HashMap<>();
-        result.put("result", announceService.updateAnc(ancNo, ancTitle,ancContent));
+        result.put("result", announceService.updateAnc(ancNo, announceDTO));
 
         // then
         Assertions.assertNotNull(result);
+
+    }
+
+    @Test
+    @DisplayName("공지사항 삭제 테스트")
+    public void deleteAnc() {
+
+        // Given
+        int ancNo = 19;
+
+        // When
+        Map<String, Object> result = announceService.deleteAncAndFile(ancNo);
+
+        // Then
+        Assertions.assertNotNull(result);
+
 
     }
 
