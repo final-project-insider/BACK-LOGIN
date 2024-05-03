@@ -1,0 +1,28 @@
+###
+POST http://localhost:8080/api/rooms/
+Content-Type: application/json
+
+{
+  "name": "민섭의 방"
+}
+
+### 방 전체 조회
+GET http://localhost:8080/wss/chatting
+Authorization: BEARER eyJkYXRlIjoxNzE0NDcyMjU1Mjk4LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJwb3NpdGlvbk5hbWUiOiLslYzrsJQiLCJSb2xlIjoiQURNSU4iLCJpbWFnZSI6IuydtOuvuOyngOqwgCDrk6TslrTqsIgg6rK966GcIiwic3ViIjoiaW5zaWRlcidzIHRva2VuOiAyNDA0MDEwMDEiLCJ1c2VyTmFtZSI6Iuq5gOyngO2ZmCIsImV4cCI6MTcxNDU1ODY1NSwiZGVwYXJ0TmFtZSI6IuyduOyCrO2MgCIsIm1lbWJlcklkIjoyNDA0MDEwMDF9.K-JmNYcMqNLmQRqaoEUJaIogsE_9B3vlaPOgHqK7sk0
+
+
+### 방 생성
+POST http://localhost:8080/api/rooms/enteredRooms
+Content-Type: application/json
+
+{
+  "roomName": "테스트 중",
+  "memberId": 202401004,
+  "receiverMember" : 240401001,
+  "roomStatus" : "ENTER"
+}
+
+
+### 방 조회
+GET http://localhost:8080/api/rooms/?memberId=202401001&receiverMemberId=241811
+Content-Type: application/json

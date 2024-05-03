@@ -1,8 +1,13 @@
 package com.insider.login.webSocket.Cahtting.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.insider.login.webSocket.Cahtting.entity.ChatRoom;
+import lombok.*;
 
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class RoomResponseDTO {
 
     @JsonProperty("name")
@@ -11,9 +16,5 @@ public class RoomResponseDTO {
     @JsonProperty("id")
     private Long roomId;
 
-    public RoomResponseDTO(ChatRoom room) {
-        this.name = room.getName();
-        this.roomId = room.getRoomId();
-    }
 
 }

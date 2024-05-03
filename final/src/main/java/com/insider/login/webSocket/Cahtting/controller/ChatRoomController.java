@@ -1,18 +1,25 @@
 package com.insider.login.webSocket.Cahtting.controller;
 
 
+import com.insider.login.member.dto.MemberDTO;
+import com.insider.login.member.entity.Member;
+import com.insider.login.member.repository.MemberRepository;
+import com.insider.login.member.service.MemberService;
 import com.insider.login.webSocket.Cahtting.Result;
-import com.insider.login.webSocket.Cahtting.dto.EntRoomResponseDTO;
-import com.insider.login.webSocket.Cahtting.dto.RoomJoinedReqDTO;
-import com.insider.login.webSocket.Cahtting.dto.RoomResponseDTO;
+import com.insider.login.webSocket.Cahtting.dto.*;
+import com.insider.login.webSocket.Cahtting.entity.EnteredRoom;
 import com.insider.login.webSocket.Cahtting.entity.RoomStatus;
-import com.insider.login.webSocket.Cahtting.service.ChatRoomService;
+import com.insider.login.webSocket.Cahtting.repository.EnteredRoomRepository;
+import com.insider.login.webSocket.Cahtting.service.EnteredRoomService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -22,28 +29,46 @@ import java.util.List;
 @Transactional
 public class ChatRoomController {
 
-    private final ChatRoomService chatRoomService;
+    private final MemberRepository memberRepository;
+    private final MemberService memberService;
+    private final ModelMapper modelMapper;
+    private final EnteredRoomService enteredRoomService;
 
-    @GetMapping("")
-    public Result<List<RoomResponseDTO>> list(RoomStatus roomStatus) {
 
-        System.out.println("쿼리는 잘 출력이 되는데 왜 안나오는거임?");
 
-        return chatRoomService.findAll(roomStatus);
+    @GetMapping("/members")
+    public List<MemberDTO> allMmemberList() {
 
+        return memberService.selectMemberList();
     }
 
-    @GetMapping("/joined")
-    public Result<List<EntRoomResponseDTO>> joinedList(RoomJoinedReqDTO requestDTO) {
-        return chatRoomService.findAll(requestDTO.getMemberId());
+    @GetMapping("/")
+    public List<EntRoomReqDTO> selectRoomList(@RequestParam("memberId") int memberId) {
+
+        Optional<Member> member = memberRepository.findById(memberId);
+        return enteredRoomService.selectRoomList(member);
     }
 
-    @PostMapping("/{roomId}/entered")
-    public ResponseEntity<String> handleRoomEnteredRequest(@PathVariable("roomId") String roomId) {
 
-        // 이 예시에서는 단순히 요청이 수신되었음을 알리는 메시지를 반환합니다.
-        return ResponseEntity.ok("Room entered request for roomId: " + roomId + " received");
+
+    /** 방 만들기 */
+    @PostMapping("/enteredRooms")
+    public ResponseEntity<EnteredRoom> saveEnteredRoom(@RequestBody EntRoomReqDTO request) {
+        int memberId = request.getMemberId();
+        int receiverId = request.getReceiverId();
+        String roomName = request.getRoomName();
+
+        EnteredRoom enteredRoom = enteredRoomService.save(memberId, receiverId, roomName);
+
+        if (enteredRoom == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } else {
+            return ResponseEntity.ok(enteredRoom);
+        }
     }
+
+
+
 
 
 

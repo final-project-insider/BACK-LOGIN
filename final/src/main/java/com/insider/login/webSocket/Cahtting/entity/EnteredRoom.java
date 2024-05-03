@@ -21,15 +21,21 @@ public class EnteredRoom {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ROOM_ID")
-    private ChatRoom chatRoom;
+    @JoinColumn(name = "RECEIVER_MEMBER", referencedColumnName = "MEMBER_ID")
+    private Member receiverMember;
+
+    @Column(name = "room_name")
+    private String roomName;
+
 
     @Enumerated(value = EnumType.STRING)
     private RoomStatus roomStatus = RoomStatus.ENTER;
 
-    public EnteredRoom(Member member, ChatRoom room) {
+
+    public EnteredRoom(Member member, Member receiverMember, String roomName) {
         this.member = member;
-        this.chatRoom = room;
+        this.receiverMember = receiverMember;
+        this.roomName = roomName;
     }
 
 

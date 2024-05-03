@@ -16,10 +16,4 @@ public class EntRoomResponseDTO {
     private String roomName;
 
 
-
-    public EntRoomResponseDTO(EnteredRoom enteredRoom) {
-        this.roomName = enteredRoom.getChatRoom().getName();
-        this.roomId = enteredRoom.getChatRoom().getRoomId();
-    }
-
 }

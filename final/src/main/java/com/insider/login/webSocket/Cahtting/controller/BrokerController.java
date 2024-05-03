@@ -21,24 +21,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class BrokerController {
+public class
+BrokerController {
 
     private final SimpMessagingTemplate template;
-
-    @MessageMapping("/test")
-    public void test(SimpMessageHeaderAccessor accessor) {
-        log.info("### test method {}", accessor);
-    }
 
 
     /* 접속 후 메시지 전송 */
     @MessageMapping("/room/{roomId}")
-    @SendTo
     public void sendMessage(@DestinationVariable(value = "roomId") String roomId, MessageDTO message) {
-        log.info("# roomId = {}", roomId);
-        log.info("# message = {}", message);
 
-        template.convertAndSend("/room/" + roomId, message.getMessage());
+        try {
+            log.info("# roomId = {}", roomId);
+            log.info("# message = {}", message.getMessage());
+            System.out.println("이새기 ㅈㄴ 안탐");
+            ObjectMapper objectMapper = new ObjectMapper();
+            String payload = objectMapper.writeValueAsString(message);
+            template.convertAndSend("/sub/room/" + roomId, payload);
+        } catch (Exception e) {
+            log.error("Error processing message", e);
+        }
     }
 
 
@@ -46,19 +48,25 @@ public class BrokerController {
     @MessageMapping("/room/{roomId}/entered")
     public void entered(@DestinationVariable(value = "roomId") String roomId, MessageDTO message){
 
-        log.info("# roomId = {}", roomId);
-        log.info("# message = {}", message);
-        final String payload = message.getWriter() + "님이 입장하셨습니다.";
-        template.convertAndSend("/sub/room/" + roomId, payload);
+        try {
+            log.info("# roomId = {}", roomId);
+            log.info("# message = {}", message.getMessage());
+            ObjectMapper objectMapper = new ObjectMapper();
+            String payload = objectMapper.writeValueAsString(message);
+            template.convertAndSend("/sub/room/" + roomId, payload);
+        } catch (Exception e) {
+            log.error("Error processing message", e);
+        }
+
 
     }
 
     @MessageMapping("/room/{roomId}/leave")
     public void leave(@DestinationVariable(value = "roomId") String roomId, MessageDTO message) {
         try {
-
             log.info("# leave method");
-            String payload = message.getWriter();
+            ObjectMapper objectMapper = new ObjectMapper();
+            String payload = objectMapper.writeValueAsString(message);
             template.convertAndSend("/sub/room/" + roomId, payload);
         } catch (Exception e) {
             log.error("Error processing message", e);

@@ -118,7 +118,8 @@ public class TokenUtils {
 
         claims.put("departName",member.getDepartment().getDepartName());    // 부서 이름
         claims.put("positionName", member.getPosition().getPositionName()); // 직급
-        claims.put("image", member.getImage().getMemberImagePath());        // 이미지 경로
+//        claims.put("image", member.getImage().getMemberImagePath());        // 이미지 경로
+        claims.put("imagePath", member.getImage()); // 삭제해야함
         claims.put("userName", member.getName());   // claims에다가 정보를 입력하는 것들...
         claims.put("Role", member.getRole());
         claims.put("memberId", member.getMemberId());
