@@ -47,7 +47,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         /* we are able to intercept every requests and responses and provide new data within the response. (해석: 어떤 요청이 들어왔을 때 우선 인증을 할 것이고, 그 인증이 완료되면 보통 인증정보들이 SecurityContextHolder에 가지고있다. 그렇기 때문에 거기로 들어가기 위한 coding을 할것이다) */
 
         System.out.println("===== JwtAuthorizationFilter 도착 =====");
-        List<String> roleLessList = Arrays.asList("/signUp","/registDepart","/registPosition", "/login","/members/{memberId}");
+        List<String> roleLessList = Arrays.asList("/signUp","/registDepart","/registPosition", "/login","/members/{memberId}", "/announces", "/announces/{ancNo}");
 
         /* 인증은 했지만 권한이 필요 없는 resource들은 그냥 다음 동작으로 넘어간다... 하지만 권한이 필요한 resource면 -> SecurityContextHolder에 권한 정보를 같이 줘서, 거기에 접근을 할 수 있게 해줘야 한다 */
         if (roleLessList.contains((request.getRequestURI()))) {

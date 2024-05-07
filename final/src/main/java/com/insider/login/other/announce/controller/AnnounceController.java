@@ -9,7 +9,9 @@ import com.insider.login.other.announce.entity.Announce;
 import com.insider.login.other.announce.service.AnnounceService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,13 +34,12 @@ public class AnnounceController extends FileController {
     private final YmlConfig ymlConfig;
 
 
-    /** 공지사항 전체조회 + 페이징 */
     @GetMapping("/announces")
-    public ResponseEntity<ResponseMessage> selectAncList(@RequestParam(value = "page", defaultValue = "0") int page,
-                                                         @RequestParam(value = "size", defaultValue = "10") int size,
-                                                         @RequestParam(value = "sort", defaultValue = "sort") String sort,
-                                                         @RequestParam(value = "direction", defaultValue = "DESC") String direction) {
-
+    public ResponseEntity<ResponseMessage> selectAncList(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "sort", defaultValue = "ancNo") String sort,
+            @RequestParam(value = "direction", defaultValue = "DESC") String direction) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -62,42 +63,50 @@ public class AnnounceController extends FileController {
         ResponseMessage responseMessage = new ResponseMessage(200, "조회 성공", responseMap);
 
         return new ResponseEntity<>(responseMessage, headers, HttpStatus.OK);
-
     }
 
-    /** 공지사항 상세 페이지 */
+    /** 공지사항 상세 조회 */
     @GetMapping("/announces/{ancNo}")
     public ResponseEntity<?> selectAncWithFiles(@PathVariable("ancNo") int ancNo) throws IOException {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        Announce announce = announceService.findAnc(ancNo);
 
-        Announce announce = announceService.findAncWithFile(ancNo);
-        List<AncFile> ancFiles = findAncFilesByAnc(ancNo);
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("announce", announce);
-
-        // 파일 목록을 저장할 리스트
-        List<Map<String, Object>> fileResponses = new ArrayList<>();
-
-        for (AncFile ancFile : ancFiles) {
-            String filePath = ancFile.getFilePath();
-            byte[] fileBytes = Files.readAllBytes(Paths.get(filePath));
-
-            String fileName = ancFile.getFileName();
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"");
-
-            // 파일의 내용과 헤더를 클라이언트에 반환
-            Map<String, Object> fileResponse = new HashMap<>();
-            fileResponse.put("fileName", fileName);
-            fileResponse.put("fileContent", Base64.getEncoder().encodeToString(fileBytes));
-            fileResponses.add(fileResponse);
+        if (announce == null) {
+            return ResponseEntity.notFound().build(); // 공지사항이 없는 경우 404 에러 반환
         }
 
-        // 공지사항과 파일 정보를 함께 반환
-        result.put("files", fileResponses);
-        return ResponseEntity.ok().headers(headers).body(result);
+        // 파일이 있으면 파일 정보를 함께 반환
+        List<AncFile> ancFiles = findAncFilesByAnc(ancNo);
+        if (!ancFiles.isEmpty()) {
+            // 파일 목록을 저장할 리스트
+            List<Map<String, Object>> fileResponses = new ArrayList<>();
+            for (AncFile ancFile : ancFiles) {
+                String filePath = ancFile.getFilePath();
+                byte[] fileBytes = Files.readAllBytes(Paths.get(filePath));
+
+                String fileName = ancFile.getFileName();
+
+                // 파일의 내용과 헤더를 클라이언트에 반환
+                Map<String, Object> fileResponse = new HashMap<>();
+                fileResponse.put("fileName", fileName);
+                fileResponse.put("fileContent", Base64.getEncoder().encodeToString(fileBytes));
+                fileResponses.add(fileResponse);
+            }
+            Map<String, Object> result = new HashMap<>();
+            result.put("announce", announce);
+            result.put("files", fileResponses);
+            return ResponseEntity.ok().body(result);
+        } else {
+            return ResponseEntity.ok().body(announce);
+        }
     }
+
+
+
+
+
+
+
+
 
     public List<AncFile> findAncFilesByAnc(int ancNo) {
 

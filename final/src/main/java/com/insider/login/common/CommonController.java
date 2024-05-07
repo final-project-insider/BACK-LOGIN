@@ -12,20 +12,18 @@ public class CommonController {
     /** 페이징 관련 DATA 가져오는 메서드 */
     public static Pageable getPageable(int page, int size, String sort, String direction) {
         Sort pageableSort;
-        if ("noteNo".equals(sort)) {
-            pageableSort = Sort.by("noteNo").descending();
+        if ("ancNo".equals(sort)) {
+            Sort.Direction sortDirection;
+            try {
+                sortDirection = Sort.Direction.fromString(direction);
+            } catch (IllegalArgumentException e) {
+                // direction 값이 잘못된 경우 기본값인 DESC로 설정
+                sortDirection = Sort.Direction.DESC;
+            }
+            pageableSort = Sort.by(sortDirection, "ancNo");
         } else {
             pageableSort = Sort.unsorted();
         }
-
-        Sort.Direction sortDirection;
-        try {
-            sortDirection = Sort.Direction.fromString(direction);
-        } catch (IllegalArgumentException e) {
-            // direction 값이 잘못된 경우 기본값인 DESC로 설정
-            sortDirection = Sort.Direction.DESC;
-        }
-
         return PageRequest.of(page, size, pageableSort);
     }
 

@@ -51,7 +51,6 @@ public class AnnounceService {
     }
 
 
-
     /** 공지사항 상세 조회 */
     public Announce findAncWithFile(int ancNo) {
         Announce announce = announceRepository.findAnnounceWithFiles(ancNo);
@@ -83,7 +82,7 @@ public class AnnounceService {
                     String fileName = file.getOriginalFilename();
                     String fileType = file.getContentType();
                     String uploadDirectory = ymlConfig.getUploadDir();
-                    String filePath = uploadDirectory + "\\" + fileName;   // 파일을 저장할 경로 지정
+                    String filePath = uploadDirectory + "/" + fileName;   // 파일을 저장할 경로 지정
 
                     File newFile = new File(filePath);
                     file.transferTo(newFile);
@@ -182,4 +181,10 @@ public class AnnounceService {
 
         return fileList;
     }
+
+    public Announce findAnc(int ancNo) {
+        // 공지사항 번호를 기준으로 공지사항을 조회하여 반환
+        return announceRepository.findByAncNo(ancNo);
+    }
+
 }
