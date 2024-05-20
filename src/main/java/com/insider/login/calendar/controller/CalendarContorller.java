@@ -59,9 +59,6 @@ public class CalendarContorller {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-//        calendarDTO.setRegistrantId();
-//        TODO: 현재 로그인 중인 관리자 사번 뽑아서 집어넣기 구현예정
-
         return ResponseEntity.ok().headers(headers).body(calendarService.insertCalendar(calendarDTO));
 
     }
@@ -74,9 +71,6 @@ public class CalendarContorller {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
-//        calendarDTO.setRegistrantId();
-//        TODO: 현재 로그인 중인 관리자 사번 뽑아서 집어넣기 구현예정
 
         return ResponseEntity.ok().headers(headers).body(calendarService.updateCalendar(calendarDTO));
     }

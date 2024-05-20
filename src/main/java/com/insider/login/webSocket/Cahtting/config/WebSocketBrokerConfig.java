@@ -2,7 +2,7 @@ package com.insider.login.webSocket.Cahtting.config;
 
 import com.insider.login.member.service.MemberService;
 import com.insider.login.webSocket.Cahtting.interceptor.WebsocketBrokerInterceptor;
-import com.insider.login.webSocket.Cahtting.service.EnteredRoomService;
+import com.insider.login.webSocket.Cahtting.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
@@ -22,7 +22,7 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer  
     private final MemberService memberService;
 
 
-    private final EnteredRoomService enteredRoomService;
+    private final ChatRoomService enteredRoomService;
 
 
 

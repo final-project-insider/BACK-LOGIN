@@ -231,50 +231,42 @@ public class LeaveService extends LeaveUtil {
 
     public Page<LeaveInfoDTO> selectLeavesList(Pageable pageable) {
         try {
-            Page<Leaves> leavesPage = leaveRepository.findAll(pageable);
+            Page<Integer> leavesPage = leaveRepository.findDistinctMemberIds(pageable);
 
-            // Collectors.groupingBy()를 통해 Map 타입으로 반환, 괄호 안은 그룹화 기준이자 키
-            Map<Integer, List<Leaves>> leavesByMemberId = leavesPage.stream()
-                    .collect(Collectors.groupingBy(Leaves::getMemberId));
+            List<LeaveInfoDTO> infoDTOList = leavesPage.stream()
+                    .map(this::getLeaveInfoById)
+                    .collect(Collectors.toList());
 
-            List<LeaveInfoDTO> infoDTOList = new ArrayList<>();
-            for (Map.Entry<Integer, List<Leaves>> entry : leavesByMemberId.entrySet()) {
-
-                // 밸류에는 하나의 사번이 가진 모든 휴가내역을 list로 가지고 있음
-                LeaveInfoDTO info = leaveInfoCalc(entry.getValue());
-
-                // addLeaveInfo()로 소진 일수와 잔여 일수를 추가한 후 리스트에 담음
-                infoDTOList.add(addLeaveInfo(info));
-            }
-
-            // DTOList를 기존 pageable 정보를 가진 새로운 페이지로 만들어서 반환
-            Page<LeaveInfoDTO> infoDTOPage = new PageImpl<>(infoDTOList, pageable, leavesPage.getTotalElements());
-
-            return infoDTOPage;
+            return new PageImpl<>(infoDTOList, pageable, leavesPage.getTotalElements());
         } catch (Exception e) {
             return null;
         }
     }
-    // 사번을 매개변수로 주면 해당 사원의 휴가 정보를 DTO로 반환하는 메소드
 
+    // 사번을 매개변수로 주면 해당 사원의 휴가 정보를 DTO로 반환하는 메소드
     public LeaveInfoDTO getLeaveInfoById(int memberId) {
 
         List<Leaves> leavesList = leaveRepository.findByMemberId(memberId);
 
         LeaveInfoDTO info = leaveInfoCalc(leavesList);
 
+        String name = memberRepository.findNameByMemberId(memberId);
+        info.setName(name);
+
         return addLeaveInfo(info);
     }
-    // leaveInfo DTO에 소진 일수와 잔여 일수를 추가해서 다시 반환하는 메소드
 
+    // leaveInfo DTO에 소진 일수와 잔여 일수를 추가해서 다시 반환하는 메소드
     public LeaveInfoDTO addLeaveInfo(LeaveInfoDTO DTO) {
 
         // 소진 일수 (사번으로 신청내역을 조회해서 신청일수를 모두 더함)
-        int consumedDays = 0;
         List<LeaveSubmit> submitList = leaveSubmitRepository.findByMemberId(DTO.getMemberId());
-        for (LeaveSubmit submit : submitList) {
-            consumedDays += leaveDaysCalc(submit);
-        }
+
+        int consumedDays = submitList.stream()
+                // 스트림의 각 요소마다 leaveDayCalc 메소드 실행 후 intStream으로 반환
+                .mapToInt(this::leaveDaysCalc)
+                // 스트림의 모든 요소를 더함
+                .sum();
 
         // 잔여 일수 (총 부여 수에서 소진 일수를 뺌)
         int remainingDays = DTO.getTotalDays() - consumedDays;

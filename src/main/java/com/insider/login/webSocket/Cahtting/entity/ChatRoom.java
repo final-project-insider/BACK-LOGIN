@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Table(name = "entered_room")
-public class EnteredRoom {
+public class ChatRoom {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +32,7 @@ public class EnteredRoom {
     private RoomStatus roomStatus = RoomStatus.ENTER;
 
 
-    public EnteredRoom(Member member, Member receiverMember, String roomName) {
+    public ChatRoom(Member member, Member receiverMember, String roomName) {
         this.member = member;
         this.receiverMember = receiverMember;
         this.roomName = roomName;

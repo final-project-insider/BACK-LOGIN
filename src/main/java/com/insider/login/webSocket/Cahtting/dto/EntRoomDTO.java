@@ -1,6 +1,6 @@
 package com.insider.login.webSocket.Cahtting.dto;
 
-import com.insider.login.webSocket.Cahtting.entity.EnteredRoom;
+import com.insider.login.webSocket.Cahtting.entity.ChatRoom;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +10,7 @@ public class EntRoomDTO {
 
     private String username;
 
-    public EntRoomDTO(EnteredRoom enteredRoom) {
+    public EntRoomDTO(ChatRoom enteredRoom) {
         this.username = enteredRoom.getMember().getName();
     }
 

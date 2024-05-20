@@ -3,7 +3,7 @@ package com.insider.login.webSocket.Cahtting.service;
 import com.insider.login.member.entity.Member;
 import com.insider.login.member.repository.MemberRepository;
 import com.insider.login.webSocket.Cahtting.dto.EntRoomReqDTO;
-import com.insider.login.webSocket.Cahtting.entity.EnteredRoom;
+import com.insider.login.webSocket.Cahtting.entity.ChatRoom;
 import com.insider.login.webSocket.Cahtting.entity.RoomStatus;
 import com.insider.login.webSocket.Cahtting.repository.EnteredRoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import java.util.Optional;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class EnteredRoomService {
+public class ChatRoomService {
 
     private final EnteredRoomRepository enteredRoomRepository;
 
@@ -28,7 +28,7 @@ public class EnteredRoomService {
     private final ModelMapper modelMapper;
 
     /** 방 생성 */
-    public EnteredRoom save(int memberId,  int receiverMemberId, String roomName) {
+    public ChatRoom save(int memberId, int receiverMemberId, String roomName) {
         Member member = memberRepository.findById(memberId).orElse(null);
         Member receiverMember = memberRepository.findById(receiverMemberId).orElse(null);
 
@@ -36,7 +36,7 @@ public class EnteredRoomService {
             System.out.println("실패 했음");
         }
         String enteredRoomName = roomName;
-        EnteredRoom enteredRoom = new EnteredRoom(member, receiverMember, enteredRoomName);
+        ChatRoom enteredRoom = new ChatRoom(member, receiverMember, enteredRoomName);
         enteredRoomRepository.save(enteredRoom);
         return enteredRoom;
 
@@ -60,11 +60,11 @@ public class EnteredRoomService {
     public List<EntRoomReqDTO> selectRoomList(Optional<Member> member) {
 
 
-        List<EnteredRoom> rooms = enteredRoomRepository.findAllList(RoomStatus.ENTER, member);
+        List<ChatRoom> rooms = enteredRoomRepository.findAllList(RoomStatus.ENTER, member);
 
         List<EntRoomReqDTO> roomList = new ArrayList<>();
 
-        for (EnteredRoom room : rooms) {
+        for (ChatRoom room : rooms) {
             EntRoomReqDTO enteredRoom = modelMapper.map(room, EntRoomReqDTO.class);
             roomList.add(enteredRoom);
         }
@@ -72,5 +72,14 @@ public class EnteredRoomService {
         return roomList;
     }
 
+    /** 방 삭제 */
+    public ChatRoom deleteRoom(int enteredRoomId) {
+        ChatRoom enteredRoom = enteredRoomRepository.findById(enteredRoomId).orElse(null);
+
+        if (enteredRoom != null) {
+            enteredRoomRepository.delete(enteredRoom);
+        }
+        return enteredRoom;
+    }
 
 }

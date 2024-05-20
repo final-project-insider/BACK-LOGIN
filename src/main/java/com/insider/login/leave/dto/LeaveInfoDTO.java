@@ -2,14 +2,15 @@ package com.insider.login.leave.dto;
 
 public class LeaveInfoDTO {
 
-    int memberId;                     // 사번
-    int annualLeave;                  // 연차
-    int vacationLeave;                // 공가
-    int familyEventLeave;             // 경조사 휴가
-    int specialLeave;                 // 특별휴가
-    int totalDays;                    // 총 부여 일수
-    int consumedDays;                 // 소진 일수
-    int remainingDays;                // 잔여 일수
+    private int memberId;                     // 사번
+    private String name;                      // 이름
+    private int annualLeave;                  // 연차
+    private int vacationLeave;                // 공가
+    private int familyEventLeave;             // 경조사 휴가
+    private int specialLeave;                 // 특별휴가
+    private int totalDays;                    // 총 부여 일수
+    private int consumedDays;                 // 소진 일수
+    private int remainingDays;                // 잔여 일수
 
     public LeaveInfoDTO() {
     }
@@ -23,8 +24,9 @@ public class LeaveInfoDTO {
         this.totalDays = totalDays;
     }
 
-    public LeaveInfoDTO(int memberId, int annualLeave, int vacationLeave, int familyEventLeave, int specialLeave, int totalDays, int consumedDays, int remainingDays) {
+    public LeaveInfoDTO(int memberId, String name, int annualLeave, int vacationLeave, int familyEventLeave, int specialLeave, int totalDays, int consumedDays, int remainingDays) {
         this.memberId = memberId;
+        this.name = name;
         this.annualLeave = annualLeave;
         this.vacationLeave = vacationLeave;
         this.familyEventLeave = familyEventLeave;
@@ -41,6 +43,15 @@ public class LeaveInfoDTO {
     public void setMemberId(int memberId) {
         this.memberId = memberId;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public int getAnnualLeave() {
         return annualLeave;
     }
@@ -100,7 +111,9 @@ public class LeaveInfoDTO {
     @Override
     public String toString() {
         return "LeaveInfoDTO{" +
-                "annualLeave=" + annualLeave +
+                "memberId=" + memberId +
+                ", name='" + name + '\'' +
+                ", annualLeave=" + annualLeave +
                 ", vacationLeave=" + vacationLeave +
                 ", familyEventLeave=" + familyEventLeave +
                 ", specialLeave=" + specialLeave +
