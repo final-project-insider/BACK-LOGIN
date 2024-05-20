@@ -151,15 +151,16 @@ public class MemberController {
 
     /** 특정 구성원 정보 조회 */
     @GetMapping("/members/{memberId}")
-    public String getSpecificMemberById(@PathVariable("memberId") int memberId) {
+    public ResponseEntity<MemberDTO> getSpecificMemberById(@PathVariable("memberId") String memberId) {
+        int getMemberId = Integer.parseInt(memberId);
         System.out.println("받은 memberId: " + memberId);
-        MemberDTO foundMember = memberService.findSpecificMember(memberId);
+        MemberDTO foundMember = memberService.findSpecificMember(getMemberId);
         System.out.println("특정 구성원 정보 조회: " + foundMember);
 
         if (foundMember != null) {
-            return "foundMember: " + foundMember;
+            return ResponseEntity.ok().body(foundMember);
         } else {
-            return "memberNotFound";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
@@ -204,24 +205,25 @@ public class MemberController {
     }
 
     /** 구성원 본인 비밀번호 */
-    @PostMapping("/updateOwnPassword")
-    public String updateOwnPassword(@RequestBody UpdatePasswordRequestDTO updatePasswordRequestDTO) {
+    @PutMapping("/updateOwnPassword")
+    public ResponseEntity<String> updateOwnPassword(@RequestBody UpdatePasswordRequestDTO updatePasswordRequestDTO) {
 
         MemberDTO foundMember = memberService.findPasswordByMemberId(getTokenInfo().getMemberId());
         String existingPassword = foundMember.getPassword();
         System.out.println("기존에 있는 비밀번호: " + existingPassword);
+        System.out.println("받은 비밀번호 값들: " + updatePasswordRequestDTO);
 
         /* 입력한 현재 비밀번호가 일치하는지 확인하는 logic */
         if (!passwordEncoder.matches(updatePasswordRequestDTO.getCurrentPassword(), existingPassword)) {
             System.out.println("비밀번호가 틀렸습니다");
-            return "wrong password";
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect current password");
         } else if (!updatePasswordRequestDTO.getNewPassword1().equals(updatePasswordRequestDTO.getNewPassword2())) {
             System.out.println("비밀번호가 일치하지 않습니다.");
-            return "password doesn't match";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("New passwords do not match");
         } else {
             String hashedNewPassword = passwordEncoder.encode(updatePasswordRequestDTO.getNewPassword2());
             String result = memberService.changePassword(hashedNewPassword, getTokenInfo123().getMemberId());
-            return "successfully changed the password" + result;
+            return ResponseEntity.ok("Successfully changed the password");
         }
     }
 
@@ -292,6 +294,7 @@ public class MemberController {
     /** 구성원 비밀번호 초기화 */
     @PutMapping("/resetMemberPassword")
     public String resetMemberPassword() {
+        System.out.println("비밀번호 초기화");
         MemberDTO memberInfo = memberService.findSpecificMember(getTokenInfo().getMemberId());
         memberInfo.setPassword("0000");
 

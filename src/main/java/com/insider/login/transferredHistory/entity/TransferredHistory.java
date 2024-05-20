@@ -19,10 +19,6 @@ public class TransferredHistory {
     private LocalDate transferredDate;
     @Column(name = "member_id", nullable = false)
     private int memberId;
-//    @ManyToOne // (fetch = FetchType.LAZY) // load on demand, helps optimize performance by fetching related entities only when needed.
-//    @JoinColumn(name = "member_id", referencedColumnName = "member_id")
-//    @JsonIgnore
-//    private Member member;
 
     protected TransferredHistory() {
     }

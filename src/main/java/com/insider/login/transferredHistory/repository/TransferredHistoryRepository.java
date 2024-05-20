@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TransferredHistoryRepository extends JpaRepository<TransferredHistory, Integer> {
+    TransferredHistory findByMemberId(int memberId);
 }
