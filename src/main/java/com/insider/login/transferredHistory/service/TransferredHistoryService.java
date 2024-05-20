@@ -50,4 +50,10 @@ public class TransferredHistoryService {
         }
         return result;
     }
+
+    public TransferredHistoryDTO getTransferredHistoryRecord(int memberId) {
+        TransferredHistory transferredHistory = transferredHistoryRepository.findByMemberId(memberId);
+        TransferredHistoryDTO transferredHistoryDTO = modelMapper.map(transferredHistory, TransferredHistoryDTO.class);
+        return transferredHistoryDTO;
+    }
 }
