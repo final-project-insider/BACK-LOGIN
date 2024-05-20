@@ -1,0 +1,25 @@
+## ================================ 직급 ================================
+
+### 직급 등록
+POST http://localhost:8080/registPosition
+Content-Type: application/json
+Accept: */*
+Authorization: BEARER eyJkYXRlIjoxNzE0NTc2MzMxNTY2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiIyNDA1MDE3NTkiLCJyb2xlIjoiQURNSU4iLCJuYW1lIjoi7KCV7J6s7ZiV7ZiV7ZiV7ZiV7ZiV7ZiVIiwibWVtYmVyU3RhdHVzIjoi7J6s7KeBIiwiZXhwIjoxNzE0NjYyNzMxLCJtZW1iZXJJZCI6MjQwNTAxNzU5fQ.sVb9TEjB47iWifAXbX2lYzbaw-Hmf-OgVTyBHpD6cJs
+
+{
+  "positionName": "과장123",
+  "positionLevel": "90"
+}
+
+### 직급 조회
+GET http://localhost:8080/showAllPosition
+Content-Type: application/json
+Accept: */*
+Authorization: BEARER eyJkYXRlIjoxNzE1MzEwMzk5OTk5LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJwb3NpdGlvbk5hbWUiOiLslYzrsJQiLCJzdWIiOiIyNDA0MDE4MzUiLCJkZXBhcnRObyI6MSwicm9sZSI6IkFETUlOIiwiaW1hZ2VVcmwiOiJodHRwczovL2ltYWdlcy5jdGZhc3NldHMubmV0L2g2Z29vOWd3MWhoNi8yc05adEZBV09kUDFsbVEzM1Z3Uk4zLzI0ZTk1M2I5MjBhOWNkMGZmMmUxZDU4Nzc0MmEyNDcyLzEtaW50cm8tcGhvdG8tZmluYWwuanBnP3c9MTIwMCZoPTk5MiZmbD1wcm9ncmVzc2l2ZSZxPTcwJmZtPWpwZyIsIm5hbWUiOiLquYDsp4DtmZgiLCJtZW1iZXJTdGF0dXMiOiLsnqzsp4EiLCJleHAiOjE3MTUzOTY3OTksImRlcGFydE5hbWUiOiLsnbjsgqztjIAiLCJtZW1iZXJJZCI6MjQwNDAxODM1fQ.IzH1_dEtXyJlCaodnSDNyhwOA-xNvertJD1cdo5mCdk
+
+### 직급 삭제
+DELETE http://localhost:8080/positions/팀장
+Content-Type: application/json
+Accept: */*
+Authorization: BEARER eyJkYXRlIjoxNzE0NzE5ODg2NDYwLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJwb3NpdGlvbk5hbWUiOiLslYzrsJQiLCJzdWIiOiIyNDA1MDE5NTkiLCJyb2xlIjoiQURNSU4iLCJpbWFnZVVybCI6IuydtOuvuOyngCDqsr3roZzrk6TslrTqsIgg6rOzISEhISEhIiwibmFtZSI6Iuq5gOyngO2ZmOydtOydtOydtOydtOydtOydtOOFoyIsIm1lbWJlclN0YXR1cyI6IuyerOyngSIsImV4cCI6MTcxNDgwNjI4NiwiZGVwYXJ0TmFtZSI6IuyduOyCrO2MgCIsIm1lbWJlcklkIjoyNDA1MDE5NTl9.SUP6Ost_rG-ksw1fWTiFSJSVJzW9QyYVdP9UoqadEvw
+

@@ -1,0 +1,30 @@
+###
+POST http://localhost:8080/api/rooms/
+Content-Type: application/json
+
+{
+  "name": "민섭의 방"
+}
+
+### 방 전체 조회
+GET http://localhost:8080/wss/chatting
+Authorization: BEARER eyJkYXRlIjoxNzE1MDQzNTExMjUzLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJwb3NpdGlvbk5hbWUiOiLslYzrsJQiLCJzdWIiOiIyNDA1MDExMzkiLCJyb2xlIjoiQURNSU4iLCJpbWFnZVVybCI6IuydtOuvuOyngCDqsr3roZzrk6TslrTqsIgg6rOzISEhISEhIiwibmFtZSI6Iuq5gOyngO2ZmOydtOydtOydtOydtOydtOydtOOFoyIsIm1lbWJlclN0YXR1cyI6IuyerOyngSIsImV4cCI6MTcxNTEyOTkxMSwiZGVwYXJ0TmFtZSI6IuyduOyCrO2MgCIsIm1lbWJlcklkIjoyNDA1MDExMzl9.G6W7UfVh2PrF3oiQyuKPx3CNUOcPPbLbR_YvPFxin0M
+
+
+### 방 생성
+POST http://localhost:8080/api/rooms/enteredRooms
+Content-Type: application/json
+Authorization: BEARER eyJkYXRlIjoxNzE1MDQzNTExMjUzLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJwb3NpdGlvbk5hbWUiOiLslYzrsJQiLCJzdWIiOiIyNDA1MDExMzkiLCJyb2xlIjoiQURNSU4iLCJpbWFnZVVybCI6IuydtOuvuOyngCDqsr3roZzrk6TslrTqsIgg6rOzISEhISEhIiwibmFtZSI6Iuq5gOyngO2ZmOydtOydtOydtOydtOydtOydtOOFoyIsIm1lbWJlclN0YXR1cyI6IuyerOyngSIsImV4cCI6MTcxNTEyOTkxMSwiZGVwYXJ0TmFtZSI6IuyduOyCrO2MgCIsIm1lbWJlcklkIjoyNDA1MDExMzl9.G6W7UfVh2PrF3oiQyuKPx3CNUOcPPbLbR_YvPFxin0M
+
+{
+  "roomName": "테스트 중",
+  "memberId": 202401004,
+  "receiverMember" : 240401001,
+  "roomStatus" : "ENTER"
+}
+
+
+### 방 조회
+GET http://localhost:8080/api/rooms/?memberId=202401001&receiverMemberId=241811
+Authorization: BEARER eyJkYXRlIjoxNzE1MDQzNTExMjUzLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJwb3NpdGlvbk5hbWUiOiLslYzrsJQiLCJzdWIiOiIyNDA1MDExMzkiLCJyb2xlIjoiQURNSU4iLCJpbWFnZVVybCI6IuydtOuvuOyngCDqsr3roZzrk6TslrTqsIgg6rOzISEhISEhIiwibmFtZSI6Iuq5gOyngO2ZmOydtOydtOydtOydtOydtOydtOOFoyIsIm1lbWJlclN0YXR1cyI6IuyerOyngSIsImV4cCI6MTcxNTEyOTkxMSwiZGVwYXJ0TmFtZSI6IuyduOyCrO2MgCIsIm1lbWJlcklkIjoyNDA1MDExMzl9.G6W7UfVh2PrF3oiQyuKPx3CNUOcPPbLbR_YvPFxin0M
+Content-Type: application/json

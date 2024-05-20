@@ -1,0 +1,84 @@
+
+###폼 목록 조회(get)
+GET http://localhost:8080/approvals/forms
+Content-Type: application/json
+Authorization: BEARER eyJkYXRlIjoxNzE1NDUyNTYzODMxLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJwb3NpdGlvbk5hbWUiOiLslYzrsJQiLCJzdWIiOiIyNDA1MDE2MjkiLCJkZXBhcnRObyI6MSwicm9sZSI6IkFETUlOIiwiaW1hZ2VVcmwiOiIxIiwibmFtZSI6IuydtOynhOyVhCIsIm1lbWJlclN0YXR1cyI6IuyerOyngSIsImV4cCI6MTcxNTUzODk2MywiZGVwYXJ0TmFtZSI6IuyduOyCrO2MgCIsIm1lbWJlcklkIjoyNDA1MDE2Mjl9.xbs2kanmXScmF9CoAFpaRWWHs2pvaAXAXD7mzIk1FkI
+
+###특정 폼 조회(get)
+GET http://localhost:8080/approvals/forms/abs
+Content-Type: application/json
+Authorization: BEARER eyJkYXRlIjoxNzE1NDUyNTYzODMxLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJwb3NpdGlvbk5hbWUiOiLslYzrsJQiLCJzdWIiOiIyNDA1MDE2MjkiLCJkZXBhcnRObyI6MSwicm9sZSI6IkFETUlOIiwiaW1hZ2VVcmwiOiIxIiwibmFtZSI6IuydtOynhOyVhCIsIm1lbWJlclN0YXR1cyI6IuyerOyngSIsImV4cCI6MTcxNTUzODk2MywiZGVwYXJ0TmFtZSI6IuyduOyCrO2MgCIsIm1lbWJlcklkIjoyNDA1MDE2Mjl9.xbs2kanmXScmF9CoAFpaRWWHs2pvaAXAXD7mzIk1FkI
+
+### 전자결재 회수(update)
+PUT http://localhost:8080/approvals/2024-con00001
+Content-Type: application/json
+Authorization: BEARER eyJkYXRlIjoxNzE1MDQyNjg4NTc4LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJwb3NpdGlvbk5hbWUiOiLslYzrsJQiLCJzdWIiOiIyNDA1MDExMzkiLCJyb2xlIjoiQURNSU4iLCJpbWFnZVVybCI6IuydtOuvuOyngCDqsr3roZzrk6TslrTqsIgg6rOzISEhISEhIiwibmFtZSI6Iuq5gOyngO2ZmOydtOydtOydtOydtOydtOydtOOFoyIsIm1lbWJlclN0YXR1cyI6IuyerOyngSIsImV4cCI6MTcxNTEyOTA4OCwiZGVwYXJ0TmFtZSI6IuyduOyCrO2MgCIsIm1lbWJlcklkIjoyNDA1MDExMzl9.WAoAxg3y9bB_LBqZ2D9-nu-VukroP4Qn1unkIFMBXjA
+
+### 전자결재 상세조회(get)
+GET http://localhost:8080/approvals/2024-con00001
+Content-Type: application/json
+Authorization: BEARER eyJkYXRlIjoxNzE1MjMyMjQwNzQ3LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJwb3NpdGlvbk5hbWUiOiLslYzrsJQiLCJzdWIiOiIyNDA1MDE2MjkiLCJyb2xlIjoiQURNSU4iLCJpbWFnZVVybCI6IjEiLCJuYW1lIjoi7J207KeE7JWEIiwibWVtYmVyU3RhdHVzIjoi7J6s7KeBIiwiZXhwIjoxNzE1MzE4NjQwLCJkZXBhcnROYW1lIjoi7J247IKs7YyAIiwibWVtYmVySWQiOjI0MDUwMTYyOX0.TjxoPiDQ3cPYQjFdGVGBHu5vhEcTt5CmFXEqaVWLEI8
+
+### 전자결재 목록조회(get)
+GET http://localhost:8080/approvals?fg=given&page=0&title=&direction=ASC
+Content-Type: application/json
+Authorization: BEARER eyJkYXRlIjoxNzE1ODIwNTUzMjY1LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJwb3NpdGlvbk5hbWUiOiLslYzrsJQiLCJzdWIiOiIyNDA1MDE2MjkiLCJkZXBhcnRObyI6MSwicm9sZSI6IkFETUlOIiwiaW1hZ2VVcmwiOiIxIiwibmFtZSI6IuydtOynhOyVhCIsIm1lbWJlclN0YXR1cyI6IuyerOyngSIsImV4cCI6MTcxNTkwNjk1MywiZGVwYXJ0TmFtZSI6IuyduOyCrO2MgCIsIm1lbWJlcklkIjoyNDA1MDE2Mjl9.5VDnIm6EAJyBwDTNhfGtDOiudh88eVmtKY9EN1AJXTc
+
+### 전자결재 기안(post)
+POST http://localhost:8080/approvals
+Content-Type: multipart/form-data; multipart/form-data; boundary=WebAppBoundary
+Accept: */*
+Authorization: BEARER eyJkYXRlIjoxNzE1ODIwNTUzMjY1LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJwb3NpdGlvbk5hbWUiOiLslYzrsJQiLCJzdWIiOiIyNDA1MDE2MjkiLCJkZXBhcnRObyI6MSwicm9sZSI6IkFETUlOIiwiaW1hZ2VVcmwiOiIxIiwibmFtZSI6IuydtOynhOyVhCIsIm1lbWJlclN0YXR1cyI6IuyerOyngSIsImV4cCI6MTcxNTkwNjk1MywiZGVwYXJ0TmFtZSI6IuyduOyCrO2MgCIsIm1lbWJlcklkIjoyNDA1MDE2Mjl9.5VDnIm6EAJyBwDTNhfGtDOiudh88eVmtKY9EN1AJXTc
+
+--WebAppBoundary
+Content-Disposition: form-data; name="memberId"
+
+240501629
+--WebAppBoundary
+Content-Disposition: form-data; name="approvalTitle"
+
+제목2
+--WebAppBoundary
+Content-Disposition: form-data; name="approvalContent"
+
+내용2
+--WebAppBoundary
+Content-Disposition: form-data; name="approvalStatus"
+
+처리 중
+--WebAppBoundary
+Content-Disposition: form-data; name="formNo"
+
+abs
+--WebAppBoundary
+Content-Disposition: form-data; name="approver[0].memberId"
+
+240401004
+--WebAppBoundary
+Content-Disposition: form-data; name="approver[1].memberId"
+
+2024001003
+--WebAppBoundary
+Content-Disposition: form-data; name="referencer[0].memberId"
+
+240401004
+--WebAppBoundary
+Content-Disposition: form-data; name="multipartFile"; filename="image.png"
+
+< ./image.png
+--WebAppBoundary--
+
+### 전자결재 처리 (put)
+PUT http://localhost:8080/approvers/2024-exp00001_apr001
+Content-Type: application/json
+Authorization: BEARER eyJkYXRlIjoxNzE1NDUyNTYzODMxLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJwb3NpdGlvbk5hbWUiOiLslYzrsJQiLCJzdWIiOiIyNDA1MDE2MjkiLCJkZXBhcnRObyI6MSwicm9sZSI6IkFETUlOIiwiaW1hZ2VVcmwiOiIxIiwibmFtZSI6IuydtOynhOyVhCIsIm1lbWJlclN0YXR1cyI6IuyerOyngSIsImV4cCI6MTcxNTUzODk2MywiZGVwYXJ0TmFtZSI6IuyduOyCrO2MgCIsIm1lbWJlcklkIjoyNDA1MDE2Mjl9.xbs2kanmXScmF9CoAFpaRWWHs2pvaAXAXD7mzIk1FkI
+
+{
+"approverStatus": "반려",
+"rejectReason": "이런 사유로 반려합니다."
+}
+
+### 전자결재 임시저장 삭제 (delete)
+DELETE http://localhost:8080/approvals/2024-sup00002
+Content-Type: application/json
+Authorization: BEARER eyJkYXRlIjoxNzE1NDUyNTYzODMxLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJwb3NpdGlvbk5hbWUiOiLslYzrsJQiLCJzdWIiOiIyNDA1MDE2MjkiLCJkZXBhcnRObyI6MSwicm9sZSI6IkFETUlOIiwiaW1hZ2VVcmwiOiIxIiwibmFtZSI6IuydtOynhOyVhCIsIm1lbWJlclN0YXR1cyI6IuyerOyngSIsImV4cCI6MTcxNTUzODk2MywiZGVwYXJ0TmFtZSI6IuyduOyCrO2MgCIsIm1lbWJlcklkIjoyNDA1MDE2Mjl9.xbs2kanmXScmF9CoAFpaRWWHs2pvaAXAXD7mzIk1FkI

@@ -1,0 +1,38 @@
+### 일정 조회
+GET http://localhost:8080/calendars?department=개발팀
+Authorization: BEARER eyJkYXRlIjoxNzE1MzI2OTk3MDI0LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJwb3NpdGlvbk5hbWUiOiLslYzrsJQiLCJzdWIiOiIyNDA0MDE4MzUiLCJkZXBhcnRObyI6MSwicm9sZSI6IkFETUlOIiwiaW1hZ2VVcmwiOiJodHRwczovL2ltYWdlcy5jdGZhc3NldHMubmV0L2g2Z29vOWd3MWhoNi8yc05adEZBV09kUDFsbVEzM1Z3Uk4zLzI0ZTk1M2I5MjBhOWNkMGZmMmUxZDU4Nzc0MmEyNDcyLzEtaW50cm8tcGhvdG8tZmluYWwuanBnP3c9MTIwMCZoPTk5MiZmbD1wcm9ncmVzc2l2ZSZxPTcwJmZtPWpwZyIsIm5hbWUiOiLquYDsp4DtmZgiLCJtZW1iZXJTdGF0dXMiOiLsnqzsp4EiLCJleHAiOjE3MTU0MTMzOTcsImRlcGFydE5hbWUiOiLsnbjsgqztjIAiLCJtZW1iZXJJZCI6MjQwNDAxODM1fQ.VYLCCQSwXPo8rVpL0pLZVtofZjD3s-OTFCLmhxfJ87g
+
+### 일정 등록
+POST http://localhost:8080/calendars
+Content-Type: application/json
+Authorization: BEARER eyJkYXRlIjoxNzE1MzI2OTk3MDI0LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJwb3NpdGlvbk5hbWUiOiLslYzrsJQiLCJzdWIiOiIyNDA0MDE4MzUiLCJkZXBhcnRObyI6MSwicm9sZSI6IkFETUlOIiwiaW1hZ2VVcmwiOiJodHRwczovL2ltYWdlcy5jdGZhc3NldHMubmV0L2g2Z29vOWd3MWhoNi8yc05adEZBV09kUDFsbVEzM1Z3Uk4zLzI0ZTk1M2I5MjBhOWNkMGZmMmUxZDU4Nzc0MmEyNDcyLzEtaW50cm8tcGhvdG8tZmluYWwuanBnP3c9MTIwMCZoPTk5MiZmbD1wcm9ncmVzc2l2ZSZxPTcwJmZtPWpwZyIsIm5hbWUiOiLquYDsp4DtmZgiLCJtZW1iZXJTdGF0dXMiOiLsnqzsp4EiLCJleHAiOjE3MTU0MTMzOTcsImRlcGFydE5hbWUiOiLsnbjsgqztjIAiLCJtZW1iZXJJZCI6MjQwNDAxODM1fQ.VYLCCQSwXPo8rVpL0pLZVtofZjD3s-OTFCLmhxfJ87g
+
+{
+  "calendarName": "테스트 일정",
+  "calendarStart": "2024-05-12T12:30:00",
+  "calendarEnd": "2024-05-12T12:30:00",
+  "color": "red",
+  "department": "개발팀",
+  "detail": "일정에 대한 부가설명",
+  "registrantId": 200401023
+}
+
+### 일정 수정
+PUT http://localhost:8080/calendars
+Content-Type: application/json
+Authorization: BEARER eyJkYXRlIjoxNzE0NTIyNDEyOTQyLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJwb3NpdGlvbk5hbWUiOiLslYzrsJQiLCJSb2xlIjoiQURNSU4iLCJpbWFnZSI6IuydtOuvuOyngOqwgCDrk6TslrTqsIgg6rK966GcIiwic3ViIjoiaW5zaWRlcidzIHRva2VuOiAyNDA0MDEwMDEiLCJ1c2VyTmFtZSI6Iuq5gOyngO2ZmCIsImV4cCI6MTcxNDYwODgxMiwiZGVwYXJ0TmFtZSI6IuyduOyCrO2MgCIsIm1lbWJlcklkIjoyNDA0MDEwMDF9.Ajn8VLUnWGkJJEOxi9o6ykMD5P6_IGK3wKKJcptuOrU
+
+{
+  "calendarNo": 1,
+  "calendarName": "수정할 일정",
+  "calendarStart": "2024-07-11T12:30:00",
+  "calendarEnd": "2024-07-12T12:30:00",
+  "color": "red",
+  "department": "all",
+  "registrantId": 200401023
+}
+
+
+### 일정 삭제
+DELETE http://localhost:8080/calendars/9
+Authorization: BEARER eyJkYXRlIjoxNzE1MzI2OTk3MDI0LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJwb3NpdGlvbk5hbWUiOiLslYzrsJQiLCJzdWIiOiIyNDA0MDE4MzUiLCJkZXBhcnRObyI6MSwicm9sZSI6IkFETUlOIiwiaW1hZ2VVcmwiOiJodHRwczovL2ltYWdlcy5jdGZhc3NldHMubmV0L2g2Z29vOWd3MWhoNi8yc05adEZBV09kUDFsbVEzM1Z3Uk4zLzI0ZTk1M2I5MjBhOWNkMGZmMmUxZDU4Nzc0MmEyNDcyLzEtaW50cm8tcGhvdG8tZmluYWwuanBnP3c9MTIwMCZoPTk5MiZmbD1wcm9ncmVzc2l2ZSZxPTcwJmZtPWpwZyIsIm5hbWUiOiLquYDsp4DtmZgiLCJtZW1iZXJTdGF0dXMiOiLsnqzsp4EiLCJleHAiOjE3MTU0MTMzOTcsImRlcGFydE5hbWUiOiLsnbjsgqztjIAiLCJtZW1iZXJJZCI6MjQwNDAxODM1fQ.VYLCCQSwXPo8rVpL0pLZVtofZjD3s-OTFCLmhxfJ87g

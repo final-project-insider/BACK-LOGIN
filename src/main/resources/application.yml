@@ -1,0 +1,43 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://mysql.coffit.today:3306/insider
+    url: jdbc:mysql://localhost:3306/insider
+    username: jeehwan1228
+    password: jeehwan1228
+
+  jpa:
+    show-sql: true
+    database: mysql
+    generate-ddl: false
+    properties:
+      hibernate:
+        format_sql: true
+
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+file:
+  upload-dir: "C:/login/"
+  file-dir: "upload"
+
+websocket:
+  servlet:
+    max-binary-message-buffer-size: 500000
+    max-text-message-buffer-size: 50000
+
+jwt:
+  key: asdkfjlkawdsjfw390r82309rjlkasdfja213498dlk
+  time: 86400000
+
+logging:
+  level:
+    org:
+      hibernate:
+        sql: debug
+        type: trace
