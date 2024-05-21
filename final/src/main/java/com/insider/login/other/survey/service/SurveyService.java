@@ -55,7 +55,6 @@ public class SurveyService {
 
                 // 해당 사번이 답변을 등록한 내역이 존재여부 dto에 삽입
                 surveyDTO.setSurveyCompleted(surveyResponseRepository.existsByMemberIdAndSurveyAnswerIn(memberId, answerNoList));
-                log.info("getCompleted {}", surveyDTO.isSurveyCompleted());
                 DTOList.add(surveyDTO);
             }
 
